@@ -22,6 +22,7 @@ alias branch="git checkout"
 alias new-branch="git checkout -B"
 
 alias compare="git diff"
+alias merge="git merge"
 alias status="git status"
 
 alias add="git add ."

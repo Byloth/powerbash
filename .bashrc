@@ -7,6 +7,19 @@ function addCommitPush()
 	git push
 }
 
+# TODO: Terminare e migliorare l'implementazione della funzione seguente...
+#
+# function resetByRemote()
+# {
+#     git fetch --all
+#     git reset --hard origin/master
+
+#     # if (($1 == "") && ($2 == ""))
+#     # {
+#     #     git reset --hard $1/$2
+#     # }
+# }
+
 # Functions aliases
 #
 alias push-commit=addCommitPush
@@ -15,6 +28,7 @@ alias push-commit=addCommitPush
 #
 alias init="git init"
 alias clone="git clone"
+alias fetch="git fetch --all"
 
 alias master="git checkout master"
 

@@ -46,4 +46,7 @@ alias hard-reset="git reset --hard"
 
 alias pull="git pull"
 alias push="git push"
-alias push-new-branch="git push --set-upstream origin"
+
+# TODO: Creare la funzione con 1 / 2 parametri per questa istruzione "<remote> <branch>".
+#
+alias push-new-branch="git push --set-upstream"

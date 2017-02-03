@@ -24,7 +24,7 @@ function addCommitPush()
 #
 alias push-commit=addCommitPush
 
-# GIT commands
+# GIT commands aliases
 #
 alias init="git init"
 alias clone="git clone"

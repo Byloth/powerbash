@@ -47,6 +47,8 @@ alias hard-reset="git reset --hard"
 alias pull="git pull"
 alias push="git push"
 
-# TODO: Creare la funzione con 1 / 2 parametri per questa istruzione "<remote> <branch>".
+# TODO #1: Creare la funzione con 1 / 2 parametri per questa istruzione "<remote> <branch>".
 #
 alias push-new-branch="git push --set-upstream"
+
+# TODO #2: Creare gli alias per le funzioni di GIT legate ai tag.

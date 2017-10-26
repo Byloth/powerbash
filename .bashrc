@@ -4,27 +4,27 @@
 #
 function addCommitPush()
 {
-	git add .
-	git commit -a -m "${1}"
-	git push
+    git add .
+    git commit -a -m "${1}"
+    git push
 }
 
 function pushSetUpstream()
 {
-	if [ -n "${1}" ]
+    if [ -n "${1}" ]
     then
         if [ -n "${2}" ]
         then
             REMOTE="${1}"
             BRANCH="${2}"
         else
-		    REMOTE="origin"
+            REMOTE="origin"
             BRANCH="${1}"
         fi
     else
-		REMOTE="origin"
+        REMOTE="origin"
         BRANCH="master"
-	fi
+    fi
     
     git push --set-upstream ${REMOTE} ${BRANCH}
 }
@@ -49,20 +49,20 @@ function resetByUpstream()
 {
     git fetch --all
 
-	if [ -n "${1}" ]
+    if [ -n "${1}" ]
     then
         if [ -n "${2}" ]
         then
             REMOTE="${1}"
             BRANCH="${2}"
         else
-		    REMOTE="origin"
+            REMOTE="origin"
             BRANCH="${1}"
         fi
     else
-		REMOTE="origin"
+        REMOTE="origin"
         BRANCH="master"
-	fi
+    fi
 
     echo -e "\nAre you sure to restore repository from '${REMOTE}/${BRANCH}'?\n"
 

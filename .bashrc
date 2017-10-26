@@ -31,7 +31,7 @@ function pushSetUpstream()
 
 function reset()
 {
-    echo -e "\nAre you sure to restore repository from last commit?"
+    echo -e "\nAre you sure to restore repository to the last commit?"
     echo -e "All your local changes will be lost forever (it's a long time)!\n"
 
     read -p "Continue? [Y/N]: " ANSWER

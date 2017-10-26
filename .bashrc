@@ -1,28 +1,71 @@
+#!/usr/bin/env bash
+
 # Functions declarations
 #
 function addCommitPush()
 {
 	git add .
-	git commit -a -m "$1"
+	git commit -a -m "${1}"
 	git push
 }
 
-# TODO: Terminare e migliorare l'implementazione della funzione seguente...
-#
-# function resetByRemote()
-# {
-#     git fetch --all
-#     git reset --hard origin/master
+function reset()
+{
+    echo -e "\nAre you sure to restore repository from last commit?"
+    echo -e "All your local changes will be lost forever (it's a long time)!\n"
 
-#     # if (($1 == "") && ($2 == ""))
-#     # {
-#     #     git reset --hard $1/$2
-#     # }
-# }
+    read -p "Continue? [Y/N]: " ANSWER
+
+    echo ""
+
+    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    then
+        git reset --hard
+    else
+        echo -e "Repository has been left untouched."
+    fi
+}
+function resetByUpstream()
+{
+    git fetch --all
+
+	if [ -n "${1}" ]
+    then
+        if [ -n "${2}" ]
+        then
+            REMOTE="${1}"
+            BRANCH="${2}"
+        else
+		    REMOTE="origin"
+            BRANCH="${1}"
+        fi
+    else
+		REMOTE="origin"
+        BRANCH="master"
+	fi
+    echo -e "\nAre you sure to restore repository from '${REMOTE}/${BRANCH}'?\n"
+
+    echo -e "All your local changes and commits that are not yet"
+    echo -e " pushed upstream will be lost forever (it's a long time)!\n"
+
+    read -p "Continue? [Y/N]: " ANSWER
+
+    echo ""
+
+    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    then
+        git reset --hard ${REMOTE}/${BRANCH}
+    else
+        echo -e "Repository has been left untouched."
+    fi
+}
 
 # Functions aliases
 #
 alias push-commit=addCommitPush
+
+alias restore=reset
+alias remote-restore=resetByUpstream
 
 # GIT commands aliases
 #
@@ -41,8 +84,6 @@ alias status="git status"
 
 alias add="git add ."
 alias commit="git commit -a -m"
-
-alias hard-reset="git reset --hard"
 
 alias pull="git pull"
 alias push="git push"

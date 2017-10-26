@@ -9,6 +9,26 @@ function addCommitPush()
 	git push
 }
 
+function pushSetUpstream()
+{
+	if [ -n "${1}" ]
+    then
+        if [ -n "${2}" ]
+        then
+            REMOTE="${1}"
+            BRANCH="${2}"
+        else
+		    REMOTE="origin"
+            BRANCH="${1}"
+        fi
+    else
+		REMOTE="origin"
+        BRANCH="master"
+	fi
+    
+    git push --set-upstream ${REMOTE} ${BRANCH}
+}
+
 function reset()
 {
     echo -e "\nAre you sure to restore repository from last commit?"
@@ -43,6 +63,7 @@ function resetByUpstream()
 		REMOTE="origin"
         BRANCH="master"
 	fi
+
     echo -e "\nAre you sure to restore repository from '${REMOTE}/${BRANCH}'?\n"
 
     echo -e "All your local changes and commits that are not yet"
@@ -63,6 +84,7 @@ function resetByUpstream()
 # Functions aliases
 #
 alias push-commit=addCommitPush
+alias push-new-branch=pushSetUpstream
 
 alias restore=reset
 alias remote-restore=resetByUpstream
@@ -88,8 +110,4 @@ alias commit="git commit -a -m"
 alias pull="git pull"
 alias push="git push"
 
-# TODO #1: Creare la funzione con 1 / 2 parametri per questa istruzione "<remote> <branch>".
-#
-alias push-new-branch="git push --set-upstream"
-
-# TODO #2: Creare gli alias per le funzioni di GIT legate ai tag.
+# TODO: Creare gli alias per le funzioni di GIT legate ai tag.

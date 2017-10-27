@@ -106,6 +106,7 @@ alias status="git status"
 
 alias add="git add ."
 alias commit="git commit -a -m"
+alias edit-commit="git commit --amend"
 
 alias pull="git pull"
 alias push="git push"

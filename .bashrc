@@ -23,7 +23,7 @@ function getRemoteBranch()
         fi
     else
         REMOTE="origin"
-        BRANCH="master"
+        BRANCH="master" # TODO: Selezionare il branch corrente di lavoro anziché "master".
     fi
 
     if [ -n "${3}" ]

@@ -36,6 +36,13 @@ function getRemoteBranch()
     echo "${REMOTE}${SEPARATOR}${BRANCH}"
 }
 
+function pullSingleBranch()
+{
+    BRANCH=$(getRemoteBranch "${1}" "${2}")
+    
+    git pull ${BRANCH}
+}
+
 function pushSetUpstream()
 {
     BRANCH=$(getRemoteBranch "${1}" "${2}")
@@ -84,6 +91,8 @@ function resetByUpstream()
 
 # Functions aliases
 #
+alias pull-single-branch=pullSingleBranch
+
 alias push-commit=addCommitPush
 alias push-new-branch=pushSetUpstream
 

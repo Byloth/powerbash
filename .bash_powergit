@@ -89,6 +89,24 @@ function resetByUpstream()
     fi
 }
 
+function revert()
+{
+    echo -e "\nAre you sure to revert repository to the previous commit?"
+    echo -e "All your local changes and last local commit"
+    echo -e " will be lost forever (it's a long time)!\n"
+
+    read -p "Continue? [Y/N]: " ANSWER
+
+    echo ""
+
+    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    then
+        git reset --hard HEAD^
+    else
+        echo -e "Repository has been left untouched."
+    fi
+}
+
 # Functions aliases
 #
 alias pull-single-branch=pullSingleBranch

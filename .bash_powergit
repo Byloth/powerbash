@@ -167,10 +167,23 @@ alias push="git push"
 #                    QUALCHE ALTRO APPUNTO                    
 # ============================================================
 #
-# case "$1" in
+# function powerGit()
+# {
+#     function powerGitBranch()
+#     {
+#         echo "Branch: ${@}"
+#     }
+
+#     case "${1}" in
 #     -h|--help)
-#       echo "usage: $(basename "$0") $USAGE"
-#       echo ""
-#       echo "$LONG_USAGE"
-#       exit 0
-# esac
+#         echo "Not implemented yet!"
+#         echo "Please, come back later! :)"
+#         ;;
+#     branch)
+#         powerGitBranch ${@:2}
+#         ;;
+#     *)
+#         echo "Command not found! :("
+#         ;;
+#     esac
+# }

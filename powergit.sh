@@ -48,14 +48,14 @@ function getRemoteBranch()
 function pullSingleBranch()
 {
     BRANCH=$(getRemoteBranch "${1}" "${2}")
-    
+
     git pull ${BRANCH}
 }
 
 function pushSetUpstream()
 {
     BRANCH=$(getRemoteBranch "${1}" "${2}")
-    
+
     git push --set-upstream ${BRANCH}
 }
 
@@ -101,7 +101,7 @@ function resetByUpstream()
 function revert()
 {
     echo -e "\nAre you sure to revert repository to the previous commit?\n"
-    
+
     echo -e "All your local changes and last local commit"
     echo -e " will be lost forever (it's a long time)!\n"
 
@@ -151,6 +151,8 @@ alias new-branch="git checkout -b"
 
 alias compare="git diff"
 alias count-commit="git rev-list --count --first-parent HEAD"
+alias graph="git log --graph --topo-order --decorate --oneline --all"
+
 alias merge="git merge"
 alias status="git status"
 
@@ -164,26 +166,28 @@ alias push="git push"
 # TODO: Creare gli alias per le funzioni di GIT legate ai tag.
 
 # ============================================================
-#                    QUALCHE ALTRO APPUNTO                    
+#                    QUALCHE ALTRO APPUNTO
 # ============================================================
 #
-# function powerGit()
-# {
-#     function powerGitBranch()
-#     {
-#         echo "Branch: ${@}"
-#     }
 
-#     case "${1}" in
-#     -h|--help)
-#         echo "Not implemented yet!"
-#         echo "Please, come back later! :)"
-#         ;;
-#     branch)
-#         powerGitBranch ${@:2}
-#         ;;
-#     *)
-#         echo "Command not found! :("
-#         ;;
-#     esac
-# }
+function powerGit()
+{
+    if [ -f ./powergit/branch.sh ]
+    then
+        source ./powergit/branch.sh
+    fi
+
+    case "${1}" in
+    -h|--help)
+        echo "Not implemented yet!"
+        echo "Please, come back later! :)"
+        ;;
+    branch)
+        powerGitBranch ${@:2}
+        ;;
+    *)
+        echo "Command '${1}' not found! :("
+        ;;
+    esac
+}
+

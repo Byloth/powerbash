@@ -1,0 +1,14 @@
+[alias]
+	graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset)%C(auto)%d%C(reset) \"%s\"\n %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order --all
+
+[credential]
+        helper = cache
+
+[core]
+	autocrlf = input
+
+[push]
+	default = simple
+
+[winUpdater]
+	recentlySeenVersion = 2.15.1.windows.2

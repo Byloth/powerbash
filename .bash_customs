@@ -36,7 +36,7 @@ then
     . "${COMPLETION_PATH}/git-prompt.sh"
 
     PS1="${PS1}\[\033[36m\]"    # Color: Cyan
-    PS1="${PS1}`__git_ps1`"     # Write: Current working GIT branch
+    PS1="${PS1}'`__git_ps1`'    # Write: Current working GIT branch
 fi
 
 PS1="${PS1}\[\033[0m\]"         # Color: White

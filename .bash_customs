@@ -36,9 +36,13 @@ then
     . "${COMPLETION_PATH}/git-prompt.sh"
 
     PS1="${PS1}\[\033[36m\]"    # Color: Cyan
-    PS1="${PS1}'`__git_ps1`'    # Write: Current working GIT branch
+    PS1="${PS1}"'`__git_ps1`'   # Write: Current working GIT branch
 fi
 
 PS1="${PS1}\[\033[0m\]"         # Color: White
 PS1="${PS1}\n"                  # Spacing...
 PS1="${PS1}\[\033[0;32m\] └\[\033[0m\033[0;32m\] \$\[\033[0m\033[0m\] "    # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)
+
+# Print a random phrase when the terminal is opened
+#
+fortune -as | cowsay

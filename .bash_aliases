@@ -14,5 +14,5 @@ alias ll="ls -alF"
 
 # Useful aliases (if you are in Bash under WSL)
 #
-alias clear="powershell.exe clear"
+alias clear="powershell.exe clear && fortune -as | cowsay"
 alias su="sudo su"

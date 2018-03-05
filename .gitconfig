@@ -1,14 +1,16 @@
 [alias]
-	graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order --all
+        branches = branch --all
+        forget = rm --cached
+        graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order --all
 
 [credential]
-    helper = cache
+        helper = cache
 
 [core]
-	autocrlf = input
+        autocrlf = input
 
 [push]
-	default = simple
+        default = simple
 
 [winUpdater]
-	recentlySeenVersion = 2.15.1.windows.2
+        recentlySeenVersion = 2.15.1.windows.2

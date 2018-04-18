@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+
+# Useful exports (if you are in Bash under WSL)
+#
+export DOCKER_HOST="localhost:2375"

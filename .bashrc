@@ -39,13 +39,17 @@ EDITOR="${VISUAL}"
 
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    source ~/.bash_aliases
 fi
 
 if [ -f ~/.bash_customs ]; then
-    . ~/.bash_customs
+    source ~/.bash_customs
+fi
+
+if [ -f ~/.bash_exports ]; then
+    source ~/.bash_exports
 fi
 
 if [ -f ~/.bash_powergit ]; then
-    . ~/.bash_powergit
+    source ~/.bash_powergit
 fi

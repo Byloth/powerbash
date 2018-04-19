@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 #
 
+# Useful functions (if you are in Bash under WSL)
+#
+function windowsFriendlyPWD()
+{
+    CURRENT_REALPATH="$(realpath .)"
+    CURRENT_REALPATH="${CURRENT_REALPATH#/mnt}"
+
+    echo ${CURRENT_REALPATH}
+}
+
 # Useful exports (if you are in Bash under WSL)
 #
+export -f windowsFriendlyPWD
 export DOCKER_HOST="localhost:2375"

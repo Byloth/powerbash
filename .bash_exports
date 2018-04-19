@@ -11,7 +11,8 @@ function windowsFriendlyPWD()
     echo ${CURRENT_REALPATH}
 }
 
+PROMPT_COMMAND="$PROMPT_COMMAND"' export PWinD=`windowsFriendlyPWD`;'
+
 # Useful exports (if you are in Bash under WSL)
 #
-export -f windowsFriendlyPWD
 export DOCKER_HOST="localhost:2375"

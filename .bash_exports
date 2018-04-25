@@ -13,6 +13,11 @@ function windowsFriendlyPWD()
 
 PROMPT_COMMAND="$PROMPT_COMMAND"' export PWinD=`windowsFriendlyPWD`;'
 
+# Defining the default editor to use.
+#
+VISUAL="nano"
+EDITOR="${VISUAL}"
+
 # Useful exports (if you are in Bash under WSL)
 #
 export DOCKER_HOST="localhost:2375"

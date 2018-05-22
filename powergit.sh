@@ -190,4 +190,3 @@ function powerGit()
         ;;
     esac
 }
-

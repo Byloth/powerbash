@@ -30,6 +30,9 @@ COMPLETION_PATH="${GIT_EXEC_PATH%/libexec/git-core}"
 COMPLETION_PATH="${COMPLETION_PATH%/lib/git-core}"
 COMPLETION_PATH="${COMPLETION_PATH}/share/git-core/contrib/completion"
 
+# Clone "git-prompt.sh" and "git-completion.bash" from
+#  Git's GitHub Repository: https://github.com/git/git
+#
 if test -f "${COMPLETION_PATH}/git-prompt.sh"
 then
     . "${COMPLETION_PATH}/git-completion.bash"

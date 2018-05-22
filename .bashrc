@@ -37,7 +37,6 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 VISUAL="nano"
 EDITOR="${VISUAL}"
 
-
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi

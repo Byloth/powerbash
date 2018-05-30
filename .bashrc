@@ -48,7 +48,3 @@ fi
 if [ -f ~/.bash_exports ]; then
     source ~/.bash_exports
 fi
-
-if [ -f ~/.bash_powergit ]; then
-    source ~/.bash_powergit
-fi

@@ -70,15 +70,6 @@ function dockerStop()
     fi
 }
 
-if [ -f ./configs.sh ]
-then
-    source ./configs.sh
-else
-    echo "$(error "Missing file \"configs.sh\"!")"
-
-    exit -1
-fi
-
 clear
 
 if [ $(isDockerRunning) -eq 0 ]
@@ -95,10 +86,21 @@ then
 
     echo -e "\n  Is the Docker daemon running?"
 
+    exit -1
+fi
+
+CONFIGS_FILE="configs.sh"
+
+if [ -f ./${CONFIGS_FILE} ]
+then
+    source ./${CONFIGS_FILE}
+else
+    echo "$(error "Missing instance configuration file: \"${CONFIGS_FILE}\"!")"
+
     exit 1
 fi
 
-echo -e "\n  I'm going to start a new Odoo Docker container..."
+echo -e "\n  I'm going to start a new Odoo instance..."
 echo -e "   └ Container name: $(info "${NAME}")"
 
 LAST_VERSION="$(getLastImageVersion)"

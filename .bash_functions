@@ -7,30 +7,28 @@ function removeDockerImages()
     local SKIP=${2}
 
     if [ -z "${IMAGE}" ]
-        echo "Usage: $0 <repository name> [<# of image to skip>]"
+    then
+        echo "Usage: removeDockerImages <repository name> [<# of image to skip>]"
+    else
+        if [ -z "${SKIP}" ]
+        then
+            SKIP=1
+        fi
 
-        exit -1
+        docker images | awk '{ if (NR > 1 && $1 == "${IMAGE}") print }' | awk '{ if (NR > ${SKIP}) print $3 }' | xargs docker image rm
     fi
-
-    if [ -z "${SKIP}" ]
-        SKIP=1
-    fi
-
-    docker images | awk '{ if (NR > 1 && $1 == "${IMAGE}") print }' | awk '{ if (NR > ${SKIP}) print $3 }' | xargs docker image rm
 }
 
 function sshTunnel()
 {
     if [ $# -lt 3 ]
     then
-        echo "Usage: $0 <local port> [<username>@]<remote host> <remote port>"
+        echo "Usage: sshTunnel <local port> [<username>@]<remote host> <remote port>"
+    else
+        echo -e "\nTunnelling \"localhost:${1}\" to \"${2}:${3}\"..."
 
-        exit -1
+        ssh -NL ${1}:localhost:${3} ${2}
     fi
-
-    echo -e "\nTunnelling \"localhost:${1}\" to \"${2}:${3}\"..."
-
-    ssh -NL ${1}:localhost:${3} ${2}
 }
 
 # Useful functions (if you are in Bash under WSL)
@@ -40,6 +38,7 @@ function getWindowsFriendlyRealPath()
     local TARGET="${1}"
 
     if [ -z "${TARGET}" ]
+    then
         TARGET="."
     fi
 

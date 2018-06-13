@@ -89,13 +89,23 @@ then
     exit -1
 fi
 
-CONFIGS_FILE="configs.sh"
+CONFIGS_FILE="odoo.conf"
 
 if [ -f ./${CONFIGS_FILE} ]
 then
-    source ./${CONFIGS_FILE}
+    while IFS='' read -r LINE || [[ -n "${LINE}" ]]
+    do
+        PROPERTY="$(echo "${LINE}" | cut -d '#' -f 1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+
+        if [ -n "${PROPERTY}" ]
+        then
+            KEY = "$(echo "${PROPERTY}" | awk '{ print $1 }')"
+            VALUE = "$(echo "${PROPERTY}" | awk '{ print $3 }')"
+        fi
+
+    done < "./${CONFIGS_FILE}"
 else
-    echo "$(error "Missing instance configuration file: \"${CONFIGS_FILE}\"!")"
+    echo -e "\n  $(error "Missing instance configuration file: \"${CONFIGS_FILE}\"!")"
 
     exit 1
 fi

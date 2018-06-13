@@ -5,10 +5,6 @@
 #
 export DOCKER_HOST="localhost:2375"
 
-# Exports functions
+# Overriding path
 #
-if [ -f ~/.bash_functions ]; then
-    source ~/.bash_functions
-fi
-
-export -f getWindowsFriendlyRealPath
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"

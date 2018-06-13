@@ -1,30 +1,23 @@
 #!/usr/bin/env bash
 #
 
-# Customizing the bash...
-# If this is an xterm set the title to user@host: dir
+# Bash customization:
+#  - set the title to "<user>@<host>: <dir>"
 #
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;\u@\h: \w\a\]"
-    ;;
-*)
-    PS1=""
-    ;;
-esac
+PS1="\[\e]0;\u@\h: \w\a\]"
 
-PS1="${PS1}\n"              # Spacing...
+#  - start composing custom prompt
+#
+PS1="${PS1}\n"              # New line...
 
 PS1="${PS1}\[\033[32m\]"    # Color: green
-PS1="${PS1}\u@\h "          # Write: user@host
+PS1="${PS1}\u@\h "          # Write: <user>@<host>
 PS1="${PS1}\[\033[35m\]"    # Color: Purple
 PS1="${PS1}\l "             # Write: Basename of the shell's terminal device name
 PS1="${PS1}\[\033[33m\]"    # Color: Brownish yellow
 PS1="${PS1}\w"              # Write: Current working directory
 
-# Adding GIT information and completion to the bash...
-# Clone "git-prompt.sh" and "git-completion.bash" from
-#  Git's GitHub Repository: https://github.com/git/git
+#  - add GIT information (https://github.com/git/git)
 #
 GIT_EXEC_PATH="$(git --exec-path 2>/dev/null)"
 
@@ -34,16 +27,18 @@ COMPLETION_PATH="${COMPLETION_PATH}/share/git-core/contrib/completion"
 
 if test -f "${COMPLETION_PATH}/git-prompt.sh"
 then
-    . "${COMPLETION_PATH}/git-completion.bash"
-    . "${COMPLETION_PATH}/git-prompt.sh"
+    source "${COMPLETION_PATH}/git-completion.bash"
+    source "${COMPLETION_PATH}/git-prompt.sh"
 
     PS1="${PS1}\[\033[36m\]"    # Color: Cyan
     PS1="${PS1}"'`__git_ps1`'   # Write: Current working GIT branch
 fi
 
+PS1="${PS1}\n"                  # Nel line...
+
+PS1="${PS1}\[\033[32m\]"        # Color: green
+PS1="${PS1} └ \$ "              # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)
 PS1="${PS1}\[\033[0m\]"         # Color: White
-PS1="${PS1}\n"                  # Spacing...
-PS1="${PS1}\[\033[0;32m\] └\[\033[0m\033[0;32m\] \$\[\033[0m\033[0m\] "    # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)
 
 # Print a random phrase when the terminal is opened
 #

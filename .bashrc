@@ -13,7 +13,6 @@ esac
 
 #
 # History Management:
-#
 #  - don't put duplicate lines and erase duplicate lines:
 #
 HISTCONTROL=ignoredups:erasedups
@@ -37,14 +36,19 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 VISUAL="nano"
 EDITOR="${VISUAL}"
 
-if [ -f ~/.bash_aliases ]; then
+if [ -f ~/.bash_aliases ]
+then
     source ~/.bash_aliases
 fi
-
-if [ -f ~/.bash_customs ]; then
+if [ -f ~/.bash_customs ]
+then
     source ~/.bash_customs
 fi
-
-if [ -f ~/.bash_exports ]; then
+if [ -f ~/.bash_exports ]
+then
     source ~/.bash_exports
+fi
+if [ -f ~/.bash_functions ]
+then
+    source ~/.bash_functions
 fi

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 
+#
 # Enable color support of 'ls', 'grep'
 #  and also add handy aliases...
 #
@@ -17,12 +18,14 @@ then
     alias egrep='egrep --color=auto'
 fi
 
+#
 # Some more 'ls' aliases...
 #
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+#
 # Useful aliases (if you are in Bash under WSL)
 #
 alias clear="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe clear && fortune -as | cowsay"

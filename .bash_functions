@@ -31,6 +31,7 @@ function sshTunnel()
     fi
 }
 
+#
 # Useful functions (if you are in Bash under WSL)
 #
 function getWindowsFriendlyRealPath()

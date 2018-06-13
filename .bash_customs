@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 
+#
 # Bash customization:
 #  - set the title to "<user>@<host>: <dir>"
 #
@@ -40,6 +41,7 @@ PS1="${PS1}\[\033[32m\]"        # Color: green
 PS1="${PS1} └ \$ "              # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)
 PS1="${PS1}\[\033[0m\]"         # Color: White
 
+#
 # Print a random phrase when the terminal is opened
 #
 fortune -as | cowsay

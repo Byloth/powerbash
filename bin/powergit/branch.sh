@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+#
+
 function powerGitBranch()
 {
     case "${1}" in
@@ -10,4 +13,3 @@ function powerGitBranch()
         ;;
     esac
 }
-

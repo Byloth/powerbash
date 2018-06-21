@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+#
 
+#
 # Functions declarations
 #
 function addCommitPush()
@@ -117,6 +119,7 @@ function revert()
     fi
 }
 
+#
 # Functions aliases
 #
 alias pull-single-branch=pullSingleBranch
@@ -127,6 +130,7 @@ alias push-new-branch=pushSetUpstream
 alias restore=reset
 alias remote-restore=resetByUpstream
 
+#
 # GIT commands aliases
 #
 alias init="git init"
@@ -135,6 +139,7 @@ alias fetch="git fetch --all"
 
 alias master="git checkout master"
 
+#
 # TODO: Creare una funzione "branch" che accetti diversi parametri;
 #        tipo:
 #         - new <branch_name> [--force]
@@ -163,7 +168,9 @@ alias edit-commit="git commit --amend"
 alias pull="git pull"
 alias push="git push"
 
+#
 # TODO: Creare gli alias per le funzioni di GIT legate ai tag.
+#
 
 # ============================================================
 #                    QUALCHE ALTRO APPUNTO

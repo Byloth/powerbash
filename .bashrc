@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 #
-# ~/.bashrc: executed by bash(1) for non-login shells.
-#
 
 #
-# If not running interactively, don't do anything.
+# If not running interactively, don't do anything
 #
 case $- in
     *i*) ;;
@@ -13,25 +11,29 @@ esac
 
 #
 # History Management:
-#  - don't put duplicate lines and erase duplicate lines:
+#  - don't put duplicate lines
+#  - erase duplicate lines
 #
 HISTCONTROL=ignoredups:erasedups
 
-#  - append to the history file, don't overwrite it:
+#  - append to the history file, don't overwrite it
+#  - check the window size after each command and, if necessary,
+#     update the values of lines and columns
 #
 shopt -s histappend
+shopt -s checkwinsize
 
-#  - setting history length:
+#  - setting history length
 #
 HISTSIZE=100000
 HISTFILESIZE=100000
 
-#  - saving and reloading the history after each command finishes:
+#  - saving and reloading the history after each command finishes
 #
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #
-# Defining the default editor to use.
+# Defining the default editor to use
 #
 VISUAL="nano"
 EDITOR="${VISUAL}"

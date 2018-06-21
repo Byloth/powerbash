@@ -9,7 +9,7 @@ PS1="\[\e]0;\u@\h: \w\a\]"
 
 #  - start composing custom prompt
 #
-PS1="${PS1}\n"              # New line...
+PS1="${PS1}\n"              # New line
 
 PS1="${PS1}\[\033[32m\]"    # Color: green
 PS1="${PS1}\u@\h "          # Write: <user>@<host>
@@ -35,7 +35,7 @@ then
     PS1="${PS1}"'`__git_ps1`'   # Write: Current working GIT branch
 fi
 
-PS1="${PS1}\n"                  # Nel line...
+PS1="${PS1}\n"                  # New line
 
 PS1="${PS1}\[\033[32m\]"        # Color: green
 PS1="${PS1} └ \$ "              # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)

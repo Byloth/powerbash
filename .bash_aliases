@@ -3,7 +3,7 @@
 
 #
 # Enable color support of 'ls', 'grep'
-#  and also add handy aliases...
+#  and also add handy aliases
 #
 if [ -x /usr/bin/dircolors ]
 then
@@ -19,7 +19,7 @@ then
 fi
 
 #
-# Some more 'ls' aliases...
+# Some more 'ls' aliases
 #
 alias ll='ls -alF'
 alias la='ls -A'

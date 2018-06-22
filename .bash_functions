@@ -8,14 +8,14 @@ function removeDockerImages()
 
     if [ -z "${IMAGE}" ]
     then
-        echo "Usage: removeDockerImages <repository name> [<# of image to skip>]"
+        echo "Usage: removeDockerImages <repository name> [<# of image to skip> | 1]"
     else
         if [ -z "${SKIP}" ]
         then
             SKIP=1
         fi
 
-        docker images | awk '{ if (NR > 1 && $1 == "${IMAGE}") print }' | awk '{ if (NR > ${SKIP}) print $3 }' | xargs docker image rm
+        docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP=${SKIP} '{ if (NR > SKIP) print $3 }' | xargs docker image rm
     fi
 }
 

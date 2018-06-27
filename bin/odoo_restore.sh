@@ -23,4 +23,5 @@ else
     echo "Copying filestore..."
     docker cp "${DUMP}" "${CONTAINER}:/var/lib/odoo/filestore/"
     docker exec ${CONTAINER} mv "/var/lib/odoo/filestore/${OLD_DATABASE}" "/var/lib/odoo/filestore/${DATABASE}"
+    docker exec ${CONTAINER} chown -R odoo:odoo "/var/lib/odoo/filestore/${DATABASE}"
 fi

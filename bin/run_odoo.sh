@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+readonly CONFIGS_FILE="odoo.conf"
+
+readonly DEFAULT_PORT="8069"
+readonly DEFAULT_PGHOST="10.0.75.1"
+readonly DEFAULT_PGPORT="5432"
+readonly DEFAULT_PGUSER="root"
+readonly DEFAULT_PGPASSWORD=""
+readonly DEFAULT_ADMIN_PASSWD="admin00"
+
 function success()
 {
     echo -e "\033[0;32m${1}\033[0m"
@@ -25,9 +34,121 @@ function getRealPath()
     echo ${REALPATH}
 }
 
+function loadDefaults()
+{
+    LAST_VERSION="$(getLastImageVersion "${IMAGE}")"
+
+    if [ -z "${DATA_VOLUME}" ]
+    then
+        DATA_VOLUME="${NAME}_data"
+    fi
+
+    if [ -z "${PORT}" ]
+    then
+        PORT="${DEFAULT_PORT}"
+    fi
+
+    if [ -z "${VERSION}" ]
+    then
+        VERSION="${LAST_VERSION}"
+    fi
+
+    if [ -z "${PGHOST}" ]
+    then
+        PGHOST="${DEFAULT_PGHOST}"
+    fi
+    if [ -z "${PGPORT}" ]
+    then
+        PGPORT="${DEFAULT_PGPORT}"
+    fi
+    if [ -z "${PGUSER}" ]
+    then
+        PGUSER="${DEFAULT_PGUSER}"
+    fi
+    if [ -z "${PGPASSWORD}" ]
+    then
+        PGPASSWORD="${DEFAULT_PGPASSWORD}"
+    fi
+
+    if [ -z "${ADMIN_PASSWD}" ]
+    then
+        ADMIN_PASSWD="${LAST_ADMIN_PASSWD}"
+    fi
+}
+function loadConfigurations()
+{
+    if [ -f ./${1} ]
+    then
+        while IFS='' read -r LINE || [[ -n "${LINE}" ]]
+        do
+            PROPERTY="$(echo "${LINE}" | cut -d '#' -f 1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+
+            if [ -n "${PROPERTY}" ]
+            then
+                KEY="$(echo "${PROPERTY}" | awk '{ print $1 }')"
+                VALUE="$(echo "${PROPERTY}" | awk '{ print $3 }')"
+
+                case "${KEY}" in
+                "name")
+                    NAME="${VALUE}"
+                    ;;
+                "volume" | "data_volume")
+                    DATA_VOLUME="${VALUE}"
+                    ;;
+                "port")
+                    PORT="${VALUE}"
+                    ;;
+                "image")
+                    IMAGE="${VALUE}"
+                    ;;
+                "version")
+                    VERSION="${VALUE}"
+                    ;;
+                "pghost")
+                    PGHOST="${VALUE}"
+                    ;;
+                "pgport")
+                    PGPORT="${VALUE}"
+                    ;;
+                "pguser")
+                    PGUSER="${VALUE}"
+                    ;;
+                "pgpass" | "pgpassword")
+                    PGPASSWORD="${VALUE}"
+                    ;;
+                "admin_pass" | "admin_passwd")
+                    ADMIN_PASSWD="${VALUE}"
+                    ;;
+                esac
+            fi
+
+        done < "./${1}"
+    else
+        echo -e "\n  $(error "Missing instance configuration file: \"${1}\"!")"
+
+        exit 1
+    fi
+}
+function checkConfigurations()
+{
+    if [ -z "${NAME}" ]
+    then
+        echo -e "\n  $(error "Missing key \"name\" in configuration file!")"
+
+        exit 2
+    fi
+
+    if [ -z "${IMAGE}" ]
+    then
+        echo -e "\n  $(error "Missing key \"image\" in configuration file!")"
+
+        exit 3
+    fi
+}
+
 function getLastImageVersion()
 {
-    docker images | grep ^${IMAGE} | awk '{ if (NR == 1) print $2 }'
+    docker images | grep ^${1} | awk '{ if (NR == 1) print $2 }'
 }
 
 function isDockerRunning()
@@ -40,7 +161,7 @@ function isDockerRunning()
 
 function dockerFind()
 {
-    docker ps | awk '{ if (NR > 1) print $NF }' | grep -w ${NAME}
+    docker ps | awk '{ if (NR > 1) print $NF }' | grep -w ${1}
 }
 function dockerRun()
 {
@@ -56,17 +177,17 @@ function dockerRun()
                -e ADMIN_PASSWD=${ADMIN_PASSWD} \
                -v ${DATA_VOLUME}:/var/lib/odoo \
                -v ${PWD}/addons:/opt/odoo/extra-addons/custom:ro \
-               ${IMAGE}:${RUNNING_VERSION} ${@} --dev reload
+               ${IMAGE}:${VERSION} ${@} --dev all
 }
 function dockerStop()
 {
-    if [ "$(docker stop ${NAME})" == "${NAME}" ]
+    if [ "$(docker stop ${1})" == "${1}" ]
     then
         echo "$(success "OK!")"
     else
         echo "$(error "Something went wrong!")"
 
-        exit 3
+        exit 4
     fi
 }
 
@@ -89,47 +210,22 @@ then
     exit -1
 fi
 
-CONFIGS_FILE="odoo.conf"
+loadConfigurations "${CONFIGS_FILE}"
+loadDefaults
 
-if [ -f ./${CONFIGS_FILE} ]
-then
-    while IFS='' read -r LINE || [[ -n "${LINE}" ]]
-    do
-        PROPERTY="$(echo "${LINE}" | cut -d '#' -f 1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-
-        if [ -n "${PROPERTY}" ]
-        then
-            KEY = "$(echo "${PROPERTY}" | awk '{ print $1 }')"
-            VALUE = "$(echo "${PROPERTY}" | awk '{ print $3 }')"
-        fi
-
-    done < "./${CONFIGS_FILE}"
-else
-    echo -e "\n  $(error "Missing instance configuration file: \"${CONFIGS_FILE}\"!")"
-
-    exit 1
-fi
+checkConfigurations
 
 echo -e "\n  I'm going to start a new Odoo instance..."
 echo -e "   └ Container name: $(info "${NAME}")"
 
-LAST_VERSION="$(getLastImageVersion)"
-
-if [ -n "${VERSION}" ]
+if [ "${VERSION}" != "${LAST_VERSION}" ]
 then
-    RUNNING_VERSION="${VERSION}"
+    echo -e "   └ Image tag: $(info "${IMAGE}"):$(warning "${VERSION}")"
 else
-    RUNNING_VERSION="${LAST_VERSION}"
+    echo -e "   └ Image tag: $(info "${IMAGE}"):$(info "${VERSION}")"
 fi
 
-if [ "${RUNNING_VERSION}" != "${LAST_VERSION}" ]
-then
-    echo -e "   └ Image tag: $(info "${IMAGE}"):$(warning "${RUNNING_VERSION}")"
-else
-    echo -e "   └ Image tag: $(info "${IMAGE}:${RUNNING_VERSION}")"
-fi
-
-if [ -n "$(dockerFind)" ]
+if [ -n "$(dockerFind "${NAME}")" ]
 then
     echo -e "\n   ------------------------------"
     echo -e "\n  $(warning "WARNING"): There is already another Docker"
@@ -140,11 +236,11 @@ then
     then
         echo -e "   └ I'm stopping it... \c"
 
-        dockerStop
+        dockerStop "${NAME}"
     else
         echo -e "   └ Ok... No problem!"
 
-        exit 2
+        exit 0
     fi
 fi
 

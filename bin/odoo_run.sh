@@ -178,7 +178,7 @@ function dockerRun()
                -e ADMIN_PASSWD=${ADMIN_PASSWD} \
                -v ${DATA_VOLUME}:/var/lib/odoo \
                -v ${PWD}/addons:/opt/odoo/extra-addons/custom:ro \
-               ${IMAGE}:${VERSION} ${@} --dev all
+               ${IMAGE}:${VERSION} ${@}
 }
 function dockerStop()
 {

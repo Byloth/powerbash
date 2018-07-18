@@ -73,7 +73,7 @@ function loadDefaults()
 
     if [ -z "${ADMIN_PASSWD}" ]
     then
-        ADMIN_PASSWD="${LAST_ADMIN_PASSWD}"
+        ADMIN_PASSWD="${DEFAULT_ADMIN_PASSWD}"
     fi
 }
 function loadConfigurations()

@@ -21,13 +21,39 @@ function removeDockerImages()
 
 function sshTunnel()
 {
-    if [ $# -lt 3 ]
+    if [ ${#} -lt 3 ]
     then
         echo "Usage: sshTunnel <local port> [<username>@]<remote host> <remote port>"
     else
         echo -e "\nTunnelling \"localhost:${1}\" to \"${2}:${3}\"..."
 
         ssh -NL ${1}:localhost:${3} ${2}
+    fi
+}
+
+function tarCompress()
+{
+    if [ ${#} -lt 2 ]
+    then
+        echo "Usage: tarCompress <archive name> <file or directory to compress>"
+    else
+        tar -czvf "${1}" "${2}"
+    fi
+}
+function tarExtract()
+{
+    if [ ${#} -lt 1 ]
+    then
+        echo "Usage: tarExtract <archive name> [<directory where extract archive> | .]"
+    else
+        local EXTRACT_PATH="${2}"
+
+        if [ -z "${EXTRACT_PATH}" ]
+        then
+            EXTRACT_PATH="."
+        fi
+
+        tar -xzvf "${1}" -C "${EXTRACT_PATH}"
     fi
 }
 
@@ -46,5 +72,5 @@ function getWindowsFriendlyRealPath()
     local REALPATH="$(realpath ${TARGET})"
     REALPATH="${REALPATH#/mnt}"
 
-    echo ${REALPATH}
+    echo "${REALPATH}"
 }

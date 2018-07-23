@@ -23,4 +23,4 @@ pg_dump -b -Fc -d "${DATABASE}" -O > "${DATABASE}.dump"
 echo "Copying filestore..."
 docker cp "${CONTAINER}:/var/lib/odoo/filestore/${DATABASE}" .
 
-echo "Done! -> $ ./<instance-name>_restore.sh \"${BACKUP_DIR}${FILENAME}/${DATABASE}\""
+echo "Done! -> $ ./<instance-name>_restore.sh \"${BACKUP_DIR}${FILENAME}\""

@@ -162,7 +162,7 @@ function isDockerRunning()
 
 function dockerFind()
 {
-    docker ps | awk '{ if (NR > 1) print $NF }' | grep -w ${1}
+    docker ps | awk '{ if (NR > 1) print $NF }' | grep "^${1}$"
 }
 function dockerRun()
 {

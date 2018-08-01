@@ -217,13 +217,22 @@ loadDefaults
 checkConfigurations
 
 echo -e "\n  I'm going to start a new Odoo instance..."
-echo -e "   └ Container name: $(info "${NAME}")"
+echo -e "   ├ Container name: $(info "${NAME}")"
 
 if [ "${VERSION}" != "${LAST_VERSION}" ]
 then
-    echo -e "   └ Image tag: $(info "${IMAGE}"):$(warning "${VERSION}")"
+    echo -e "   ├ Image tag: $(info "${IMAGE}"):$(warning "${VERSION}")"
 else
-    echo -e "   └ Image tag: $(info "${IMAGE}"):$(info "${VERSION}")"
+    echo -e "   ├ Image tag: $(info "${IMAGE}"):$(info "${VERSION}")"
+fi
+
+echo -e "   │"
+
+if [ "${PORT}" != "80" ]
+then
+    echo -e "   └ URL: $(info "http://localhost:${PORT}/web?debug")"
+else
+    echo -e "   └ URL: $(info "http://localhost/web?debug")"
 fi
 
 if [ -n "$(dockerFind "${NAME}")" ]

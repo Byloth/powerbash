@@ -1,11 +1,16 @@
 import argparse
+import subprocess
+
+from libs import tty
+from libs.odoo import Odoo
 
 #
 # https://docs.python.org/3/library/argparse.html
 #
 
-class Test:
+class OdooStart:
     _args = None
+    _odoo = None
 
     @classmethod
     def get_parser(cls):
@@ -19,15 +24,17 @@ class Test:
         return parser
 
     def __init__(self):
-        parser = self.get_parser()
+        self._odoo = Odoo()
+    #     parser = self.get_parser()
 
-        self._args = parser.parse_args()
+    #     self._args = parser.parse_args()
 
     def execute(self):
-        print(self._args.accumulate(self._args.integers))
+        tty.clear()
+
+        self._odoo.start()
 
 
 if __name__ == '__main__':
-    test = Test()
-
-    test.execute()
+    odoo_start = OdooStart()
+    odoo_start.execute()

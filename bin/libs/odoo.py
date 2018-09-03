@@ -50,7 +50,7 @@ class Odoo:
 
         for key, value in lines:
             if key in configs:
-                _logger.warn("Property \"%s\" already exists in configs' dictionary!" % key)
+                _logger.warning("Property \"%s\" already exists in configs' dictionary!" % key)
 
             configs[key] = value
 

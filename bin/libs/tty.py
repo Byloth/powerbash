@@ -68,4 +68,4 @@ def pretty(text, text_color=None, text_format=None, background_color=None):
 
     attrs = ";".join(args)
 
-    return "\\e[{}m{}\\e[0m".format(attrs, text)
+    return "\033[{}m{}\033[0m".format(attrs, text)

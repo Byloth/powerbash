@@ -1,8 +1,8 @@
 import argparse
 import subprocess
 
-from libs import tty
-from libs.odoo import Odoo
+from lib import tty
+from lib.odoo import Odoo
 
 #
 # https://docs.python.org/3/library/argparse.html

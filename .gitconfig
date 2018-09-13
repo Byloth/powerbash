@@ -11,6 +11,7 @@
 [core]
         autocrlf = input
         filemode = false
+        hooksPath = ~/.git-hooks
 
 [push]
         default = simple

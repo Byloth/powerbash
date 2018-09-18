@@ -5,13 +5,13 @@
 # Based on http://www.snip2code.com/Snippet/165926/Check-for-ipdb-breakpoints-git-hook
 #
 
-PDB_CHECK=$(git grep -E -n '[ ;]i?pdb')
+PDB_CHECK="$(git grep -E -n '[ ;]i?pdb')"
 
 if [ ${#PDB_CHECK} -gt 0 ]
 then
     echo -e "\n\033[4;31mCOMMIT REJECTED: you cannot commit due an error!\033[0m"
     echo -e " \033[31m└\033[0m Your code contains at least one break points. Please remove them before committing.\n"
-    echo -e $PDB_CHECK
+    echo -e "${PDB_CHECK}"
 
     exit 1
 fi

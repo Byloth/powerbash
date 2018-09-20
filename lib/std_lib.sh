@@ -15,3 +15,5 @@ function loadFile()
 
     source "${FILE_DIR}/${1}"
 }
+
+PWinD="$(getRealPath)"

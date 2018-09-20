@@ -41,6 +41,8 @@ function loadConfigurations()
 {
     if [ -f ./${1} ]
     then
+        MOUNT_DIRS=""
+
         while IFS='' read -r LINE || [[ -n "${LINE}" ]]
         do
             PROPERTY="$(echo "${LINE}" | cut -d '#' -f 1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
@@ -81,6 +83,18 @@ function loadConfigurations()
                 "admin_pass" | "admin_passwd")
                     ADMIN_PASSWD="${VALUE}"
                     ;;
+                "mount")
+                    VALUES=($(echo ${VALUE} | tr ':' ' '))
+                    SRC_PATH="${VALUES[0]}"
+                    DEST_PATH="${VALUES[1]}"
+
+                    if [[ ! "${SRC_PATH}" =~ ^/ ]]
+                    then
+                        SRC_PATH="${PWinD}/${SRC_PATH}"
+                    fi
+
+                    MOUNT_DIRS="${MOUNT_DIRS} -v ${SRC_PATH}:${DEST_PATH}:ro"
+                    ;;
                 esac
             fi
 
@@ -108,7 +122,12 @@ function loadDefaults()
 
     if [ -z "${VERSION}" ]
     then
-        VERSION="${LAST_VERSION}"
+        if [ -n "${LAST_VERSION}" ]
+        then
+            VERSION="${LAST_VERSION}"
+        else
+            VERSION="latest"
+        fi
     fi
 
     if [ -z "${PGHOST}" ]
@@ -132,13 +151,16 @@ function loadDefaults()
     then
         ADMIN_PASSWD="${DEFAULT_ADMIN_PASSWD}"
     fi
+
+    if [ -z "${MOUNT_DIRS}" ]
+    then
+        MOUNT_DIRS="-v ${PWinD}/addons:/opt/odoo/extra-addons/custom:ro"
+    fi
 }
 
 function odooRun()
 {
-    local PWD="$(getRealPath)"
-
-    docker run --rm -it \
+    echo "docker run --rm -it \
                --name=${NAME} \
                -p ${PORT}:8069 \
                -e PGHOST=${PGHOST} \
@@ -147,8 +169,8 @@ function odooRun()
                -e PGPASSWORD=${PGPASSWORD} \
                -e ADMIN_PASSWD=${ADMIN_PASSWD} \
                -v ${DATA_VOLUME}:/var/lib/odoo \
-               -v ${PWD}/addons:/opt/odoo/extra-addons/custom:ro \
-               ${IMAGE}:${VERSION} ${@}
+               ${MOUNT_DIRS} \
+               ${IMAGE}:${VERSION} ${@}"
 }
 
 loadConfigurations "${CONFIGS_FILE}"

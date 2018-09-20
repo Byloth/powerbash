@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 #
 
+function getIpAddresses()
+{
+    ifconfig | grep "inet " | awk '{ print $2 }'
+}
+
 function removeDockerImages()
 {
     local IMAGE=${1}

@@ -41,6 +41,7 @@ function loadConfigurations()
 {
     if [ -f ./${1} ]
     then
+        ENV_VARS=""
         MOUNT_DIRS=""
 
         while IFS='' read -r LINE || [[ -n "${LINE}" ]]
@@ -83,10 +84,17 @@ function loadConfigurations()
                 "admin_pass" | "admin_passwd")
                     ADMIN_PASSWD="${VALUE}"
                     ;;
+                "env" | "environment")
+                    local VALUES=($(echo ${VALUE} | tr ':' ' '))
+                    local VAR_NAME="${VALUES[0]}"
+                    local VAR_VALUE="${VALUES[1]}"
+
+                    ENV_VARS="${ENV_VARS} -e ${VAR_NAME}=\"${VAR_VALUE}\""
+                    ;;
                 "mount")
-                    VALUES=($(echo ${VALUE} | tr ':' ' '))
-                    SRC_PATH="${VALUES[0]}"
-                    DEST_PATH="${VALUES[1]}"
+                    local VALUES=($(echo ${VALUE} | tr ':' ' '))
+                    local SRC_PATH="${VALUES[0]}"
+                    local DEST_PATH="${VALUES[1]}"
 
                     if [[ ! "${SRC_PATH}" =~ ^/ ]]
                     then
@@ -160,7 +168,7 @@ function loadDefaults()
 
 function odooRun()
 {
-    echo "docker run --rm -it \
+    docker run --rm -it \
                --name=${NAME} \
                -p ${PORT}:8069 \
                -e PGHOST=${PGHOST} \
@@ -168,9 +176,10 @@ function odooRun()
                -e PGUSER=${PGUSER} \
                -e PGPASSWORD=${PGPASSWORD} \
                -e ADMIN_PASSWD=${ADMIN_PASSWD} \
+               ${ENV_VARS} \
                -v ${DATA_VOLUME}:/var/lib/odoo \
                ${MOUNT_DIRS} \
-               ${IMAGE}:${VERSION} ${@}"
+               ${IMAGE}:${VERSION} ${@}
 }
 
 loadConfigurations "${CONFIGS_FILE}"

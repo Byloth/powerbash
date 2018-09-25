@@ -23,6 +23,10 @@ function removeDockerImages()
         docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP=${SKIP} '{ if (NR > SKIP) print $3 }' | xargs docker image rm
     fi
 }
+function removeOdooAssets()
+{
+    echo "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" | psql ${@} -f -
+}
 
 function sshTunnel()
 {

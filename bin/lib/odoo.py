@@ -1,21 +1,31 @@
 import logging
 import os
 
-from .docker import Docker, DockerDefault
-from .postgresql import PostgreSqlDefault
+from .docker import Docker, DockerConfiguration
+from .postgresql import PostgreSqlConfiguration
 
 DEFAULT_CONFIG_FILE = 'odoo.conf'
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.DEBUG)
 
-class OdooDefault:
+class OdooDefault(DockerConfiguration, PostgreSqlConfiguration):
     PORT = 8069
-    PGHOST = DockerDefault.HOST_IP
-    PGPORT = PostgreSqlDefault.PORT
-    PGUSER = PostgreSqlDefault.USER
-    PGPASSWORD = PostgreSqlDefault.PASSWORD
+    PGHOST = DockerConfiguration.HOST_IP
+    PGPORT = PostgreSqlConfiguration.PORT
+    PGUSER = PostgreSqlConfiguration.USER
+    PGPASSWORD = PostgreSqlConfiguration.PASSWORD
     ADMIN_PASSWD = "admin00"
+
+    def __init__(self, filename):
+        super().__init__(filename)
+
+    def _store_configuration(self, key, value):
+        if key in ['admin_pass', 'admin_passwd', 'admin_password']:
+            self.ADMIN_PASSWD = value 
+
+        else:
+            super()._store_configuration(key, value)
 
 
 class Odoo:
@@ -32,69 +42,6 @@ class Odoo:
             self._config_file = DEFAULT_CONFIG_FILE
 
         self._docker = Docker()
-
-    def _sanitize_line(self, line):
-        line = line.replace("\n", "")
-        comment = line.find("#")
-
-        if comment > -1:
-            line = line[:comment]
-
-        return line.strip()
-
-    def _parse_line(self, line):
-        couple = line.split("=")
-
-        return couple[0].strip(), couple[1].strip()
-
-    def _get_lines(self, config_file):
-        for line in config_file:
-            line = self._sanitize_line(line)
-
-            if line:
-                yield self._parse_line(line)
-
-    def _get_configs(self, config_file):
-        configs = {}
-        lines = self._get_lines(config_file)
-
-        for key, value in lines:
-            if key in configs:
-                _logger.warning("Property \"%s\" already exists in configs' dictionary!" % key)
-
-            configs[key] = value
-
-        return configs
-
-    def _load_configurations(self):
-        with open(self._config_file) as config_file:
-            self._configs = self._get_configs(config_file)
-            
-        _logger.debug(self._configs)
-
-    def _load_defaults(self):
-        if 'data_volume' not in self._configs:
-            self._configs['data_volume'] = "%s_data" % self._configs['name']
-            
-        if 'port' not in self._configs:
-            self._configs['port'] = OdooDefault.PORT
-            
-        if 'pghost' not in self._configs:
-            self._configs['pghost'] = OdooDefault.PGHOST
-            
-        if 'pgport' not in self._configs:
-            self._configs['pgport'] = OdooDefault.PGPORT
-            
-        if 'pguser' not in self._configs:
-            self._configs['pguser'] = OdooDefault.PGUSER
-            
-        if 'pgpassword' not in self._configs:
-            self._configs['pgpassword'] = OdooDefault.PGPASSWORD
-            
-        if 'admin_passwd' not in self._configs:
-            self._configs['admin_passwd'] = OdooDefault.ADMIN_PASSWD
-
-        _logger.debug(self._configs)
 
     def start(self, **kwargs):
         self._load_configurations()

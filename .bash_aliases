@@ -28,5 +28,4 @@ alias l='ls -CF'
 #
 # Useful aliases (if you are in Bash under WSL)
 #
-alias clear="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe clear && fortune -as | cowsay"
 alias su="sudo su"

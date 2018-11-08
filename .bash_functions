@@ -32,11 +32,20 @@ function sshTunnel()
 {
     if [ ${#} -lt 3 ]
     then
-        echo "Usage: $(basename "${0}") <local port> [<username>@]<remote host> <remote port>"
+        echo "Usage: $(basename "${0}") <local port> [<ssh username>@]<ssh host>[:<ssh port> | 22] <remote port>"
     else
+        local PARTS=($(echo ${2} | tr ':' ' '))
+        local SSH_HOST="${PARTS[0]}"
+        local SSH_PORT="${PARTS[1]}"
+
+        if [ -z "${SSH_PORT}" ]
+        then
+            SSH_PORT=22
+        fi
+
         echo -e "\nTunnelling \"localhost:${1}\" to \"${2}:${3}\"..."
 
-        ssh -NL ${1}:localhost:${3} ${2}
+        ssh -NL ${1}:localhost:${3} ${SSH_HOST} -p ${SSH_PORT}
     fi
 }
 

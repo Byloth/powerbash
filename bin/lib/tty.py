@@ -1,4 +1,5 @@
 import os
+import platform
 
 
 class TextFormat:
@@ -52,18 +53,33 @@ class BackgroundColor:
 
 
 def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    if platform.system() == 'Windows':
+        command = 'cls'
+
+    else:
+        command = 'clear'
+
+    os.system(command)
     
 def pretty(text, text_color=None, text_format=None, background_color=None):
     args = []
 
     if text_color:
+        #
+        # TODO: Check if 'text_color' is valid!
+        #
         args.append(text_color)
     
     if text_format:
+        #
+        # TODO: Check if 'text_format' is valid!
+        #
         args.append(text_format)
     
     if background_color:
+        #
+        # TODO: Check if 'background_color' is valid!
+        #
         args.append(background_color)
 
     attrs = ";".join(args)

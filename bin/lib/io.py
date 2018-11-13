@@ -1,15 +1,5 @@
-import abc
-
-
-class ConfigurationLoader:
-    __metaclass__ = abc.ABCMeta
-
-    _filename = None
-
-    def __init__(self, filename):
-        self._filename = filename
-
-    def _sanitize_line(self, line):
+def read_configs_from_file(filename):
+    def sanitize_line(line):
         line = line.replace("\n", "")
         comment = line.find("#")
 
@@ -18,28 +8,21 @@ class ConfigurationLoader:
 
         return line.strip()
 
-    def _parse_line(self, line):
-        couple = line.split("=")
+    def parse_line(line):
+        couple = line.split("=", 1)
 
         return couple[0].strip(), couple[1].strip()
 
-    def _get_lines(self, config_file):
+    def generate_lines(config_file):
         for line in config_file:
-            line = self._sanitize_line(line)
+            line = sanitize_line(line)
 
             if line:
-                yield self._parse_line(line)
+                yield parse_line(line)
+    #
+    # FIXME: What happen if configs file does not exists?!
+    #
+    with open(filename) as config_file:
+        lines = generate_lines(config_file)
 
-    @abc.abstractmethod
-    def _store_configuration(self, key, value):
-        pass
-
-    def load(self):
-        #
-        # FIXME: What happen if configs file does not exists?!
-        #
-        with open(self._filename) as config_file:
-            lines = self._get_lines(config_file)
-
-            for key, value in lines:
-                self._store_configuration(key, value)
+    return lines

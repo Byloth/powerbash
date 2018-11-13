@@ -1,44 +1,40 @@
-from .io import ConfigurationLoader
+import platform
+
+HOST_ADDRESS = None
 
 
-class DockerConfiguration(ConfigurationLoader):
-    HOST_IP = '10.0.75.1'
+class DockerContainer:
+    _ports = None
+    _envs = None
+    _volumes = None
 
-    CONTAINER_NAME = None
-    IMAGE_NAME = None
-    IMAGE_VERSION = None
+    name = None
+    image = None
+    version = None
 
-    PORTS = None
-    ENV_VARS = None
-    VOLUMES = None
-
-    def __init__(self, filename):
-        self.PORT = []
-        self.ENV_VARS = []
-        self.VOLUMES = [] 
-
-    def _store_configuration(self, key, value):
-        if key in ['container', 'name']:
-            self.NAME = value
-
-        elif key in ['image']:
-            self.IMAGE = value
-        
-        elif key in ['version']:
-            self.VERSION = value
-
-        elif key in ['port']:
-            self.PORTS.append(value)
-
-        elif key in ['env', 'variable']:
-            self.ENV_VARS.append(value)
-
-        elif key in ['mount', 'volume']:
-            self.VOLUMES.append(value)
-
-
-
-class Docker:
     def __init__(self):
-        # isDockerRunning
+        #
+        # TODO: Is Docker deamon running?
+        #
+        self._ports = {}
+        self._envs = {}
+        self._volumes = {}
+
+    def define_environment_variable(self, name, value):
         pass
+
+    def map_port(self, guest_port, host_port=None):
+        if not host_port:
+            host_port = guest_port
+
+        self._ports[guest_port] = host_port
+
+    def mount_volume(self, volume_or_path, container_path, is_readonly=False):
+        pass
+
+
+if platform.system() in ['Darwin', 'Windows']:
+    HOST_ADDRESS = 'host.docker.internal'
+
+else:
+    HOST_ADDRESS = 'localhost'

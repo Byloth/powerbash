@@ -1,21 +1,21 @@
-from .docker import DockerConfiguration
+class PostgreSql:
+    pghost = 'localhost'
+    pgport = 5432
+    pguser = 'postgres'
+    pgpassword = None
 
-
-class PostgreSqlConfiguration(DockerConfiguration):
-    HOST = 'localhost'
-    PORT = 5432
-    USER = 'root'
-    PASSWORD = ''
-
-    def _store_configuration(self, key, value):
+    def store_configuration(self, key, value):
         if key in ['pghost']:
-            self.HOST = value
+            self.pghost = value
         
         elif key in ['pgport']:
-            self.PORT = value
+            self.pgport = value
 
         elif key in ['pguser']:
-            self.USER = value
+            self.pguser = value
 
         elif key in ['pgpass', 'pgpassword']:
-            self.PASSWORD = value
+            self.pgpassword = value
+
+        else:
+            super().store_configuration(key, value)

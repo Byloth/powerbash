@@ -43,7 +43,7 @@ function sshTunnel()
             SSH_PORT=22
         fi
 
-        echo -e "\nTunnelling \"localhost:${1}\" to \"${2}:${3}\"..."
+        echo -e "\nTunnelling \"localhost:${1}\" to \"${SSH_HOST}:${3}\"..."
 
         ssh -NL ${1}:localhost:${3} ${SSH_HOST} -p ${SSH_PORT}
     fi

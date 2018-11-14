@@ -33,6 +33,11 @@ HISTFILESIZE=100000
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #
+# Useful settings (if you are in Bash under WSL)
+#
+umask 022
+
+#
 # Defining the default editor to use
 #
 VISUAL="nano"

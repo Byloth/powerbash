@@ -2,11 +2,17 @@
 #
 
 #
-# Useful exports (if you are in Bash under WSL)
+# Defining the default editor to use
 #
-export DOCKER_HOST="localhost:2375"
+export VISUAL="nano"
+export EDITOR="${VISUAL}"
 
 #
 # Overriding path
 #
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+
+#
+# Useful exports (if you are in Bash under WSL)
+#
+export DOCKER_HOST="localhost:2375"

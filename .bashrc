@@ -37,12 +37,6 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 #
 umask 022
 
-#
-# Defining the default editor to use
-#
-VISUAL="nano"
-EDITOR="${VISUAL}"
-
 if [ -f ~/.bash_aliases ]
 then
     source ~/.bash_aliases

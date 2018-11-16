@@ -1,9 +1,10 @@
 [alias]
         amend = commit --amend
-        count = rev-list HEAD --count
         branches = branch --all
+        count = rev-list HEAD --count
         forget = rm --cached
         graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order
+        remove = reset HEAD --
 
 [credential]
         helper = store

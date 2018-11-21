@@ -11,11 +11,16 @@
 
 [core]
         autocrlf = input
-        filemode = false
+
+        # If you are using UNIX
+        #
+        filemode = true
+
+        # If you are using Windows
+        #
+        # filemode = false
+
         hooksPath = ~/.git-hooks
 
 [push]
         default = simple
-
-[winUpdater]
-        recentlySeenVersion = 2.18.0.windows.1

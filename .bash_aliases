@@ -29,3 +29,8 @@ alias l='ls -CF'
 # Useful aliases (if you are in Bash under WSL)
 #
 alias su="sudo su"
+
+#
+# Other extra aliases
+#
+alias clear="clear && fortune -as | cowsay"

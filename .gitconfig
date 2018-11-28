@@ -1,26 +1,28 @@
 [alias]
-        amend = commit --amend
-        branches = branch --all
-        count = rev-list HEAD --count
-        forget = rm --cached
-        graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order
-        remove = reset HEAD --
+    amend = commit --amend
+    branches = branch --all
+    count = rev-list HEAD --count
+    fast-forward = merge --ff-only
+    forget = rm --cached
+    graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order
+    merge = merge --no-ff
+    remove = reset HEAD --
 
 [credential]
-        helper = store
+    helper = store
 
 [core]
-        autocrlf = input
+    autocrlf = input
 
-        # If you are using UNIX
-        #
-        filemode = true
+    # If you are using UNIX
+    #
+    filemode = true
 
-        # If you are using Windows
-        #
-        # filemode = false
+    # If you are using Windows
+    #
+    # filemode = false
 
-        hooksPath = ~/.git-hooks
+    hooksPath = ~/.git-hooks
 
 [push]
-        default = simple
+    default = simple

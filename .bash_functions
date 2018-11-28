@@ -28,6 +28,35 @@ function removeOdooAssets()
     echo "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" | psql ${@} -f -
 }
 
+function resetPermissions()
+{
+    local TARGET="${1}"
+
+    if [ -z "${TARGET}" ]
+    then
+        TARGET="."
+    fi
+
+    local REALPATH="$(realpath "${TARGET}")"
+
+    echo -e "\n \033[4;33mWARNING!\033[0m"
+    echo -e "  \033[0;33m└\033[0m You are about to reset permissions on all files,"
+    echo -e "     directories and subdirectories contained in: \"\033[0;36m${REALPATH}\033[0m\"\n"
+    read -p "Are you sure to continue? [N]: " ANSWER
+
+    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    then
+        echo -e " └ Please, wait... Resetting permissions... \c"
+
+        find "${REALPATH}" -type d -exec chmod 755 {} \;
+        find "${REALPATH}" -type f -exec chmod 644 {} \;
+
+        echo -e "\033[0;32mOK!\033[0m"
+    else
+        echo -e " └ Ok, no problem! Permissions have been left untouched."
+    fi
+}
+
 function sshTunnel()
 {
     if [ ${#} -lt 3 ]

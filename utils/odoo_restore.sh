@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 #
 
-source "$(dirname ${0})/../lib/odoo.sh"
+readonly CONTAINER="<container>"
+
+export PGHOST="<pghost>"
+export PGUSER="<pguser>"
+export PGPASSWORD="<pgpassword>"
 
 readonly ARCHIVE="${1}"
 
@@ -10,15 +14,6 @@ then
     echo "Usage: $(basename "${0}") <path/to/dump/file.tar.gz>"
 
     exit -1
-fi
-
-if [ -z "$(dockerFind "${NAME}")" ]
-then
-    echo -e "\n  $(warning "WARNING"): Docker container with name $(info "${NAME}")"
-    echo -e "   seems not to be running...\n"
-    echo -e "  Is the Docker container's name correct?"
-
-    exit 1
 fi
 
 read -p "New database name: " DATABASE
@@ -44,15 +39,15 @@ pg_restore -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Copying filestore... \c"
-docker cp "${OLD_DATABASE}" "${NAME}:/var/lib/odoo/filestore/"
+docker cp "${OLD_DATABASE}" "${CONTAINER}:/var/lib/odoo/filestore/"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Renaming filestore... \c"
-docker exec ${NAME} mv "/var/lib/odoo/filestore/${OLD_DATABASE}" "/var/lib/odoo/filestore/${DATABASE}"
+docker exec ${CONTAINER} mv "/var/lib/odoo/filestore/${OLD_DATABASE}" "/var/lib/odoo/filestore/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Changing permissions on filestore... \c"
-docker exec ${NAME} chown -R odoo:odoo "/var/lib/odoo/filestore/${DATABASE}"
+docker exec ${CONTAINER} chown -R odoo:odoo "/var/lib/odoo/filestore/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 cd ../..

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 
-source "$(dirname ${0})/../lib/odoo.sh"
+source "$(dirname "${0}")/../lib/odoo.sh"
 
 readonly ARCHIVE="${1}"
 

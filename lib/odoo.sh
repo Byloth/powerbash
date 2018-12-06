@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 
-source "$(dirname ${0})/../lib/std_lib.sh"
+source "$(dirname "${0}")/../lib/std_lib.sh"
 
 loadFile "../lib/std_output.sh"
 loadFile "../lib/postgresql.sh"
@@ -69,6 +69,9 @@ function loadConfigurations()
                 "version")
                     VERSION="${VALUE}"
                     ;;
+                "pull")
+                    HAVE_TO_PULL="${VALUE}"
+                    ;;
                 "pghost")
                     PGHOST="${VALUE}"
                     ;;
@@ -85,23 +88,20 @@ function loadConfigurations()
                     ADMIN_PASSWD="${VALUE}"
                     ;;
                 "env" | "environment")
-                    local VALUES=($(echo ${VALUE} | tr ':' ' '))
+                    local VALUES=($(echo "${VALUE}" | tr ':' ' '))
                     local VAR_NAME="${VALUES[0]}"
                     local VAR_VALUE="${VALUES[1]}"
 
                     ENV_VARS="${ENV_VARS} -e ${VAR_NAME}=\"${VAR_VALUE}\""
                     ;;
                 "mount")
-                    local VALUES=($(echo ${VALUE} | tr ':' ' '))
+                    local VALUES=($(echo "${VALUE}" | tr ':' ' '))
                     local SRC_PATH="${VALUES[0]}"
                     local DEST_PATH="${VALUES[1]}"
 
-                    if [[ ! "${SRC_PATH}" =~ ^/ ]]
-                    then
-                        SRC_PATH="${PWinD}/${SRC_PATH}"
-                    fi
+                    echo "${MOUNT_DIRS} -v $(getRealPath "${SRC_PATH}"):${DEST_PATH}:ro"
 
-                    MOUNT_DIRS="${MOUNT_DIRS} -v ${SRC_PATH}:${DEST_PATH}:ro"
+                    MOUNT_DIRS="${MOUNT_DIRS} -v $(getRealPath "${SRC_PATH}"):${DEST_PATH}:ro"
                     ;;
                 esac
             fi
@@ -135,7 +135,12 @@ function loadDefaults()
             VERSION="${LAST_VERSION}"
         else
             VERSION="latest"
+            HAVE_TO_PULL="true"
         fi
+    fi
+    if [ -z "${HAVE_TO_PULL}" ]
+    then
+        HAVE_TO_PULL="false"
     fi
 
     if [ -z "${PGHOST}" ]
@@ -162,10 +167,14 @@ function loadDefaults()
 
     if [ -z "${MOUNT_DIRS}" ]
     then
-        MOUNT_DIRS="-v ${PWinD}/addons:/opt/odoo/extra-addons/custom:ro"
+        MOUNT_DIRS="-v $(getRealPath "addons"):/opt/odoo/extra-addons/custom:ro"
     fi
 }
 
+function odooPull()
+{
+    docker pull ${IMAGE}:${VERSION}
+}
 function odooRun()
 {
     docker run --rm -it \

@@ -116,7 +116,7 @@ function getWindowsFriendlyRealPath()
         TARGET="."
     fi
 
-    local REALPATH="$(realpath ${TARGET})"
+    local REALPATH="$(realpath "${TARGET}")"
     REALPATH="${REALPATH#/mnt}"
 
     echo "${REALPATH}"

@@ -37,4 +37,4 @@ rm -rf "${DATABASE}" &> /dev/null
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "\nDone!"
-echo -e " └ $ $(dirname ${0})/odoo_restore.sh \"${BACKUP_DIR}/${FILENAME}\"\n"
+echo -e " └ $ $(dirname "${0}")/odoo_restore.sh \"${BACKUP_DIR}/${FILENAME}\"\n"

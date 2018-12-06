@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 
-source "$(dirname ${0})/../lib/odoo.sh"
+source "$(dirname "${0}")/../lib/odoo.sh"
 
 clear
 
@@ -41,6 +41,14 @@ then
 
         exit 0
     fi
+fi
+
+if [ "${HAVE_TO_PULL}" == "true" ]
+then
+    echo -e "\n  Pulling fresh image..."
+    echo -e " ------------------------------\n"
+
+    odooPull
 fi
 
 echo -e "\n  Start logging..."

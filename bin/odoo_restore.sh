@@ -3,6 +3,8 @@
 
 source "$(dirname "${0}")/../lib/odoo.sh"
 
+readonly FILESTORE="/var/lib/odoo/filestore"
+
 readonly ARCHIVE="${1}"
 
 if [ -z "${ARCHIVE}" ]
@@ -44,15 +46,16 @@ pg_restore -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Copying filestore... \c"
-docker cp "${OLD_DATABASE}" "${NAME}:/var/lib/odoo/filestore/"
+docker cp "${OLD_DATABASE}" "${NAME}:${FILESTORE}/"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Renaming filestore... \c"
-docker exec ${NAME} mv "/var/lib/odoo/filestore/${OLD_DATABASE}" "/var/lib/odoo/filestore/${DATABASE}"
+docker exec ${NAME} if [ -d "${FILESTORE}/${DATABASE}" ]; then rm -rf "${FILESTORE}/${DATABASE}"; fi
+docker exec ${NAME} mv "${FILESTORE}/${OLD_DATABASE}" "${FILESTORE}/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Changing permissions on filestore... \c"
-docker exec ${NAME} chown -R odoo:odoo "/var/lib/odoo/filestore/${DATABASE}"
+docker exec ${NAME} chown -R odoo:odoo "${FILESTORE}/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 cd ../..

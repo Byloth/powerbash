@@ -7,6 +7,7 @@ readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 readonly CONTAINER="<container>"
 
 export PGHOST="<pghost>"
+export PGPORT="<pgport>"
 export PGUSER="<pguser>"
 export PGPASSWORD="<pgpassword>"
 

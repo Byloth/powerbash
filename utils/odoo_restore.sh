@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 #
 
+readonly FILESTORE="/var/lib/odoo/filestore"
+
 readonly CONTAINER="<container>"
 
 export PGHOST="<pghost>"
+export PGPORT="<pgport>"
 export PGUSER="<pguser>"
 export PGPASSWORD="<pgpassword>"
 
@@ -39,15 +42,16 @@ pg_restore -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Copying filestore... \c"
-docker cp "${OLD_DATABASE}" "${CONTAINER}:/var/lib/odoo/filestore/"
+docker cp "${OLD_DATABASE}" "${CONTAINER}:${FILESTORE}/"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Renaming filestore... \c"
-docker exec ${CONTAINER} mv "/var/lib/odoo/filestore/${OLD_DATABASE}" "/var/lib/odoo/filestore/${DATABASE}"
+docker exec ${CONTAINER} if [ -d "${FILESTORE}/${DATABASE}" ]; then rm -rf "${FILESTORE}/${DATABASE}"; fi
+docker exec ${CONTAINER} mv "${FILESTORE}/${OLD_DATABASE}" "${FILESTORE}/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Changing permissions on filestore... \c"
-docker exec ${CONTAINER} chown -R odoo:odoo "/var/lib/odoo/filestore/${DATABASE}"
+docker exec ${CONTAINER} chown -R odoo:odoo "${FILESTORE}/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 cd ../..

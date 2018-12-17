@@ -11,6 +11,15 @@ export PGPORT="<pgport>"
 export PGUSER="<pguser>"
 export PGPASSWORD="<pgpassword>"
 
+# Is Postgres client available on this local machine?
+#
+readonly PG_DUMP="pg_dump"
+
+# Is Postgres client available inside a Docker container?
+#
+readonly POSTGRES="<postgres container>"
+readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
+
 read -p "Database name: " DATABASE
 
 readonly FILEPATH="${BACKUP_DIR}/${DATABASE}"
@@ -20,7 +29,7 @@ mkdir -p "${FILEPATH}"
 cd "${FILEPATH}"
 
 echo -e "Dumping database... \c"
-pg_dump -b -Fc -d "${DATABASE}" -O > "${DATABASE}.dump"
+${PG_DUMP} -b -Fc -d "${DATABASE}" -O > "${DATABASE}.dump"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Copying filestore... \c"

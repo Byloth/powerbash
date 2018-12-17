@@ -3,6 +3,15 @@
 
 source "$(dirname "${0}")/../lib/odoo.sh"
 
+# Is Postgres client available on this local machine?
+#
+readonly PG_RESTORE="pg_restore"
+
+# Is Postgres client available inside a Docker container?
+#
+readonly POSTGRES="<postgres container>"
+readonly PG_RESTORE="docker exec -i ${POSTGRES} pg_restore -U ${PGUSER}"
+
 readonly FILESTORE="/var/lib/odoo/filestore"
 
 readonly ARCHIVE="${1}"
@@ -42,7 +51,7 @@ createdb "${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Restoring database... \c"
-pg_restore -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
+$PG_RESTORE -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Copying filestore... \c"

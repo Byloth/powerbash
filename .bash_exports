@@ -8,6 +8,17 @@ export VISUAL="nano"
 export EDITOR="${VISUAL}"
 
 #
+# Python VirtualEnvWrapper
+#
+if [ -f "/usr/local/bin/virtualenvwrapper.sh" ]
+then
+    export WORKON_HOME="${HOME}/.virtualenvs"
+    export PROJECT_HOME="${HOME}/projects"
+
+    source "/usr/local/bin/virtualenvwrapper.sh"
+fi
+
+#
 # Overriding path
 #
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"

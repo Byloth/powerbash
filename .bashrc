@@ -53,3 +53,9 @@ if [ -f ~/.bash_functions ]
 then
     source ~/.bash_functions
 fi
+
+#
+# Print a random phrase when the terminal is
+#  opened and all scripts have been loaded
+#
+fortune -as | cowsay

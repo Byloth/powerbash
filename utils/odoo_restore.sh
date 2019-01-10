@@ -55,11 +55,7 @@ docker cp "${OLD_DATABASE}" "${CONTAINER}:${FILESTORE}/"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Renaming filestore... \c"
-
-#
-# TODO: Escaping `'` char!
-#
-docker exec ${CONTAINER} bash -c 'if [ -d "${FILESTORE}/${DATABASE}" ]; then rm -rf "${FILESTORE}/${DATABASE}"; fi'
+docker exec ${CONTAINER} bash -c "if [ -d \"${FILESTORE}/${DATABASE}\" ]; then rm -rf \"${FILESTORE}/${DATABASE}\"; fi"
 docker exec ${CONTAINER} mv "${FILESTORE}/${OLD_DATABASE}" "${FILESTORE}/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 

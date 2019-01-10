@@ -5,12 +5,12 @@ source "$(dirname "${0}")/../lib/odoo.sh"
 
 # Is Postgres client available on this local machine?
 #
-readonly PG_DUMP="pg_dump"
+    readonly PG_DUMP="pg_dump"
 
 # Is Postgres client available inside a Docker container?
 #
-readonly POSTGRES="<postgres container>"
-readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
+    readonly POSTGRES="<postgres container>"
+    readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
 
 readonly BACKUP_DIR="./backups"
 readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")

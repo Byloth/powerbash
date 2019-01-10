@@ -13,12 +13,12 @@ export PGPASSWORD="<pgpassword>"
 
 # Is Postgres client available on this local machine?
 #
-readonly PG_DUMP="pg_dump"
+    readonly PG_DUMP="pg_dump"
 
 # Is Postgres client available inside a Docker container?
 #
-readonly POSTGRES="<postgres container>"
-readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
+    readonly POSTGRES="<postgres container>"
+    readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
 
 read -p "Database name: " DATABASE
 

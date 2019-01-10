@@ -6,6 +6,17 @@ function getIpAddresses()
     ifconfig | grep "inet " | awk '{ print $2 }'
 }
 
+function odooMakeDev()
+{
+    echo "DELETE FROM fetchmail_server;" | psql ${@} -f -
+    echo "DELETE FROM ir_cron;" | psql ${@} -f -
+    echo "DELETE FROM ir_mail_server;" | psql ${@} -f -
+}
+function odooRemoveAssets()
+{
+    echo "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" | psql ${@} -f -
+}
+
 function removeDockerImages()
 {
     local IMAGE=${1}
@@ -22,10 +33,6 @@ function removeDockerImages()
 
         docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP=${SKIP} '{ if (NR > SKIP) print $3 }' | xargs docker image rm
     fi
-}
-function removeOdooAssets()
-{
-    echo "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" | psql ${@} -f -
 }
 
 function resetPermissions()

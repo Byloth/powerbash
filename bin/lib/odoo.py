@@ -1,11 +1,10 @@
 import logging
 import os
-
-from .io import read_configs_from_file
+import yaml
 
 from .docker import DockerContainer
 
-DEFAULT_CONFIG_FILE = 'odoo.conf'
+DEFAULT_CONFIG_FILE = 'odoo.conf.yml'
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.DEBUG)
@@ -21,7 +20,6 @@ class OdooInstance:
     pgpassword = None
 
     _container = None
-
     _config_file = None
 
     def __init__(self):
@@ -38,8 +36,12 @@ class OdooInstance:
         self._container = DockerContainer()
 
     def start(self, **kwargs):
-        self._load_configurations()
-        self._load_defaults()
+        with open(self._config_file) as file:
+            data = file.read()
+            
+            _logger.info(yaml.load(data))
+        # self._load_configurations()
+        # self._load_defaults()
         #  ...
         # checkConfigurations
         # (exportConfigurations)?
@@ -65,9 +67,6 @@ class OdooInstance:
 
         elif key in ['admin_pass', 'admin_passwd', 'admin_password']:
             self.admin_passwd = value
-
-        elif key in ['port']:
-            self.port = value
 
         elif key in ['pghost']:
             self.pghost = value

@@ -1,23 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 
-import argparse
-import subprocess
+from argparse import ArgumentParser
+# import subprocess
 
 from lib import tty
-from lib.odoo import Odoo
+from lib.odoo import OdooInstance
 
 #
 # https://docs.python.org/3/library/argparse.html
 #
 
-class OdooStart:
+class OdooStartCommand:
     _args = None
     _odoo = None
 
     @classmethod
     def get_parser(cls):
-        parser = argparse.ArgumentParser(description="Process some integers.")
+        parser = ArgumentParser(description="Process some integers.")
         parser.add_argument('integers', metavar='N', type=int, nargs='+',
                             help="an integer for the accumulator")
         parser.add_argument('--sum', dest='accumulate', action='store_const',
@@ -27,17 +27,17 @@ class OdooStart:
         return parser
 
     def __init__(self):
-        self._odoo = Odoo()
-    #     parser = self.get_parser()
+        self._odoo = OdooInstance()
 
-    #     self._args = parser.parse_args()
+        # parser = self.get_parser()
+        # self._args = parser.parse_args()
 
     def execute(self):
-        tty.clear()
+        # tty.clear()
 
         self._odoo.start()
 
 
 if __name__ == '__main__':
-    odoo_start = OdooStart()
+    odoo_start = OdooStartCommand()
     odoo_start.execute()

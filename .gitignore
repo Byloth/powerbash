@@ -1,3 +1,17 @@
-__pycache__
+# Files created by OS
+#
+.DS_Store
+Desktop.ini
 
-odoo.conf
+# Files created by IDE
+#
+/.idea/
+/.vscode/
+
+# Generated & compiled files
+#
+__pycache__/
+
+# Not ignored
+#
+!.gitkeep

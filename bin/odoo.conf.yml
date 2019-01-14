@@ -1,0 +1,48 @@
+name: debian-test
+
+image:
+    name: debian
+    version: stretch
+
+ports:
+    - internal: 80
+      external: 8080
+
+    - internal: 443
+      external: 44344
+
+environment:
+    PATH: "\
+        /usr/local/sbin:\
+        /usr/local/bin:\
+        /usr/sbin:\
+        /usr/bin:\
+        /sbin:\
+        /bin:\
+        /usr/games:\
+        /usr/local/games:\
+        /snap/bin:\
+        ."
+
+    EXTRA_ADDONS: "\
+        /usr/lib/python3/dist-packages,\
+        /usr/lib/python2/dist-packages"
+
+    PGHOST: localhost
+    PGPORT: 5433
+    PGUSER: root
+    PGPASSWORD: ""
+
+    ADMIN_PASSWD: admin00
+
+volumes:
+    - internal: "/tmp"
+      external: "~/.temp"
+      readonly: false
+
+    - name: debian-test_data
+      internal: "~"
+
+    - internal: "/usr"
+      external: "~/application-data"
+      readonly: true

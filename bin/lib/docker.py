@@ -3,6 +3,30 @@ import platform
 HOST_ADDRESS = None
 
 
+class VolumeType:
+    DIRECTORY_TYPE = 'directory'
+    VOLUME_TYPE = 'volume'
+
+
+class DockerMap:
+    internal = None
+    external = None
+
+    def __init__(self, internal, external):
+        self.internal = internal
+        self.external = external
+
+
+class PortMap(DockerMap):
+    pass
+
+
+class VolumeMap(DockerMap):
+    @property
+    def type(self):
+        pass
+
+
 class DockerContainer:
     _ports = None
     _envs = None

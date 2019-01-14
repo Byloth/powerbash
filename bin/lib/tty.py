@@ -85,3 +85,13 @@ def pretty(text, text_color=None, text_format=None, background_color=None):
     attrs = ";".join(args)
 
     return "\033[{}m{}\033[0m".format(attrs, text)
+
+
+if platform.system() == 'Windows':
+    #
+    # TODO: Make the colors look great even on Windows platform!
+    #
+    def plain(text, **kwargs):
+        return text
+
+    pretty = plain

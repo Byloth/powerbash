@@ -6,11 +6,28 @@ function getIpAddresses()
     ifconfig | grep "inet " | awk '{ print $2 }'
 }
 
+function odooChangePassword()
+{
+    read -s -p "New password: " NEW_PASSWD
+    echo ""
+
+    local PYTHON_SCRIPT="
+from passlib.context import CryptContext
+passwd = CryptContext(schemes=['pbkdf2_sha512'])
+print(passwd.encrypt('${NEW_PASSWD}'))
+"
+    local CRYPTED_PASSWD="$(python3 -c "${MY_SCRIPT}")"
+
+    echo "UPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;" | psql ${@} -f -
+}
 function odooMakeDev()
 {
     echo "DELETE FROM fetchmail_server;" | psql ${@} -f -
     echo "DELETE FROM ir_cron;" | psql ${@} -f -
     echo "DELETE FROM ir_mail_server;" | psql ${@} -f -
+    echo ""
+
+    odooChangePassword ${@}
 }
 function odooRemoveAssets()
 {

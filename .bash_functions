@@ -8,6 +8,7 @@ function getIpAddresses()
 
 function odooChangePassword()
 {
+    echo ""
     read -s -p "New password: " NEW_PASSWD
     echo ""
 
@@ -16,16 +17,25 @@ from passlib.context import CryptContext
 passwd = CryptContext(schemes=['pbkdf2_sha512'])
 print(passwd.encrypt('${NEW_PASSWD}'))
 "
-    local CRYPTED_PASSWD="$(python3 -c "${MY_SCRIPT}")"
+    local CRYPTED_PASSWD="$(python -c "${PYTHON_SCRIPT}")"
 
+    echo -e "\nUPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;"
+    echo -e " └ \c"
     echo "UPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;" | psql ${@} -f -
 }
 function odooMakeDev()
 {
+    echo -e "\nDELETE FROM fetchmail_server;"
+    echo -e " └ \c"
     echo "DELETE FROM fetchmail_server;" | psql ${@} -f -
+
+    echo -e "\nDELETE FROM ir_cron;"
+    echo -e " └ \c"
     echo "DELETE FROM ir_cron;" | psql ${@} -f -
+
+    echo -e "\nDELETE FROM ir_mail_server;"
+    echo -e " └ \c"
     echo "DELETE FROM ir_mail_server;" | psql ${@} -f -
-    echo ""
 
     odooChangePassword ${@}
 }

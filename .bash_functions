@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 #
 
+function _executePSqlQuery()
+{
+    local QUERY="${1}"
+
+    echo -e "\n${QUERY}"
+    echo -e " └ \c"
+    echo "${QUERY}" | psql ${@:2} -f -
+}
+
 function getIpAddresses()
 {
     ifconfig | grep "inet " | awk '{ print $2 }'
@@ -19,9 +28,7 @@ print(passwd.encrypt('${NEW_PASSWD}'))
 "
     local CRYPTED_PASSWD="$(python -c "${PYTHON_SCRIPT}")"
 
-    echo -e "\nUPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;"
-    echo -e " └ \c"
-    echo "UPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;" | psql ${@} -f -
+    _executePSqlQuery "UPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;" ${@}
 }
 function odooMakeDev()
 {
@@ -30,37 +37,33 @@ import uuid
 print(uuid.uuid4())
 "
     local DATABASE_UUID="$(python -c "${PYTHON_SCRIPT}")"
-    echo -e "\nUPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';"
-    echo -e " └ \c"
-    echo "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" | psql ${@} -f -
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" ${@}
 
     local DATABASE_SECRET="$(python -c "${PYTHON_SCRIPT}")"
-    echo -e "\nUPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';"
-    echo -e " └ \c"
-    echo "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" | psql ${@} -f -
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" ${@}
 
     local MOBILE_UUID="$(python -c "${PYTHON_SCRIPT}")"
-    echo -e "\nUPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';"
-    echo -e " └ \c"
-    echo "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" | psql ${@} -f -
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" ${@}
 
-    echo -e "\nDELETE FROM fetchmail_server;"
-    echo -e " └ \c"
-    echo "DELETE FROM fetchmail_server;" | psql ${@} -f -
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '2021-12-31 23:59:59' WHERE key = 'database.expiration_date';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = 'renewal' WHERE key = 'database.expiration_reason';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'database.enterprise_code';" ${@}
 
-    echo -e "\nDELETE FROM ir_cron;"
-    echo -e " └ \c"
-    echo "DELETE FROM ir_cron;" | psql ${@} -f -
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'website_slides.google_app_key';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_id';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_secret';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_id';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_secret';" ${@}
 
-    echo -e "\nDELETE FROM ir_mail_server;"
-    echo -e " └ \c"
-    echo "DELETE FROM ir_mail_server;" | psql ${@} -f -
+    _executePSqlQuery "DELETE FROM fetchmail_server;" ${@}
+    _executePSqlQuery "DELETE FROM ir_cron;" ${@}
+    _executePSqlQuery "DELETE FROM ir_mail_server;" ${@}
 
     odooChangePassword ${@}
 }
 function odooRemoveAssets()
 {
-    echo "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" | psql ${@} -f -
+    _executePSqlQuery "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" ${@}
 }
 
 function removeDockerImages()

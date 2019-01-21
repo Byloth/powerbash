@@ -26,4 +26,4 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 #
 # Useful exports (if you are in Bash under WSL)
 #
-export DOCKER_HOST="localhost:2375"
+export DOCKER_HOST="tcp://localhost:2375"

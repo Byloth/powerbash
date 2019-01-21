@@ -25,6 +25,25 @@ print(passwd.encrypt('${NEW_PASSWD}'))
 }
 function odooMakeDev()
 {
+    local PYTHON_SCRIPT="
+import uuid
+print(uuid.uuid4())
+"
+    local DATABASE_UUID="$(python -c "${PYTHON_SCRIPT}")"
+    echo -e "\nUPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';"
+    echo -e " └ \c"
+    echo "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" | psql ${@} -f -
+
+    local DATABASE_SECRET="$(python -c "${PYTHON_SCRIPT}")"
+    echo -e "\nUPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';"
+    echo -e " └ \c"
+    echo "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" | psql ${@} -f -
+
+    local MOBILE_UUID="$(python -c "${PYTHON_SCRIPT}")"
+    echo -e "\nUPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';"
+    echo -e " └ \c"
+    echo "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" | psql ${@} -f -
+
     echo -e "\nDELETE FROM fetchmail_server;"
     echo -e " └ \c"
     echo "DELETE FROM fetchmail_server;" | psql ${@} -f -

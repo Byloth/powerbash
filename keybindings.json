@@ -1,0 +1,81 @@
+// Inserire i tasti di scelta rapida in questo file
+//  per sovrascrivere i valori predefiniti.
+//
+
+[
+    // Regole di salvataggio dei file...
+    //
+        // Rimuovo le regole esistenti:
+        //
+            {
+                "key": "ctrl+shift+s",
+                "command": "-workbench.action.files.saveAs"
+            },
+            {
+                "key": "ctrl+k s",
+                "command": "-workbench.action.files.saveAll"
+            },
+
+        // Aggiungo le nuove regole:
+        //
+            {
+                "key": "ctrl+k s",
+                "command": "workbench.action.files.saveAs"
+            },
+            {
+                "key": "ctrl+shift+s",
+                "command": "workbench.action.files.saveAll"
+            },
+
+    // Regole di toggle dei commenti...
+    //
+        // Rimuovo le regole esistenti:
+        //
+            {
+                "key": "ctrl+oem_2",
+                "command": "-editor.action.commentLine"
+            },
+            {
+                "key": "shift+alt+a",
+                "command": "-editor.action.blockComment"
+            },
+            {
+                "key": "ctrl+k ctrl+c",
+                "command": "-editor.action.addCommentLine"
+            },
+            {
+                "key": "ctrl+k ctrl+u",
+                "command": "-editor.action.removeCommentLine"
+            },
+
+        // Aggiungo le nuove regole:
+        //
+            {
+                "key": "ctrl+shift+7",
+                "command": "editor.action.commentLine",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "key": "ctrl+numpad_divide",
+                "command": "editor.action.commentLine",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+        
+    // Regole di duplicazione delle righe...
+    //
+        // Rimuovo le regole esistenti:
+        //
+            {
+                "key": "ctrl+d",
+                "command": "-editor.action.addSelectionToNextFindMatch",
+                "when": "editorFocus"
+            },
+
+        // Aggiungo le nuove regole:
+        //
+            {
+                "key": "ctrl+d",
+                "command": "editor.action.copyLinesDownAction",
+                "when": "editorTextFocus && !editorReadonly"
+            }
+]

@@ -1,81 +1,83 @@
-// Inserire i tasti di scelta rapida in questo file
-//  per sovrascrivere i valori predefiniti.
-//
+/*
+ * This is my personal key bindings configuration file
+ *  that I usually use as default configuration for
+ *  Microsoft Visual Studio Code key bindings.
+ */
 
 [
-    // Regole di salvataggio dei file...
+  // Rules about saving files...
+  //
+    // Remove existing rules:
     //
-        // Rimuovo le regole esistenti:
-        //
-            {
-                "key": "ctrl+shift+s",
-                "command": "-workbench.action.files.saveAs"
-            },
-            {
-                "key": "ctrl+k s",
-                "command": "-workbench.action.files.saveAll"
-            },
+      {
+        "key": "ctrl+shift+s",
+        "command": "-workbench.action.files.saveAs"
+      },
+      {
+        "key": "ctrl+k s",
+        "command": "-workbench.action.files.saveAll"
+      },
 
-        // Aggiungo le nuove regole:
-        //
-            {
-                "key": "ctrl+k s",
-                "command": "workbench.action.files.saveAs"
-            },
-            {
-                "key": "ctrl+shift+s",
-                "command": "workbench.action.files.saveAll"
-            },
-
-    // Regole di toggle dei commenti...
+    // Add new rules:
     //
-        // Rimuovo le regole esistenti:
-        //
-            {
-                "key": "ctrl+oem_2",
-                "command": "-editor.action.commentLine"
-            },
-            {
-                "key": "shift+alt+a",
-                "command": "-editor.action.blockComment"
-            },
-            {
-                "key": "ctrl+k ctrl+c",
-                "command": "-editor.action.addCommentLine"
-            },
-            {
-                "key": "ctrl+k ctrl+u",
-                "command": "-editor.action.removeCommentLine"
-            },
+      {
+        "key": "ctrl+k s",
+        "command": "workbench.action.files.saveAs"
+      },
+      {
+        "key": "ctrl+shift+s",
+        "command": "workbench.action.files.saveAll"
+      },
 
-        // Aggiungo le nuove regole:
-        //
-            {
-                "key": "ctrl+shift+7",
-                "command": "editor.action.commentLine",
-                "when": "editorTextFocus && !editorReadonly"
-            },
-            {
-                "key": "ctrl+numpad_divide",
-                "command": "editor.action.commentLine",
-                "when": "editorTextFocus && !editorReadonly"
-            },
-        
-    // Regole di duplicazione delle righe...
+  // Rules about toggling comments...
+  //
+    // Remove existing rules:
     //
-        // Rimuovo le regole esistenti:
-        //
-            {
-                "key": "ctrl+d",
-                "command": "-editor.action.addSelectionToNextFindMatch",
-                "when": "editorFocus"
-            },
+      {
+        "key": "ctrl+oem_2",
+        "command": "-editor.action.commentLine"
+      },
+      {
+        "key": "shift+alt+a",
+        "command": "-editor.action.blockComment"
+      },
+      {
+        "key": "ctrl+k ctrl+c",
+        "command": "-editor.action.addCommentLine"
+      },
+      {
+        "key": "ctrl+k ctrl+u",
+        "command": "-editor.action.removeCommentLine"
+      },
 
-        // Aggiungo le nuove regole:
-        //
-            {
-                "key": "ctrl+d",
-                "command": "editor.action.copyLinesDownAction",
-                "when": "editorTextFocus && !editorReadonly"
-            }
+    // Add new rules:
+    //
+      {
+        "key": "ctrl+shift+7",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+numpad_divide",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+    
+  // Rules about lines duplication...
+  //
+    // Remove existing rules:
+    //
+      {
+        "key": "ctrl+d",
+        "command": "-editor.action.addSelectionToNextFindMatch",
+        "when": "editorFocus"
+      },
+
+    // Add new rules:
+    //
+      {
+        "key": "ctrl+d",
+        "command": "editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      }
 ]

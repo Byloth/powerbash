@@ -1,4 +1,21 @@
-.vscode/
+# Files created by OS
+#
+.DS_Store
+Desktop.ini
+
+# Files created by IDE
+#
+/.idea/
+/.vscode/
+
+# Generated & compiled files
+#
 __pycache__/
 
+# Other files
+#
 odoo.conf
+
+# Not ignored
+#
+!.gitkeep

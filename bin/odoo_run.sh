@@ -3,8 +3,6 @@
 
 source "$(dirname "${0}")/../lib/odoo.sh"
 
-clear
-
 echo -e "\n  I'm going to start a new Odoo instance..."
 echo -e "   ├ Container name: $(info "${NAME}")"
 

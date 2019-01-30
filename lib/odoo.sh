@@ -146,6 +146,13 @@ function loadDefaults()
     if [ -z "${PGHOST}" ]
     then
         PGHOST="${DEFAULT_PGHOST}"
+
+    elif [ "${PGHOST}" == "localhost" ]
+    then
+        echo -e "\n  $(warning "WARNING"): $(info "\$PGHOST") variable was set to \"$(warning "localhost")\";"
+        echo -e "   overwriting value to \"$(info "${DEFAULT_PGHOST}")\"..."
+
+        PGHOST="${DEFAULT_PGHOST}"
     fi
     if [ -z "${PGPORT}" ]
     then

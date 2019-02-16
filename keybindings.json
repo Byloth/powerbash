@@ -7,7 +7,7 @@
 [
   // Rules about saving files...
   //
-    // Remove existing rules:
+    // Removing existing rules:
     //
       {
         "key": "ctrl+shift+s",
@@ -18,7 +18,7 @@
         "command": "-workbench.action.files.saveAll"
       },
 
-    // Add new rules:
+    // Adding new rules:
     //
       {
         "key": "ctrl+k s",
@@ -31,7 +31,7 @@
 
   // Rules about toggling comments...
   //
-    // Remove existing rules:
+    // Removing existing rules:
     //
       {
         "key": "ctrl+oem_2",
@@ -50,7 +50,7 @@
         "command": "-editor.action.removeCommentLine"
       },
 
-    // Add new rules:
+    // Adding new rules:
     //
       {
         "key": "ctrl+shift+7",
@@ -65,7 +65,7 @@
     
   // Rules about lines duplication...
   //
-    // Remove existing rules:
+    // Removing existing rules:
     //
       {
         "key": "ctrl+d",
@@ -73,11 +73,72 @@
         "when": "editorFocus"
       },
 
-    // Add new rules:
+    // Adding new rules:
     //
       {
         "key": "ctrl+d",
         "command": "editor.action.copyLinesDownAction",
         "when": "editorTextFocus && !editorReadonly"
+      },
+
+  // Rules about quick-fixing...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "ctrl+oem_period",
+        "command": "-editor.action.quickFix",
+        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "-problems.action.showQuickFixes",
+        "when": "problemFocus"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "-settings.action.editFocusedSetting",
+        "when": "inSettingsSearch"
+      },
+
+    // Reversing current keybindings:
+    //
+      {
+        "key": "alt+enter",
+        "command": "-debug.openBreakpointToSide",
+        "when": "breakpointsFocused"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "debug.openBreakpointToSide",
+        "when": "breakpointsFocused"
+      },
+      {
+        "key": "alt+enter",
+        "command": "-editor.action.selectAllMatches",
+        "when": "editorFocus && findWidgetVisible"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "editor.action.selectAllMatches",
+        "when": "editorFocus && findWidgetVisible"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "alt+enter",
+        "command": "editor.action.quickFix",
+        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+enter",
+        "command": "problems.action.showQuickFixes",
+        "when": "problemFocus"
+      },
+      {
+        "key": "alt+enter",
+        "command": "settings.action.editFocusedSetting",
+        "when": "inSettingsSearch"
       }
 ]

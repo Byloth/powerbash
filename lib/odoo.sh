@@ -146,13 +146,6 @@ function loadDefaults()
     if [ -z "${PGHOST}" ]
     then
         PGHOST="${DEFAULT_PGHOST}"
-
-    elif [ "${PGHOST}" == "localhost" ]
-    then
-        echo -e "\n  $(warning "WARNING"): $(info "\$PGHOST") variable was set to \"$(warning "localhost")\";"
-        echo -e "   overwriting value to \"$(info "${DEFAULT_PGHOST}")\"..."
-
-        PGHOST="${DEFAULT_PGHOST}"
     fi
     if [ -z "${PGPORT}" ]
     then
@@ -184,6 +177,14 @@ function odooPull()
 }
 function odooRun()
 {
+    if [ "${PGHOST}" == "localhost" ]
+    then
+        echo -e "  $(warning "WARNING"): $(info "\$PGHOST") variable was set to \"$(warning "localhost")\";"
+        echo -e "   overwriting value to \"$(info "${DEFAULT_PGHOST}")\"...\n"
+
+        PGHOST="${DEFAULT_PGHOST}"
+    fi
+
     docker run --rm -it \
                --name=${NAME} \
                -p ${PORT}:8069 \

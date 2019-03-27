@@ -58,4 +58,9 @@ fi
 # Print a random phrase when the terminal is
 #  opened and all scripts have been loaded
 #
-fortune -as | cowsay
+# Some other "cows" here: /usr/share/cowsay/cows
+#  -f <cow_name>
+#  -W <max_columns>
+#  -b / -d / -g / -p / -s / -t / -w / -y
+#
+fortune -as | cowthink -n

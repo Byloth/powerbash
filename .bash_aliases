@@ -34,4 +34,4 @@ alias su="sudo su"
 # Other extra aliases
 #
 alias clear="clear && fortune -as | cowthink -n"
-alias tmux="tmux new-session 'htop' \; split-window -p 85 \; split-window -d -p 40 \; split-window -h \; swap-pane -t %2 \; select-pane -t %1"
+alias welcome="tmux new-session 'htop' \; split-window -p 85 \; split-window -d -p 40 \; split-window -h \; swap-pane -t %2 \; select-pane -t %1"

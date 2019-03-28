@@ -10,6 +10,12 @@ function _executePSqlQuery()
     echo "${QUERY}" | psql ${@:2} -f -
 }
 
+function clean()
+{
+    clear
+    fortune -as | cowthink -n -$(expr substr "-bdgpstwy" $(shuf -i1-9 -n1) 1)
+}
+
 function getIpAddresses()
 {
     ifconfig | grep "inet " | awk '{ print $2 }'

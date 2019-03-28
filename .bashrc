@@ -63,4 +63,4 @@ fi
 #  -W <max_columns>
 #  -b / -d / -g / -p / -s / -t / -w / -y
 #
-fortune -as | cowthink -n
+fortune -as | cowthink -n -$(expr substr "-bdgpstwy" $(shuf -i1-9 -n1) 1)

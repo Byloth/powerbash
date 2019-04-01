@@ -33,4 +33,4 @@ alias su="sudo su"
 #
 # Other extra aliases
 #
-alias welcome="tmux new-session 'htop' \; split-window -p 85 \; split-window -d -p 40 \; split-window -h \; swap-pane -t %2 \; select-pane -t %1"
+alias welcome="tmux new-session 'htop' \; rename-window workspace \; split-window -p 85 \; split-window -d -p 40 \; split-window -h \; swap-pane -t %2 \; select-pane -t %1"

@@ -55,6 +55,7 @@ $PG_RESTORE -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Copying filestore... \c"
+docker exec ${NAME} mkdir -p "${FILESTORE}"
 docker cp "${OLD_DATABASE}" "${NAME}:${FILESTORE}/"
 echo -e "\033[0;32mOK!\033[0m"
 

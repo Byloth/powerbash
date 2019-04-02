@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 
+set -e
+
 source "$(dirname "${0}")/../lib/odoo.sh"
 
 echo -e "\n  I'm going to start a new Odoo instance..."

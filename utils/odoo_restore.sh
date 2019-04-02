@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 
+set -e
+
 readonly CONTAINER="<container>"
 
 export PGHOST="<pghost>"

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 
+set -e
+
 readonly BACKUP_DIR="./backups"
 readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 

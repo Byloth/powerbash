@@ -10,7 +10,7 @@ export EDITOR="${VISUAL}"
 #
 # Python VirtualEnvWrapper
 #
-if [ -f "/usr/local/bin/virtualenvwrapper.sh" ]
+if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
 then
     export WORKON_HOME="${HOME}/.virtualenvs"
     export PROJECT_HOME="${HOME}/projects"

@@ -77,11 +77,11 @@ function removeDockerImages()
     local IMAGE=${1}
     local SKIP=${2}
 
-    if [ -z "${IMAGE}" ]
+    if [[ -z "${IMAGE}" ]]
     then
         echo "Usage: removeDockerImages <repository name> [<# of image to skip> | 1]"
     else
-        if [ -z "${SKIP}" ]
+        if [[ -z "${SKIP}" ]]
         then
             SKIP=1
         fi
@@ -94,7 +94,7 @@ function resetPermissions()
 {
     local TARGET="${1}"
 
-    if [ -z "${TARGET}" ]
+    if [[ -z "${TARGET}" ]]
     then
         TARGET="."
     fi
@@ -106,7 +106,7 @@ function resetPermissions()
     echo -e "     directories and subdirectories contained in: \"\033[0;36m${REALPATH}\033[0m\"\n"
     read -p "Are you sure to continue? [N]: " ANSWER
 
-    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    if [[ "${ANSWER}" == "y" ]] || [[ "${ANSWER}" == "Y" ]]
     then
         echo -e " └ Please, wait... Resetting permissions... \c"
 
@@ -121,7 +121,7 @@ function resetPermissions()
 
 function sshTunnel()
 {
-    if [ ${#} -lt 3 ]
+    if [[ ${#} -lt 3 ]]
     then
         echo "Usage: sshTunnel <local port> [<ssh username>@]<ssh host>[:<ssh port> | 22] <remote port>"
     else
@@ -129,7 +129,7 @@ function sshTunnel()
         local SSH_HOST="${PARTS[0]}"
         local SSH_PORT="${PARTS[1]}"
 
-        if [ -z "${SSH_PORT}" ]
+        if [[ -z "${SSH_PORT}" ]]
         then
             SSH_PORT=22
         fi
@@ -142,7 +142,7 @@ function sshTunnel()
 
 function tarCompress()
 {
-    if [ ${#} -lt 2 ]
+    if [[ ${#} -lt 2 ]]
     then
         echo "Usage: tarCompress <archive name> <file or directory to compress>"
     else
@@ -151,13 +151,13 @@ function tarCompress()
 }
 function tarExtract()
 {
-    if [ ${#} -lt 1 ]
+    if [[ ${#} -lt 1 ]]
     then
         echo "Usage: tarExtract <archive name> [<directory where extract archive> | .]"
     else
         local EXTRACT_PATH="${2}"
 
-        if [ -z "${EXTRACT_PATH}" ]
+        if [[ -z "${EXTRACT_PATH}" ]]
         then
             EXTRACT_PATH="."
         fi
@@ -173,7 +173,7 @@ function getWindowsFriendlyRealPath()
 {
     local TARGET="${1}"
 
-    if [ -z "${TARGET}" ]
+    if [[ -z "${TARGET}" ]]
     then
         TARGET="."
     fi

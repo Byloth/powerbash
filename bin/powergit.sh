@@ -22,9 +22,9 @@ function getCurrentBranch()
 
 function getRemoteBranch()
 {
-    if [ -n "${1}" ]
+    if [[ -n "${1}" ]]
     then
-        if [ -n "${2}" ]
+        if [[ -n "${2}" ]]
         then
             REMOTE="${1}"
             BRANCH="${2}"
@@ -37,7 +37,7 @@ function getRemoteBranch()
         BRANCH=$(getCurrentBranch)
     fi
 
-    if [ -n "${3}" ]
+    if [[ -n "${3}" ]]
     then
         SEPARATOR="${3}"
     else
@@ -70,7 +70,7 @@ function reset()
 
     echo ""
 
-    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    if [[ "${ANSWER}" == "y" ]] || [[ "${ANSWER}" == "Y" ]]
     then
         git reset --hard
     else
@@ -92,7 +92,7 @@ function resetByUpstream()
 
     echo ""
 
-    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    if [[ "${ANSWER}" == "y" ]] || [[ "${ANSWER}" == "Y" ]]
     then
         git reset --hard ${BRANCH}
     else
@@ -111,7 +111,7 @@ function revert()
 
     echo ""
 
-    if [ "${ANSWER}" == "y" ] || [ "${ANSWER}" == "Y" ]
+    if [[ "${ANSWER}" == "y" ]] || [[ "${ANSWER}" == "Y" ]]
     then
         git reset --hard HEAD^
     else
@@ -179,7 +179,7 @@ alias push="git push"
 
 function powerGit()
 {
-    if [ -f ./powergit/branch.sh ]
+    if [[ -f ./powergit/branch.sh ]]
     then
         source ./powergit/branch.sh
     fi

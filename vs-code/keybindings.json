@@ -34,10 +34,6 @@
     // Removing existing rules:
     //
       {
-        "key": "ctrl+oem_2",
-        "command": "-editor.action.commentLine"
-      },
-      {
         "key": "shift+alt+a",
         "command": "-editor.action.blockComment"
       },
@@ -53,15 +49,18 @@
     // Adding new rules:
     //
       {
-        "key": "ctrl+shift+7",
-        "command": "editor.action.commentLine",
-        "when": "editorTextFocus && !editorReadonly"
-      },
-      {
         "key": "ctrl+numpad_divide",
         "command": "editor.action.commentLine",
         "when": "editorTextFocus && !editorReadonly"
       },
+
+      // If you're using a keyboard with Italian layout:
+      //
+      // {
+      //   "key": "ctrl+shift+7",
+      //   "command": "editor.action.commentLine",
+      //   "when": "editorTextFocus && !editorReadonly"
+      // },
     
   // Rules about lines duplication...
   //

@@ -23,7 +23,7 @@ readonly FILESTORE="/var/lib/odoo/filestore"
 
 readonly ARCHIVE="${1}"
 
-if [ -z "${ARCHIVE}" ]
+if [[ -z "${ARCHIVE}" ]]
 then
     echo "Usage: $(basename "${0}") <path/to/dump/file.tar.gz>"
 
@@ -58,7 +58,7 @@ docker cp "${OLD_DATABASE}" "${CONTAINER}:${FILESTORE}/"
 echo -e "\033[0;32mOK!\033[0m"
 
 echo -e "Renaming filestore... \c"
-docker exec ${CONTAINER} bash -c "if [ -d \"${FILESTORE}/${DATABASE}\" ]; then rm -rf \"${FILESTORE}/${DATABASE}\"; fi"
+docker exec ${CONTAINER} bash -c "if [[ -d \"${FILESTORE}/${DATABASE}\" ]]; then rm -rf \"${FILESTORE}/${DATABASE}\"; fi"
 docker exec ${CONTAINER} mv "${FILESTORE}/${OLD_DATABASE}" "${FILESTORE}/${DATABASE}"
 echo -e "\033[0;32mOK!\033[0m"
 

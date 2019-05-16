@@ -37,19 +37,19 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 #
 umask 022
 
-if [ -f ~/.bash_aliases ]
+if [[ -f ~/.bash_aliases ]]
 then
     source ~/.bash_aliases
 fi
-if [ -f ~/.bash_customs ]
+if [[ -f ~/.bash_customs ]]
 then
     source ~/.bash_customs
 fi
-if [ -f ~/.bash_exports ]
+if [[ -f ~/.bash_exports ]]
 then
     source ~/.bash_exports
 fi
-if [ -f ~/.bash_functions ]
+if [[ -f ~/.bash_functions ]]
 then
     source ~/.bash_functions
 fi

@@ -5,7 +5,7 @@
 # Enable color support of 'ls', 'grep'
 #  and also add handy aliases
 #
-if [ -x /usr/bin/dircolors ]
+if [[ -x /usr/bin/dircolors ]]
 then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 
@@ -29,6 +29,12 @@ alias l='ls -CF'
 # Useful aliases (if you are in Bash under WSL)
 #
 alias su="sudo su"
+
+#
+# Not supported yet! :´(
+#
+# alias mklink="cmd.exe /C mklink"  # Usage: [/D] "<symlink_name>" "<path/to/destination>"
+#
 
 #
 # Other extra aliases

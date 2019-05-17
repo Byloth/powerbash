@@ -2,16 +2,38 @@
 #
 
 #
-# Based on http://www.snip2code.com/Snippet/165926/Check-for-ipdb-breakpoints-git-hook
+# PDB check
+#  - Based on http://www.snip2code.com/Snippet/165926/Check-for-ipdb-breakpoints-git-hook
 #
-
 PDB_CHECK="$(git grep -E -n '[ ;]i?pdb')"
 
-if [[ ${#PDB_CHECK} -gt 0 ]]
+if [[ "${#PDB_CHECK}" -gt 0 ]]
 then
-    echo -e "\n\033[4;31mCOMMIT REJECTED: you cannot commit due an error!\033[0m"
-    echo -e " \033[31m└\033[0m Your code contains at least one break points. Please remove them before committing.\n"
+    echo -e "\n\033[4;31mCOMMIT REJECTED: you cannot commit due an error!""\033[0m"
+    echo -e " \033[31m├\033[0m Your code contains at least one break point;"
+    echo -e " \033[31m│\033[0m  please, remove them before committing."
+    echo -e " \033[31m│\033[0m"
+    echo -e " \033[31m└\033[0m If instead you know \033[4;33mEXACTLY\033[0m what you're doing,"
+    echo -e "    you can force commit using \"\033[0;36mgit commit --no-verify\033[0m\".\n"
     echo -e "${PDB_CHECK}"
+
+    exit 1
+fi
+
+#
+# Uncompleted merge check
+#
+MERGE_CHECK="$(git grep -E -n '^([><]{7} |={7}$)')"
+
+if [[ "${#MERGE_CHECK}" -gt 0 ]]
+then
+    echo -e "\n\033[4;31mCOMMIT REJECTED: you cannot commit due an error!""\033[0m"
+    echo -e " \033[31m├\033[0m Your code contains at least one merge conflict;"
+    echo -e " \033[31m│\033[0m  please, solve them before committing."
+    echo -e " \033[31m│\033[0m"
+    echo -e " \033[31m└\033[0m If instead you know \033[4;33mEXACTLY\033[0m what you're doing,"
+    echo -e "    you can force commit using \"\033[0;36mgit commit --no-verify\033[0m\".\n"
+    echo -e "${MERGE_CHECK}"
 
     exit 1
 fi

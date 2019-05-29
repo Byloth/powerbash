@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 #
 
+function __venv_ps1()
+{
+    if [[ -n "${VIRTUAL_ENV}" ]]
+    then
+        local VENV="${VIRTUAL_ENV##*/}"
+
+        echo -e "[${VENV}] "
+    fi
+}
+
 #
 # Bash customization:
 #  - set the title to "<user>@<host>: <dir>"
@@ -9,14 +19,14 @@ PS1="\[\e]0;\u@\h: \w\a\]"
 
 #  - start composing custom prompt
 #
-PS1="${PS1}\n"              # New line
+PS1="${PS1}\n"                 # New line
 
-PS1="${PS1}\[\033[32m\]"    # Color: green
-PS1="${PS1}\u@\h "          # Write: <user>@<host>
-PS1="${PS1}\[\033[35m\]"    # Color: Purple
-PS1="${PS1}\l "             # Write: Basename of the shell's terminal device name
-PS1="${PS1}\[\033[33m\]"    # Color: Brownish yellow
-PS1="${PS1}\w"              # Write: Current working directory
+PS1="${PS1}\[\e[32m\]"         # Color: Green
+PS1="${PS1}\u@\h "             # Write: <user>@<host>
+PS1="${PS1}\[\e[35m\]"         # Color: Purple
+PS1="${PS1}\l "                # Write: Basename of the shell's terminal device name
+PS1="${PS1}\[\e[33m\]"         # Color: Brownish yellow
+PS1="${PS1}\w"                 # Write: Current working directory
 
 #  - add GIT information (https://github.com/git/git)
 #
@@ -31,12 +41,16 @@ then
     source "${COMPLETION_PATH}/git-completion.bash"
     source "${COMPLETION_PATH}/git-prompt.sh"
 
-    PS1="${PS1}\[\033[36m\]"    # Color: Cyan
-    PS1="${PS1}"'`__git_ps1`'   # Write: Current working GIT branch
+    PS1="${PS1}\[\e[36m\]"     # Color: Cyan
+    PS1="${PS1}"'`__git_ps1`'  # Write: Current working GIT branch
 fi
 
-PS1="${PS1}\n"                  # New line
+PS1="${PS1}\n"                 # New line
 
-PS1="${PS1}\[\033[32m\]"        # Color: green
-PS1="${PS1} └ \$ "              # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)
-PS1="${PS1}\[\033[0m\]"         # Color: White
+PS1="${PS1}\[\e[32m\]"         # Color: Green
+PS1="${PS1} └ "                # Write: └
+PS1="${PS1}\[\e[94m\]"         # Color: Light blue
+PS1="${PS1}"'`__venv_ps1`'     # Write: Current VirtualEnv name
+PS1="${PS1}\[\e[32m\]"         # Color: Green
+PS1="${PS1}\$ "                # Write: Current user's terminal symbol ('$' -> Normal user / '#' -> Power user)
+PS1="${PS1}\[\e[0m\]"          # Color: White

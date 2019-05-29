@@ -8,7 +8,12 @@ export VISUAL="nano"
 export EDITOR="${VISUAL}"
 
 #
-# Python VirtualEnvWrapper
+# Python VirtualEnv:
+#  - disable the default virtualenv prompt change
+#
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+#  - enable VirtualEnvWrapper support
 #
 if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
 then

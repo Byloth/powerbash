@@ -27,21 +27,21 @@ cd "${FILEPATH}"
 
 echo -e "Dumping database... \c"
 ${PG_DUMP} -b -Fc -d "${DATABASE}" -O > "${DATABASE}.dump"
-echo -e "\033[0;32mOK!\033[0m"
+echo -e "\e[0;32mOK!\e[0m"
 
 echo -e "Copying filestore... \c"
 docker cp "${NAME}:/var/lib/odoo/filestore/${DATABASE}" . &> /dev/null
-echo -e "\033[0;32mOK!\033[0m"
+echo -e "\e[0;32mOK!\e[0m"
 
 cd ..
 
 echo -e "Compressing backup... \c"
 tar -czvf "${FILENAME}" "${DATABASE}" &> /dev/null
-echo -e "\033[0;32mOK!\033[0m"
+echo -e "\e[0;32mOK!\e[0m"
 
 echo -e "Removing temporary directories... \c"
 rm -rf "${DATABASE}" &> /dev/null
-echo -e "\033[0;32mOK!\033[0m"
+echo -e "\e[0;32mOK!\e[0m"
 
 echo -e "\nDone!"
 echo -e " └ $ $(dirname "${0}")/odoo_restore.sh \"${BACKUP_DIR}/${FILENAME}\"\n"

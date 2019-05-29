@@ -101,9 +101,9 @@ function resetPermissions()
 
     local REALPATH="$(realpath "${TARGET}")"
 
-    echo -e "\n \033[4;33mWARNING!\033[0m"
-    echo -e "  \033[0;33m└\033[0m You are about to reset permissions on all files,"
-    echo -e "     directories and subdirectories contained in: \"\033[0;36m${REALPATH}\033[0m\"\n"
+    echo -e "\n \e[4;33mWARNING!\e[0m"
+    echo -e "  \e[0;33m└\e[0m You are about to reset permissions on all files,"
+    echo -e "     directories and subdirectories contained in: \"\e[0;36m${REALPATH}\e[0m\"\n"
     read -p "Are you sure to continue? [N]: " ANSWER
 
     if [[ "${ANSWER}" == "y" ]] || [[ "${ANSWER}" == "Y" ]]
@@ -113,7 +113,7 @@ function resetPermissions()
         find "${REALPATH}" -type d -exec chmod 755 {} \;
         find "${REALPATH}" -type f -exec chmod 644 {} \;
 
-        echo -e "\033[0;32mOK!\033[0m"
+        echo -e "\e[0;32mOK!\e[0m"
     else
         echo -e " └ Ok, no problem! Permissions have been left untouched."
     fi

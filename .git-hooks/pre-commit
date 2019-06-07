@@ -23,7 +23,7 @@ fi
 #
 # Uncompleted merge check
 #
-MERGE_CHECK="$(git grep -E -n '^([><]{7} |={7}$)')"
+MERGE_CHECK="$(git grep -E -n '^([><]{7} \S+|={7})$')"
 
 if [[ "${#MERGE_CHECK}" -gt 0 ]]
 then

@@ -139,5 +139,23 @@
         "key": "alt+enter",
         "command": "settings.action.editFocusedSetting",
         "when": "inSettingsSearch"
+      },
+
+  // Rules about searching...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "shift+alt+f",
+        "command": "-filesExplorer.findInFolder",
+        "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "ctrl+shift+f",
+        "command": "filesExplorer.findInFolder",
+        "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
       }
 ]

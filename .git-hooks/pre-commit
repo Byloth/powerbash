@@ -5,35 +5,40 @@
 # PDB check
 #  - Based on http://www.snip2code.com/Snippet/165926/Check-for-ipdb-breakpoints-git-hook
 #
-PDB_CHECK="$(git grep -E -n '[ ;]i?pdb')"
-
-if [[ "${#PDB_CHECK}" -gt 0 ]]
-then
-    echo -e "\n\e[4;31mCOMMIT REJECTED: you cannot commit due an error!""\e[0m"
-    echo -e " \e[31m├\e[0m Your code contains at least one break point;"
-    echo -e " \e[31m│\e[0m  please, remove them before committing."
-    echo -e " \e[31m│\e[0m"
-    echo -e " \e[31m└\e[0m If instead you know \e[4;33mEXACTLY\e[0m what you're doing,"
-    echo -e "    you can force commit using \"\e[0;36mgit commit --no-verify\e[0m\".\n"
-    echo -e "${PDB_CHECK}"
-
-    exit 1
-fi
+PDB_CHECK="$(git grep --color -E -n '[ ;]i?pdb')"
 
 #
 # Uncompleted merge check
 #
-MERGE_CHECK="$(git grep -E -n '^([><]{7} \S+|={7})$')"
+MERGE_CHECK="$(git grep --color -E -n '^([><]{7} \S+|={7})$')"
 
-if [[ "${#MERGE_CHECK}" -gt 0 ]]
+if [[ "${#PDB_CHECK}" -gt 0 ]] || [[ "${#MERGE_CHECK}" -gt 0 ]]
 then
-    echo -e "\n\e[4;31mCOMMIT REJECTED: you cannot commit due an error!""\e[0m"
-    echo -e " \e[31m├\e[0m Your code contains at least one merge conflict;"
-    echo -e " \e[31m│\e[0m  please, solve them before committing."
+    OUTPUT_CHECK="\n  --------------------------------------------------------\n"
+
+    echo -e "\n\e[4;31mCOMMIT REJECTED: your code may contain some errors!""\e[0m"
     echo -e " \e[31m│\e[0m"
-    echo -e " \e[31m└\e[0m If instead you know \e[4;33mEXACTLY\e[0m what you're doing,"
-    echo -e "    you can force commit using \"\e[0;36mgit commit --no-verify\e[0m\".\n"
-    echo -e "${MERGE_CHECK}"
+
+    if [[ "${#PDB_CHECK}" -gt 0 ]]
+    then
+        echo -e " \e[31m├\e[0m Found at least one break point."
+
+        OUTPUT_CHECK="${OUTPUT_CHECK}\n\e[36mBreak points:\e[0m\n${PDB_CHECK}\n"
+    fi
+
+    if [[ "${#MERGE_CHECK}" -gt 0 ]]
+    then
+        echo -e " \e[31m├\e[0m Found at least one merge conflict."
+
+        OUTPUT_CHECK="${OUTPUT_CHECK}\n\e[36mMerge conflicts:\e[0m\n${MERGE_CHECK}\n"
+    fi
+
+    echo -e " \e[31m│\e[0m"
+    echo -e " \e[31m└\e[0m Please, resolve these problems before committing."
+    echo -e "   If instead you know \e[4;33mEXACTLY\e[0m what you're doing,"
+    echo -e "    you can force commit using \"\e[36mgit commit --no-verify\e[0m\"."
+
+    echo -e "${OUTPUT_CHECK}"
 
     exit 1
 fi

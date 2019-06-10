@@ -3,11 +3,11 @@
 
 function success()
 {
-    echo -e "\e[0;32m${1}\e[0m"
+    echo -e "\e[32m${1}\e[0m"
 }
 function info()
 {
-    echo -e "\e[0;36m${1}\e[0m"
+    echo -e "\e[36m${1}\e[0m"
 }
 function warning()
 {

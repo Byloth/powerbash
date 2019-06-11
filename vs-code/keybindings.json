@@ -1,0 +1,161 @@
+/*
+ * This is my personal key bindings configuration file
+ *  that I usually use as default configuration for
+ *  Microsoft Visual Studio Code key bindings.
+ */
+
+[
+  // Rules about saving files...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "ctrl+shift+s",
+        "command": "-workbench.action.files.saveAs"
+      },
+      {
+        "key": "ctrl+k s",
+        "command": "-workbench.action.files.saveAll"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "ctrl+k s",
+        "command": "workbench.action.files.saveAs"
+      },
+      {
+        "key": "ctrl+shift+s",
+        "command": "workbench.action.files.saveAll"
+      },
+
+  // Rules about toggling comments...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "shift+alt+a",
+        "command": "-editor.action.blockComment"
+      },
+      {
+        "key": "ctrl+k ctrl+c",
+        "command": "-editor.action.addCommentLine"
+      },
+      {
+        "key": "ctrl+k ctrl+u",
+        "command": "-editor.action.removeCommentLine"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "ctrl+numpad_divide",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+
+      // If you're using a keyboard with Italian layout:
+      //
+      // {
+      //   "key": "ctrl+shift+7",
+      //   "command": "editor.action.commentLine",
+      //   "when": "editorTextFocus && !editorReadonly"
+      // },
+    
+  // Rules about lines duplication...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "ctrl+d",
+        "command": "-editor.action.addSelectionToNextFindMatch",
+        "when": "editorFocus"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "ctrl+d",
+        "command": "editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+
+  // Rules about quick-fixing...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "ctrl+oem_period",
+        "command": "-editor.action.quickFix",
+        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "-problems.action.showQuickFixes",
+        "when": "problemFocus"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "-settings.action.editFocusedSetting",
+        "when": "inSettingsSearch"
+      },
+
+    // Reversing current keybindings:
+    //
+      {
+        "key": "alt+enter",
+        "command": "-debug.openBreakpointToSide",
+        "when": "breakpointsFocused"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "debug.openBreakpointToSide",
+        "when": "breakpointsFocused"
+      },
+      {
+        "key": "alt+enter",
+        "command": "-editor.action.selectAllMatches",
+        "when": "editorFocus && findWidgetVisible"
+      },
+      {
+        "key": "ctrl+oem_period",
+        "command": "editor.action.selectAllMatches",
+        "when": "editorFocus && findWidgetVisible"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "alt+enter",
+        "command": "editor.action.quickFix",
+        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+enter",
+        "command": "problems.action.showQuickFixes",
+        "when": "problemFocus"
+      },
+      {
+        "key": "alt+enter",
+        "command": "settings.action.editFocusedSetting",
+        "when": "inSettingsSearch"
+      },
+
+  // Rules about searching...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "shift+alt+f",
+        "command": "-filesExplorer.findInFolder",
+        "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "ctrl+shift+f",
+        "command": "filesExplorer.findInFolder",
+        "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
+      }
+]

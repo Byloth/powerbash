@@ -1,18 +1,27 @@
 [alias]
-        amend = commit --amend
-        branches = branch --all
-        forget = rm --cached
-        graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order
+    amend = commit --amend
+    branches = branch --all
+    count = rev-list HEAD --count
+    forget = rm --cached
+    graph = log --graph --pretty=format:'%C(bold red)[%C(auto)%h%C(bold red)]%C(reset) \"%s\"%C(auto)%d%C(reset)\n  %C(yellow)└%C(reset) %C(green)(%cr)%C(reset) by %C(bold blue)<%an>%C(reset)\n' --abbrev-commit --date-order
+    remotes = remote -v
+    remove = reset HEAD --
 
 [credential]
-        helper = store
+    helper = store
 
 [core]
-        autocrlf = input
-        filemode = false
+    autocrlf = input
+
+    # If you are using UNIX
+    #
+    filemode = true
+
+    # If you are using Windows
+    #
+    # filemode = false
+
+    hooksPath = ~/.git-hooks
 
 [push]
-        default = simple
-
-[winUpdater]
-        recentlySeenVersion = 2.18.0.windows.1
+    default = simple

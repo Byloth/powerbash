@@ -3,7 +3,15 @@
 
 set -e
 
-source "$(dirname "${0}")/../lib/odoo.sh"
+readonly BACKUP_DIR="./backups"
+readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+
+readonly CONTAINER="<container>"
+
+export PGHOST="<pghost>"
+export PGPORT="<pgport>"
+export PGUSER="<pguser>"
+export PGPASSWORD="<pgpassword>"
 
 # Is Postgres client available on this local machine?
 #
@@ -14,13 +22,10 @@ source "$(dirname "${0}")/../lib/odoo.sh"
     readonly POSTGRES="<postgres container>"
     readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
 
-readonly BACKUP_DIR="./backups"
-readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-
 read -p "Database name: " DATABASE
 
 readonly FILEPATH="${BACKUP_DIR}/${DATABASE}"
-readonly FILENAME="${NAME}_${TIMESTAMP}.tar.gz"
+readonly FILENAME="${CONTAINER}_${TIMESTAMP}.tar.gz"
 
 mkdir -p "${FILEPATH}"
 cd "${FILEPATH}"
@@ -30,7 +35,7 @@ ${PG_DUMP} -b -Fc -d "${DATABASE}" -O > "${DATABASE}.dump"
 echo -e "\e[32mOK!\e[0m"
 
 echo -e "Copying filestore... \c"
-docker cp "${NAME}:/var/lib/odoo/filestore/${DATABASE}" . &> /dev/null
+docker cp "${CONTAINER}:/var/lib/odoo/filestore/${DATABASE}" . &> /dev/null
 echo -e "\e[32mOK!\e[0m"
 
 cd ..

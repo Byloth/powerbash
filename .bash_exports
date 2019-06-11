@@ -2,11 +2,33 @@
 #
 
 #
-# Useful exports (if you are in Bash under WSL)
+# Defining the default editor to use
 #
-export DOCKER_HOST="localhost:2375"
+export VISUAL="nano"
+export EDITOR="${VISUAL}"
+
+#
+# Python VirtualEnv:
+#  - disable the default virtualenv prompt change
+#
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+#  - enable VirtualEnvWrapper support
+#
+if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
+then
+    export WORKON_HOME="${HOME}/.virtualenvs"
+    export PROJECT_HOME="${HOME}/projects"
+
+    source "/usr/local/bin/virtualenvwrapper.sh"
+fi
 
 #
 # Overriding path
 #
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+
+#
+# Useful exports (if you are in Bash under WSL)
+#
+export DOCKER_HOST="tcp://localhost:2375"

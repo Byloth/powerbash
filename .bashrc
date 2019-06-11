@@ -33,24 +33,34 @@ HISTFILESIZE=100000
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #
-# Defining the default editor to use
+# Useful settings (if you are in Bash under WSL)
 #
-VISUAL="nano"
-EDITOR="${VISUAL}"
+umask 022
 
-if [ -f ~/.bash_aliases ]
+if [[ -f ~/.bash_aliases ]]
 then
     source ~/.bash_aliases
 fi
-if [ -f ~/.bash_customs ]
+if [[ -f ~/.bash_customs ]]
 then
     source ~/.bash_customs
 fi
-if [ -f ~/.bash_exports ]
+if [[ -f ~/.bash_exports ]]
 then
     source ~/.bash_exports
 fi
-if [ -f ~/.bash_functions ]
+if [[ -f ~/.bash_functions ]]
 then
     source ~/.bash_functions
 fi
+
+#
+# Print a random phrase when the terminal is
+#  opened and all scripts have been loaded
+#
+# Some other "cows" here: /usr/share/cowsay/cows
+#  -f <cow_name>
+#  -W <max_columns>
+#  -b / -d / -g / -p / -s / -t / -w / -y
+#
+fortune -as | cowthink -n -$(expr substr "-bdgpstwy" $(shuf -i1-9 -n1) 1)

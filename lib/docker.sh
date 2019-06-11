@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 
-source "$(dirname ${0})/../lib/std_output.sh"
+source "$(dirname "${0}")/../lib/std_output.sh"
 
 function getLastImageVersion()
 {
@@ -30,7 +30,7 @@ function dockerFind()
 
 function dockerStop()
 {
-    if [ "$(docker stop ${1})" == "${1}" ]
+    if [[ "$(docker stop "${1}")" == "${1}" ]]
     then
         echo "$(success "OK!")"
     else
@@ -40,11 +40,11 @@ function dockerStop()
     fi
 }
 
-if [ $(isDockerRunning) -eq 0 ]
+if [[ $(isDockerRunning) -eq 0 ]]
 then
     echo -e "\n  $(warning "WARNING"): \c"
 
-    if [ -n "${DOCKER_HOST}" ]
+    if [[ -n "${DOCKER_HOST}" ]]
     then
         echo -e "can't connect to the Docker"
         echo -e "   daemon at $(info "tcp://${DOCKER_HOST}")."

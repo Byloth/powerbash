@@ -3,7 +3,12 @@
 
 set -e
 
-source "$(dirname "${0}")/../lib/odoo.sh"
+readonly CONTAINER="<container>"
+
+export PGHOST="<pghost>"
+export PGPORT="<pgport>"
+export PGUSER="<pguser>"
+export PGPASSWORD="<pgpassword>"
 
 # Is Postgres client available on this local machine?
 #
@@ -23,15 +28,6 @@ then
     echo "Usage: $(basename "${0}") <path/to/dump/file.tar.gz>"
 
     exit -1
-fi
-
-if [[ -z "$(dockerFind "${NAME}")" ]]
-then
-    echo -e "\n  $(warning "WARNING"): Docker container with name $(info "${NAME}")"
-    echo -e "   seems not to be running...\n"
-    echo -e "  Is the Docker container's name correct?"
-
-    exit 1
 fi
 
 read -p "New database name: " DATABASE
@@ -57,17 +53,17 @@ $PG_RESTORE -Fc -d "${DATABASE}" -O "${OLD_DATABASE}.dump"
 echo -e "\e[32mOK!\e[0m"
 
 echo -e "Copying filestore... \c"
-docker exec ${NAME} mkdir -p "${FILESTORE}"
-docker cp "${OLD_DATABASE}" "${NAME}:${FILESTORE}/"
+docker exec ${CONTAINER} mkdir -p "${FILESTORE}"
+docker cp "${OLD_DATABASE}" "${CONTAINER}:${FILESTORE}/"
 echo -e "\e[32mOK!\e[0m"
 
 echo -e "Renaming filestore... \c"
-docker exec ${NAME} bash -c  "if [[ -d \"${FILESTORE}/${DATABASE}\" ]]; then rm -rf \"${FILESTORE}/${DATABASE}\"; fi"
-docker exec ${NAME} mv "${FILESTORE}/${OLD_DATABASE}" "${FILESTORE}/${DATABASE}"
+docker exec ${CONTAINER} bash -c "if [[ -d \"${FILESTORE}/${DATABASE}\" ]]; then rm -rf \"${FILESTORE}/${DATABASE}\"; fi"
+docker exec ${CONTAINER} mv "${FILESTORE}/${OLD_DATABASE}" "${FILESTORE}/${DATABASE}"
 echo -e "\e[32mOK!\e[0m"
 
 echo -e "Changing permissions on filestore... \c"
-docker exec ${NAME} chown -R odoo:odoo "${FILESTORE}/${DATABASE}"
+docker exec ${CONTAINER} chown -R odoo:odoo "${FILESTORE}/${DATABASE}"
 echo -e "\e[32mOK!\e[0m"
 
 cd ../..

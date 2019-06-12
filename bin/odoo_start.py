@@ -4,7 +4,7 @@
 from argparse import ArgumentParser
 # import subprocess
 
-from lib import tty
+# from lib import tty
 from lib.odoo import OdooInstance
 
 #
@@ -35,7 +35,7 @@ class OdooStartCommand:
     def execute(self):
         # tty.clear()
 
-        self._odoo.start()
+        self._odoo.run()
 
 
 if __name__ == '__main__':

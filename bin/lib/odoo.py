@@ -35,7 +35,7 @@ class OdooInstance:
 
         self._container = DockerContainer()
 
-    def start(self, **kwargs):
+    def run(self, **kwargs):
         with open(self._config_file) as file:
             data = file.read()
             

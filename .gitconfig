@@ -10,6 +10,9 @@
 [credential]
     helper = store
 
+[commit]
+    gpgsign = true
+
 [core]
     autocrlf = input
 
@@ -25,3 +28,7 @@
 
 [push]
     default = simple
+
+[user]
+    name = <first name> <last name>
+    email = <e-mail address>

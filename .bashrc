@@ -54,13 +54,4 @@ then
     source ~/.bash_functions
 fi
 
-#
-# Print a random phrase when the terminal is
-#  opened and all scripts have been loaded
-#
-# Some other "cows" here: /usr/share/cowsay/cows
-#  -f <cow_name>
-#  -W <max_columns>
-#  -b / -d / -g / -p / -s / -t / -w / -y
-#
-fortune -as | cowthink -n -$(expr substr "-bdgpstwy" $(shuf -i1-9 -n1) 1)
+_randomPhrase

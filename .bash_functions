@@ -9,11 +9,27 @@ function _executePSqlQuery()
     echo -e " └ \c"
     echo "${QUERY}" | psql ${@:2} -f -
 }
+function _randomPhrase()
+{
+    #
+    # Print a random phrase when the terminal is
+    #  opened and all scripts have been loaded
+    #
+    # Some other "cows" here: /usr/share/cowsay/cows
+    #  -f <cow_name>
+    #  -W <max_columns>
+    #  -b / -d / -g / -p / -s / -t / -w / -y
+    #
+    local COW_PARAMS="-bdgpstwy"
+
+    fortune -as | cowthink -n -${COW_PARAMS:$(shuf -i0-8 -n1):1}
+}
 
 function clean()
 {
     clear
-    fortune -as | cowthink -n -$(expr substr "-bdgpstwy" $(shuf -i1-9 -n1) 1)
+
+    _randomPhrase
 }
 
 function getIpAddresses()

@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 #
 
+function _cryptPassword()
+{
+    local PYTHON_SCRIPT="
+from passlib.context import CryptContext
+passwd = CryptContext(schemes=['pbkdf2_sha512'])
+print(passwd.encrypt('${1}'))
+"
+    echo "$(python -c "${PYTHON_SCRIPT}")"
+}
 function _executePSqlQuery()
 {
     local QUERY="${1}"
@@ -8,6 +17,35 @@ function _executePSqlQuery()
     echo -e "\n${QUERY}"
     echo -e " └ \c"
     echo "${QUERY}" | psql ${@:2} -f -
+}
+function _odooReset()
+{
+    local PYTHON_SCRIPT="
+import uuid
+print(uuid.uuid4())
+"
+    local DATABASE_UUID="$(python -c "${PYTHON_SCRIPT}")"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" ${@}
+
+    local DATABASE_SECRET="$(python -c "${PYTHON_SCRIPT}")"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" ${@}
+
+    local MOBILE_UUID="$(python -c "${PYTHON_SCRIPT}")"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" ${@}
+
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '2021-12-31 23:59:59' WHERE key = 'database.expiration_date';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = 'renewal' WHERE key = 'database.expiration_reason';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'database.enterprise_code';" ${@}
+
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'website_slides.google_app_key';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_id';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_secret';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_id';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_secret';" ${@}
+
+    _executePSqlQuery "DELETE FROM fetchmail_server;" ${@}
+    _executePSqlQuery "DELETE FROM ir_cron;" ${@}
+    _executePSqlQuery "DELETE FROM ir_mail_server;" ${@}
 }
 function _randomPhrase()
 {
@@ -43,45 +81,27 @@ function odooChangePassword()
     read -s -p "New password: " NEW_PASSWD
     echo ""
 
-    local PYTHON_SCRIPT="
-from passlib.context import CryptContext
-passwd = CryptContext(schemes=['pbkdf2_sha512'])
-print(passwd.encrypt('${NEW_PASSWD}'))
-"
-    local CRYPTED_PASSWD="$(python -c "${PYTHON_SCRIPT}")"
+    _executePSqlQuery "UPDATE res_users SET password_crypt = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 1;" ${@}
+}
+function odoo12ChangePassword()
+{
+    echo ""
+    read -s -p "New password: " NEW_PASSWD
+    echo ""
 
-    _executePSqlQuery "UPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;" ${@}
+    _executePSqlQuery "UPDATE res_users SET password = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 2;" ${@}
 }
 function odooMakeDev()
 {
-    local PYTHON_SCRIPT="
-import uuid
-print(uuid.uuid4())
-"
-    local DATABASE_UUID="$(python -c "${PYTHON_SCRIPT}")"
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" ${@}
-
-    local DATABASE_SECRET="$(python -c "${PYTHON_SCRIPT}")"
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" ${@}
-
-    local MOBILE_UUID="$(python -c "${PYTHON_SCRIPT}")"
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" ${@}
-
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '2021-12-31 23:59:59' WHERE key = 'database.expiration_date';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = 'renewal' WHERE key = 'database.expiration_reason';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'database.enterprise_code';" ${@}
-
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'website_slides.google_app_key';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_id';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_secret';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_id';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_secret';" ${@}
-
-    _executePSqlQuery "DELETE FROM fetchmail_server;" ${@}
-    _executePSqlQuery "DELETE FROM ir_cron;" ${@}
-    _executePSqlQuery "DELETE FROM ir_mail_server;" ${@}
+    _odooReset ${@}
 
     odooChangePassword ${@}
+}
+function odoo12MakeDev()
+{
+    _odooReset ${@}
+
+    odoo12ChangePassword ${@}
 }
 function odooRemoveAssets()
 {

@@ -1,3 +1,6 @@
 {
-    "files.eol": "\n"
+    "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "files.eol": "\n",
+    "window.customMenuBarAltFocus": false
 }

@@ -8,6 +8,8 @@ Desktop.ini
 /.idea/
 /.vscode/
 
+/*.code-workspace
+
 # Generated & compiled files
 #
 __pycache__/

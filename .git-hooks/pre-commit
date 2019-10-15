@@ -10,7 +10,7 @@ PDB_CHECK="$(git grep --color -E -n '[ ;]i?pdb')"
 #
 # Uncompleted merge check
 #
-MERGE_CHECK="$(git grep --color -E -n '^([><]{7} \S+|={7})$')"
+MERGE_CHECK="$(git grep --color -E -n '^[<>]{7} .+$')"
 
 if [[ "${#PDB_CHECK}" -gt 0 ]] || [[ "${#MERGE_CHECK}" -gt 0 ]]
 then

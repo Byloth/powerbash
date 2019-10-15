@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 #
 
+function _cryptPassword()
+{
+    local PYTHON_SCRIPT="
+from passlib.context import CryptContext
+passwd = CryptContext(schemes=['pbkdf2_sha512'])
+print(passwd.encrypt('${1}'))
+"
+    echo "$(python -c "${PYTHON_SCRIPT}")"
+}
 function _executePSqlQuery()
 {
     local QUERY="${1}"
@@ -9,34 +18,7 @@ function _executePSqlQuery()
     echo -e " └ \c"
     echo "${QUERY}" | psql ${@:2} -f -
 }
-
-function clean()
-{
-    clear
-    fortune -as | cowthink -n -$(expr substr "-bdgpstwy" $(shuf -i1-9 -n1) 1)
-}
-
-function getIpAddresses()
-{
-    ifconfig | grep "inet " | awk '{ print $2 }'
-}
-
-function odooChangePassword()
-{
-    echo ""
-    read -s -p "New password: " NEW_PASSWD
-    echo ""
-
-    local PYTHON_SCRIPT="
-from passlib.context import CryptContext
-passwd = CryptContext(schemes=['pbkdf2_sha512'])
-print(passwd.encrypt('${NEW_PASSWD}'))
-"
-    local CRYPTED_PASSWD="$(python -c "${PYTHON_SCRIPT}")"
-
-    _executePSqlQuery "UPDATE res_users SET password_crypt = '${CRYPTED_PASSWD}' WHERE id = 1;" ${@}
-}
-function odooMakeDev()
+function _odooReset()
 {
     local PYTHON_SCRIPT="
 import uuid
@@ -64,8 +46,62 @@ print(uuid.uuid4())
     _executePSqlQuery "DELETE FROM fetchmail_server;" ${@}
     _executePSqlQuery "DELETE FROM ir_cron;" ${@}
     _executePSqlQuery "DELETE FROM ir_mail_server;" ${@}
+}
+function _randomPhrase()
+{
+    #
+    # Print a random phrase when the terminal is
+    #  opened and all scripts have been loaded
+    #
+    # Some other "cows" here: /usr/share/cowsay/cows
+    #  -f <cow_name>
+    #  -W <max_columns>
+    #  -b / -d / -g / -p / -s / -t / -w / -y
+    #
+    local COW_PARAMS="-bdgpstwy"
+
+    fortune -as | cowthink -n -${COW_PARAMS:$(shuf -i0-8 -n1):1}
+}
+
+function clean()
+{
+    clear
+
+    _randomPhrase
+}
+
+function getIpAddresses()
+{
+    ifconfig | grep "inet " | awk '{ print $2 }'
+}
+
+function odooChangePassword()
+{
+    echo ""
+    read -s -p "New password: " NEW_PASSWD
+    echo ""
+
+    _executePSqlQuery "UPDATE res_users SET password_crypt = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 1;" ${@}
+}
+function odoo12ChangePassword()
+{
+    echo ""
+    read -s -p "New password: " NEW_PASSWD
+    echo ""
+
+    _executePSqlQuery "UPDATE res_users SET password = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 2;" ${@}
+}
+function odooMakeDev()
+{
+    _odooReset ${@}
 
     odooChangePassword ${@}
+}
+function odoo12MakeDev()
+{
+    _odooReset ${@}
+
+    odoo12ChangePassword ${@}
 }
 function odooRemoveAssets()
 {

@@ -31,4 +31,5 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 #
 # Useful exports (if you are in Bash under WSL)
 #
+export BROWSER="none"
 export DOCKER_HOST="tcp://localhost:2375"

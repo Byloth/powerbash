@@ -47,7 +47,7 @@ then
     if [[ -n "${DOCKER_HOST}" ]]
     then
         echo -e "can't connect to the Docker"
-        echo -e "   daemon at $(info "tcp://${DOCKER_HOST}")."
+        echo -e "   daemon at $(info "${DOCKER_HOST}")."
     else
         echo -e "can't connect to the Docker daemon."
     fi

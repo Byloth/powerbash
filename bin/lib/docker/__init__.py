@@ -3,30 +3,6 @@ import platform
 HOST_ADDRESS = None
 
 
-class VolumeType:
-    DIRECTORY_TYPE = 'directory'
-    VOLUME_TYPE = 'volume'
-
-
-class DockerMap:
-    internal = None
-    external = None
-
-    def __init__(self, internal, external):
-        self.internal = internal
-        self.external = external
-
-
-class PortMap(DockerMap):
-    pass
-
-
-class VolumeMap(DockerMap):
-    @property
-    def type(self):
-        pass
-
-
 class DockerContainer:
     _ports = None
     _envs = None
@@ -36,6 +12,9 @@ class DockerContainer:
     image = None
     version = None
 
+    is_interactive = None
+    is_volatile = None
+
     def __init__(self):
         #
         # TODO: Is Docker deamon running?
@@ -43,6 +22,7 @@ class DockerContainer:
         self._ports = {}
         self._envs = {}
         self._volumes = {}
+
 
     def define_environment_variable(self, name, value):
         pass

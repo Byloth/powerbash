@@ -11,7 +11,7 @@ class PostgreSql:
         elif key in ['pgport']:
             self.pgport = value
 
-        elif key in ['pguser']:
+        elif key in ['pguser', 'pgusername']:
             self.pguser = value
 
         elif key in ['pgpass', 'pgpassword']:

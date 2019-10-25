@@ -39,7 +39,8 @@ class OdooInstance:
         with open(self._config_file) as file:
             data = file.read()
             
-            _logger.info(yaml.load(data))
+        _logger.info(yaml.safe_load(data))
+
         # self._load_configurations()
         # self._load_defaults()
         #  ...

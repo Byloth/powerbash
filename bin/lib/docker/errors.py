@@ -1,0 +1,2 @@
+class DockerError(RuntimeError):
+    pass

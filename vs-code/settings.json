@@ -1,6 +1,11 @@
 {
     "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
+    "editor.rulers": [120],
     "files.eol": "\n",
-    "window.customMenuBarAltFocus": false
+    "window.customMenuBarAltFocus": false,
+
+    "[python]": {
+        "editor.rulers": [79, 120]
+    }
 }

@@ -14,7 +14,7 @@ MERGE_CHECK="$(git grep --color -E -n '^[<>]{7} .+$')"
 
 if [[ "${#PDB_CHECK}" -gt 0 ]] || [[ "${#MERGE_CHECK}" -gt 0 ]]
 then
-    OUTPUT_CHECK="\n  --------------------------------------------------------\n"
+    OUTPUT_CHECK=""
 
     echo -e "\n\e[4;31mCOMMIT REJECTED: your code may contain some errors!""\e[0m"
     echo -e " \e[31m│\e[0m"
@@ -23,21 +23,21 @@ then
     then
         echo -e " \e[31m├\e[0m Found at least one break point."
 
-        OUTPUT_CHECK="${OUTPUT_CHECK}\n\e[36mBreak points:\e[0m\n${PDB_CHECK}\n"
+        OUTPUT_CHECK="${OUTPUT_CHECK}\n\n\e[36mBreak points:\e[0m\n${PDB_CHECK}"
     fi
 
     if [[ "${#MERGE_CHECK}" -gt 0 ]]
     then
         echo -e " \e[31m├\e[0m Found at least one merge conflict."
 
-        OUTPUT_CHECK="${OUTPUT_CHECK}\n\e[36mMerge conflicts:\e[0m\n${MERGE_CHECK}\n"
+        OUTPUT_CHECK="${OUTPUT_CHECK}\n\n\e[36mMerge conflicts:\e[0m\n${MERGE_CHECK}"
     fi
 
     echo -e " \e[31m│\e[0m"
     echo -e " \e[31m└\e[0m Please, resolve these problems before committing."
     echo -e "   If instead you know \e[4;33mEXACTLY\e[0m what you're doing,"
     echo -e "    you can force commit using \"\e[36mgit commit --no-verify\e[0m\"."
-
+    echo -e "\n  --------------------------------------------------------\c"
     echo -e "${OUTPUT_CHECK}"
 
     exit 1

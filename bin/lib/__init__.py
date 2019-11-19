@@ -1,3 +1,4 @@
+from . import core
 from . import docker
 from . import logging
 from . import odoo

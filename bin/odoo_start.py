@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 
 # from lib import tty
 from lib.odoo import OdooInstance
+from lib.docker.core import DockerImage
 
 #
 # https://docs.python.org/3/library/argparse.html
@@ -28,6 +29,10 @@ class OdooStartCommand:
 
     def __init__(self):
         self._odoo = OdooInstance()
+
+        image = DockerImage('debian', 'stretch')
+        image.is_available
+
 
         # parser = self.get_parser()
         # self._args = parser.parse_args()

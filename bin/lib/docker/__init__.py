@@ -1,16 +1,20 @@
 import platform
 
+from . import core
+from . import errors
+from . import mapping
+
 HOST_ADDRESS = None
 
 
 class DockerContainer:
+    _image = None
+
     _ports = None
     _envs = None
     _volumes = None
 
     name = None
-    image = None
-    version = None
 
     is_interactive = None
     is_volatile = None

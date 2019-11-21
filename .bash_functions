@@ -63,6 +63,15 @@ function _randomPhrase()
     fortune -as | cowthink -n -${COW_PARAMS:$(shuf -i0-8 -n1):1}
 }
 
+function base64encode()
+{
+    echo -n "${1}" | base64
+}
+function base64decode()
+{
+    echo -n "${1}" | base64 --decode
+}
+
 function clean()
 {
     clear

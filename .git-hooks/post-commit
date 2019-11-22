@@ -5,26 +5,34 @@ BASE_DIR="$(dirname "${0}")"
 
 GIT_ROOT_DIR="$(git rev-parse --show-toplevel)"
 ODOO_MODULE_CHECK="$(${BASE_DIR}/bin/check_odoo_modules_version.py "${GIT_ROOT_DIR}")"
+ODOO_MODULE_CHECK_EXIT_CODE="${?}"
 
-if [[ -n "${ODOO_MODULE_CHECK}" ]]
+if [[ "${ODOO_MODULE_CHECK_EXIT_CODE}" -eq "0" ]]
 then
-    OUTPUT_CHECK=""
-
-    echo -e "\n\e[4;33mWARNING: your commit may contains some errors!""\e[0m"
-    echo -e " \e[33m│\e[0m"
-
     if [[ -n "${ODOO_MODULE_CHECK}" ]]
     then
-        echo -e " \e[33m├\e[0m Found at least one module with DEV version."
+        OUTPUT_CHECK=""
 
-        OUTPUT_CHECK="${OUTPUT_CHECK}\n\n\e[36mDEV versions:\e[0m\n${ODOO_MODULE_CHECK}"
+        echo -e "\n\e[4;33mWARNING: your commit may contains some errors!""\e[0m"
+        echo -e " \e[33m│\e[0m"
+
+        if [[ -n "${ODOO_MODULE_CHECK}" ]]
+        then
+            echo -e " \e[33m├\e[0m Found at least one module with DEV version."
+
+            OUTPUT_CHECK="${OUTPUT_CHECK}\n\n\e[36mDEV versions:\e[0m\n${ODOO_MODULE_CHECK}"
+        fi
+
+        echo -e " \e[33m│\e[0m"
+        echo -e " \e[33m└\e[0m Please, resolve these problems before pushing."
+        echo -e "   You can use \"\e[36mgit commit --amend\e[0m\" to integrate "
+        echo -e "    this commit with the correct modules version or"
+        echo -e "    you can simply create another explicit commit."
+        echo -e "\n  --------------------------------------------------------\c"
+        echo -e "${OUTPUT_CHECK}\n"
     fi
-
-    echo -e " \e[33m│\e[0m"
-    echo -e " \e[33m└\e[0m Please, resolve these problems before pushing."
-    echo -e "   You can use \"\e[36mgit commit --amend\e[0m\" to integrate "
-    echo -e "    this commit with the correct modules version or"
-    echo -e "    you can simply create another explicit commit."
-    echo -e "\n  --------------------------------------------------------\c"
-    echo -e "${OUTPUT_CHECK}\n"
+else
+    echo -e "\n\e[4;31mERROR: something went wrong!""\e[0m"
+    echo -e " \e[31m│\e[0m"
+    echo -e " \e[31m└\e[0m ${ODOO_MODULE_CHECK}"
 fi

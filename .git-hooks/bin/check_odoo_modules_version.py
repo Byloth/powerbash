@@ -6,7 +6,14 @@ import re
 import sys
 
 from argparse import ArgumentParser
-from setuptools_odoo.git_postversion import STRATEGY_99_DEVN, get_git_postversion
+
+try:
+    from setuptools_odoo.git_postversion import STRATEGY_99_DEVN, get_git_postversion
+
+except ModuleNotFoundError:
+    print("Did you install 'setuptools_odoo' in your active Python environment?")
+
+    sys.exit(1)
 
 DEV_REGEX = re.compile(r'\.99\.dev\d+')
 
@@ -111,7 +118,7 @@ if __name__ == '__main__':
     except ValueError as exc:
         print(exc)
 
-        sys.exit(1)
+        sys.exit(0)
 
     else:
         sys.exit(0)

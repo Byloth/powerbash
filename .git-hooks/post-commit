@@ -34,5 +34,5 @@ then
 else
     echo -e "\n\e[4;31mERROR: something went wrong!""\e[0m"
     echo -e " \e[31m│\e[0m"
-    echo -e " \e[31m└\e[0m ${ODOO_MODULE_CHECK}"
+    echo -e " \e[31m└\e[0m ${ODOO_MODULE_CHECK}\n"
 fi

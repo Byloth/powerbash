@@ -88,16 +88,14 @@ function loadConfigurations()
                     ADMIN_PASSWD="${VALUE}"
                     ;;
                 "env" | "environment")
-                    local VALUES=($(echo "${VALUE}" | tr ':' ' '))
-                    local VAR_NAME="${VALUES[0]}"
-                    local VAR_VALUE="${VALUES[1]}"
+                    local VAR_NAME="$(echo "${VALUE}" | cut -d ':' -f 1)"
+                    local VAR_VALUE="$(echo "${VALUE}" | cut -d ':' -f 2-)"
 
                     ENV_VARS="${ENV_VARS} -e ${VAR_NAME}=\"${VAR_VALUE}\""
                     ;;
                 "mount")
-                    local VALUES=($(echo "${VALUE}" | tr ':' ' '))
-                    local SRC_PATH="${VALUES[0]}"
-                    local DEST_PATH="${VALUES[1]}"
+                    local SRC_PATH="$(echo "${VALUE}" | cut -d ':' -f 1)"
+                    local DEST_PATH="$(echo "${VALUE}" | cut -d ':' -f 2-)"
 
                     echo "${MOUNT_DIRS} -v $(getRealPath "${SRC_PATH}"):${DEST_PATH}:ro"
 

@@ -29,6 +29,7 @@ alias l="ls -CF"
 # Useful aliases
 #
 alias cat="bat"
+alias kube-dashboard="kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') && kubectl proxy"
 
 #
 # Useful aliases (if you are in Bash under WSL)

@@ -1,6 +1,39 @@
 #!/usr/bin/env bash
 #
 
+function _accessDockerMobyLinuxVM()
+{
+    echo -e "\n \e[4;33mWARNING!\e[0m"
+    echo -e "  \e[33m├\e[0m You're about to directly access the Docker MobyLinuxVM..."
+    echo -e "  \e[33m│\e[0m"
+    echo -e "  \e[33m└\e[0m Please, continue at your own risk only"
+    echo -e "     if you know \e[4;0mexacly\e[0m what you're doing.\n"
+
+    read -p "Are you sure to continue? [N]: " ANSWER
+
+    if [[ "${ANSWER}" == "y" ]] || [[ "${ANSWER}" == "Y" ]]
+    then
+        echo -e " └ Ok, then... Pay attention from now on!\n"
+
+        docker run -it --rm \
+                    --privileged \
+                \
+                --name "moby" \
+                --security-opt "seccomp=unconfined" \
+                \
+                --ipc "host" \
+                --net "host" \
+                --pid "host" \
+                --uts "host" \
+                \
+                -v "/":"/moby" \
+            \
+            "alpine":"latest" "chroot" "/moby"
+    else
+        echo -e " └ Never mind... See ya' next time."
+    fi
+}
+
 function _cryptPassword()
 {
     local PYTHON_SCRIPT="

@@ -5,7 +5,7 @@ source "$(dirname "${0}")/../lib/std_output.sh"
 
 function getLastImageVersion()
 {
-    docker images | grep ^${1} | awk '{ if (NR == 1) print $2 }'
+    docker images | grep "^${1}" | awk '{ if (NR == 1) print $2 }'
 }
 
 function isDockerRunning()

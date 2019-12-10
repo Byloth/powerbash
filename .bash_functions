@@ -84,6 +84,25 @@ function getIpAddresses()
     ifconfig | grep "inet " | awk '{ print $2 }'
 }
 
+function kubeDashboard()
+{
+    local ADMIN_NAMESPACE="kube-system"
+    local ADMIN_NAME="admin-user"
+    local DASHBOARD_NAMESPACE="kubernetes-dashboard"
+    local DASHBOARD_SERVICE="kubernetes-dashboard"
+
+    local SECRET_NAME="$(kubectl -n "${ADMIN_NAMESPACE}" get secret | grep "^${ADMIN_NAME}-token-" | awk '{print $1}')"
+    local SECRET_TOKEN="$(kubectl -n "${ADMIN_NAMESPACE}" describe secret "${SECRET_NAME}" | grep "^token: " | awk '{print $2}')"
+
+    echo -e "\nKubernetes dashboard is starting..."
+    echo " │"
+    echo -e " ├ URL: \e[4;36mhttp://localhost:8001/api/v1/namespaces/${DASHBOARD_NAMESPACE}/services/https:${DASHBOARD_SERVICE}:/proxy/\e[0m"
+    echo " │"
+    echo -e " └ Token: ${SECRET_TOKEN}\n"
+
+    kubectl proxy
+}
+
 function odooChangePassword()
 {
     echo ""

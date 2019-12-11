@@ -54,4 +54,4 @@ fi
 echo -e "\n  Start logging..."
 echo -e " ------------------------------\n"
 
-odooRun ${@}
+odooRun "${@}"

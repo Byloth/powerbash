@@ -7,7 +7,7 @@ function _accessDockerMobyLinuxVM()
     echo -e "  \e[33m├\e[0m You're about to directly access the Docker MobyLinuxVM..."
     echo -e "  \e[33m│\e[0m"
     echo -e "  \e[33m└\e[0m Please, continue at your own risk only"
-    echo -e "     if you know \e[4;0mexacly\e[0m what you're doing.\n"
+    echo -e "     if you know \e[4mEXACTLY\e[0m what you're doing.\n"
 
     read -p "Are you sure to continue? [N]: " ANSWER
 
@@ -49,7 +49,7 @@ function _executePSqlQuery()
 
     echo -e "\n${QUERY}"
     echo -e " └ \c"
-    echo "${QUERY}" | psql ${@:2} -f -
+    echo "${QUERY}" | psql "${@:2}" -f -
 }
 function _odooReset()
 {
@@ -58,27 +58,27 @@ import uuid
 print(uuid.uuid4())
 "
     local DATABASE_UUID="$(python -c "${PYTHON_SCRIPT}")"
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_UUID}' WHERE key = 'database.uuid';" "${@}"
 
     local DATABASE_SECRET="$(python -c "${PYTHON_SCRIPT}")"
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${DATABASE_SECRET}' WHERE key = 'database.secret';" "${@}"
 
     local MOBILE_UUID="$(python -c "${PYTHON_SCRIPT}")"
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '${MOBILE_UUID}' WHERE key = 'mobile.uuid';" "${@}"
 
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '2021-12-31 23:59:59' WHERE key = 'database.expiration_date';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = 'renewal' WHERE key = 'database.expiration_reason';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'database.enterprise_code';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '2021-12-31 23:59:59' WHERE key = 'database.expiration_date';" "${@}"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = 'renewal' WHERE key = 'database.expiration_reason';" "${@}"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'database.enterprise_code';" "${@}"
 
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'website_slides.google_app_key';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_id';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_secret';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_id';" ${@}
-    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_secret';" ${@}
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'website_slides.google_app_key';" "${@}"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_id';" "${@}"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_calendar_client_secret';" "${@}"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_id';" "${@}"
+    _executePSqlQuery "UPDATE ir_config_parameter SET value = '' WHERE key = 'google_drive_client_secret';" "${@}"
 
-    _executePSqlQuery "DELETE FROM fetchmail_server;" ${@}
-    _executePSqlQuery "DELETE FROM ir_cron;" ${@}
-    _executePSqlQuery "DELETE FROM ir_mail_server;" ${@}
+    _executePSqlQuery "DELETE FROM fetchmail_server;" "${@}"
+    _executePSqlQuery "DELETE FROM ir_cron;" "${@}"
+    _executePSqlQuery "DELETE FROM ir_mail_server;" "${@}"
 }
 function _randomPhrase()
 {
@@ -142,7 +142,7 @@ function odooChangePassword()
     read -s -p "New password: " NEW_PASSWD
     echo ""
 
-    _executePSqlQuery "UPDATE res_users SET password_crypt = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 1;" ${@}
+    _executePSqlQuery "UPDATE res_users SET password_crypt = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 1;" "${@}"
 }
 function odoo12ChangePassword()
 {
@@ -150,29 +150,29 @@ function odoo12ChangePassword()
     read -s -p "New password: " NEW_PASSWD
     echo ""
 
-    _executePSqlQuery "UPDATE res_users SET password = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 2;" ${@}
+    _executePSqlQuery "UPDATE res_users SET password = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 2;" "${@}"
 }
 function odooMakeDev()
 {
-    _odooReset ${@}
+    _odooReset "${@}"
 
-    odooChangePassword ${@}
+    odooChangePassword "${@}"
 }
 function odoo12MakeDev()
 {
-    _odooReset ${@}
+    _odooReset "${@}"
 
-    odoo12ChangePassword ${@}
+    odoo12ChangePassword "${@}"
 }
 function odooRemoveAssets()
 {
-    _executePSqlQuery "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" ${@}
+    _executePSqlQuery "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" "${@}"
 }
 
 function removeDockerImages()
 {
-    local IMAGE=${1}
-    local SKIP=${2}
+    local IMAGE="${1}"
+    local SKIP="${2}"
 
     if [[ -z "${IMAGE}" ]]
     then
@@ -183,7 +183,7 @@ function removeDockerImages()
             SKIP=1
         fi
 
-        docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP=${SKIP} '{ if (NR > SKIP) print $3 }' | xargs docker image rm
+        docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP="${SKIP}" '{ if (NR > SKIP) print $3 }' | xargs docker image rm
     fi
 }
 

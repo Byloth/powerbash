@@ -11,9 +11,9 @@ function getLastImageVersion()
 function isDockerRunning()
 {
     docker ps &> /dev/null
-    local IS_RUNNING=$((1 - ${?}))
+    local IS_RUNNING="$((1 - ${?}))"
 
-    echo ${IS_RUNNING}
+    echo "${IS_RUNNING}"
 }
 
 function dockerFind()

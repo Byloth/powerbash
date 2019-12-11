@@ -6,7 +6,7 @@ function getRealPath()
     local REALPATH="$(realpath "${1}")"
     REALPATH="${REALPATH#/mnt}"
 
-    echo ${REALPATH}
+    echo "${REALPATH}"
 }
 
 function loadFile()

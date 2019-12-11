@@ -7,7 +7,7 @@ GIT_ROOT_DIR="$(git rev-parse --show-toplevel)"
 ODOO_MODULE_CHECK="$(${BASE_DIR}/bin/check_odoo_modules_version.py "${GIT_ROOT_DIR}")"
 ODOO_MODULE_CHECK_EXIT_CODE="${?}"
 
-if [[ "${ODOO_MODULE_CHECK_EXIT_CODE}" -eq "0" ]]
+if [[ "${ODOO_MODULE_CHECK_EXIT_CODE}" -eq 0 ]]
 then
     if [[ -n "${ODOO_MODULE_CHECK}" ]]
     then

@@ -40,7 +40,7 @@ echo -e "Extracting backup... \c"
 tar -xzvf "${ARCHIVE}" -C "${EXTRACT_DIR}" &> /dev/null
 echo -e "\e[32mOK!\e[0m"
 
-readonly OLD_DATABASE=$(ls "${EXTRACT_DIR}")
+readonly OLD_DATABASE="$(ls "${EXTRACT_DIR}")"
 
 cd "${EXTRACT_DIR}/${OLD_DATABASE}"
 

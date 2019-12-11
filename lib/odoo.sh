@@ -171,7 +171,7 @@ function loadDefaults()
 
 function odooPull()
 {
-    docker pull ${IMAGE}:${VERSION}
+    docker pull "${IMAGE}:${VERSION}"
 }
 function odooRun()
 {
@@ -184,17 +184,17 @@ function odooRun()
     fi
 
     docker run --rm -it \
-               --name=${NAME} \
-               -p ${PORT}:8069 \
-               -e PGHOST=${PGHOST} \
-               -e PGPORT=${PGPORT} \
-               -e PGUSER=${PGUSER} \
-               -e PGPASSWORD=${PGPASSWORD} \
-               -e ADMIN_PASSWD=${ADMIN_PASSWD} \
+               --name="${NAME}" \
+               -p "${PORT}":8069 \
+               -e PGHOST="${PGHOST}" \
+               -e PGPORT="${PGPORT}" \
+               -e PGUSER="${PGUSER}" \
+               -e PGPASSWORD="${PGPASSWORD}" \
+               -e ADMIN_PASSWD="${ADMIN_PASSWD}" \
                ${ENV_VARS} \
-               -v ${DATA_VOLUME}:/var/lib/odoo \
+               -v "${DATA_VOLUME}":/var/lib/odoo \
                ${MOUNT_DIRS} \
-               ${IMAGE}:${VERSION} ${@}
+               "${IMAGE}:${VERSION}" "${@}"
 }
 
 loadConfigurations "${CONFIGS_FILE}"

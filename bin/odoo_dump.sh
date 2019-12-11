@@ -15,7 +15,7 @@ source "$(dirname "${0}")/../lib/odoo.sh"
     readonly PG_DUMP="docker exec -i ${POSTGRES} pg_dump -U ${PGUSER}"
 
 readonly BACKUP_DIR="./backups"
-readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+readonly TIMESTAMP="$(date +"%Y-%m-%d_%H-%M-%S")"
 
 read -p "Database name: " DATABASE
 

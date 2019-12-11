@@ -4,7 +4,7 @@
 set -e
 
 readonly BACKUP_DIR="./backups"
-readonly TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+readonly TIMESTAMP="$(date +"%Y-%m-%d_%H-%M-%S")"
 
 readonly CONTAINER="<container>"
 

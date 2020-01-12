@@ -80,11 +80,9 @@ print(uuid.uuid4())
     _executePSqlQuery "DELETE FROM ir_cron;" "${@}"
     _executePSqlQuery "DELETE FROM ir_mail_server;" "${@}"
 }
+
 function _randomPhrase()
 {
-    #
-    # Print a random phrase when the terminal is
-    #  opened and all scripts have been loaded
     #
     # Some other "cows" here: /usr/share/cowsay/cows
     #  -f <cow_name>

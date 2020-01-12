@@ -1,0 +1,52 @@
+{
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "globals":
+    {
+        "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
+        "initialCols": 137,
+        "initialRows": 30
+    },
+    "profiles":
+    [
+        {
+            "acrylicOpacity": 0.75,
+            "colorScheme": "Ubuntu",
+            "commandline": "wsl.exe ~",
+            "cursorColor": "#CFF5DB",
+            "cursorShape": "bar",
+            "fontFace": "Cascadia Code",
+            "fontSize": 9,
+            "guid": "{00000000-0000-0000-0000-000000000000}",
+            "icon": "%LOCALAPPDATA%/Packages/CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc/icon.png",
+            "name": "Windows Linux Subsystem",
+            "padding": "19, 16, 0, 10",
+            "suppressApplicationTitle": true,
+            "tabTitle": "Ubuntu 18.04 LTS",
+            "useAcrylic": true
+        }
+    ],
+    "schemes":
+    [
+        {
+            "background": "#300A24",
+            "black": "#000000",
+            "blue": "#0000EE",
+            "brightBlack": "#7F7F7F",
+            "brightBlue": "#5C5CFF",
+            "brightCyan": "#00FFFF",
+            "brightGreen": "#00FF00",
+            "brightPurple": "#FF00FF",
+            "brightRed": "#FF0000",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFFF00",
+            "cyan": "#00CDCD",
+            "foreground": "#E5E5E5",
+            "green": "#00CD00",
+            "name": "Ubuntu",
+            "purple": "#CD00CD",
+            "red": "#CD0000",
+            "white": "#E5E5E5",
+            "yellow": "#CDCD00"
+        }
+    ]
+}

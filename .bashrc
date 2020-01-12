@@ -37,6 +37,12 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 #
 umask 022
 
+#
+# Alias definitions.
+# You may want to put all your additions into a separate file
+#  like `~/.bash_aliases`, instead of adding them here directly.
+# See `/usr/share/doc/bash-doc/examples` in the bash-doc package.
+#
 if [[ -f ~/.bash_aliases ]]
 then
     source ~/.bash_aliases
@@ -54,4 +60,8 @@ then
     source ~/.bash_functions
 fi
 
+#
+# Print a random phrase when the terminal is
+#  opened and all scripts have been loaded.
+#
 _randomPhrase

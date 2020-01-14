@@ -1,3 +1,8 @@
+/*
+ * "ms-appdata:///Local/" -> "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\"
+ * "ms-appdata:///Roaming/" -> "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\RoamingState\"
+ */
+
 {
     "$schema": "https://aka.ms/terminal-profiles-schema",
     "globals":
@@ -10,6 +15,10 @@
     [
         {
             "acrylicOpacity": 0.75,
+            "backgroundImage": "ms-appdata:///Local/ubuntu-background.png",
+            "backgroundImageAlignment": "bottomRight",
+            "backgroundImageOpacity": 0.1,
+            "backgroundImageStretchMode": "none",
             "colorScheme": "Ubuntu",
             "commandline": "wsl.exe ~",
             "cursorColor": "#CFF5DB",
@@ -17,7 +26,7 @@
             "fontFace": "Cascadia Code",
             "fontSize": 9,
             "guid": "{00000000-0000-0000-0000-000000000000}",
-            "icon": "%LOCALAPPDATA%/Packages/CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc/icon.png",
+            "icon": "ms-appdata:///Local/ubuntu-icon.png",
             "name": "Windows Linux Subsystem",
             "padding": "19, 16, 0, 10",
             "suppressApplicationTitle": true,

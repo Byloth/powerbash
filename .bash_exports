@@ -13,14 +13,23 @@ export EDITOR="${VISUAL}"
 #
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
+#  - some useful environment variables
+#
+export WORKON_HOME="${HOME}/.virtualenvs"
+export PROJECT_HOME="${HOME}/projects"
+
 #  - enable VirtualEnvWrapper support
 #
 if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
 then
-    export WORKON_HOME="${HOME}/.virtualenvs"
-    export PROJECT_HOME="${HOME}/projects"
-
     source "/usr/local/bin/virtualenvwrapper.sh"
+fi
+
+#  - enable Pipenv support
+#
+if [[ -x /usr/local/bin/pipenv ]]
+then
+    eval "$(pipenv --completion)"
 fi
 
 #
@@ -29,7 +38,10 @@ fi
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 
 #
-# Useful exports (if you are in Bash under WSL)
+# Useful WSL exports
 #
-export BROWSER="none"
-export DOCKER_HOST="tcp://localhost:2375"
+if [[ -n "${IS_WSL_ENV}" ]]
+then
+    export BROWSER="none"
+    export DOCKER_HOST="tcp://localhost:2375"
+fi

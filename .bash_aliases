@@ -28,12 +28,18 @@ alias l="ls -CF"
 #
 # Useful aliases
 #
-alias cat="bat"
+if [[ -x /usr/bin/bat ]]
+then
+    alias cat="bat"
+fi
 
 #
-# Useful aliases (if you are in Bash under WSL)
+# Useful WSL aliases
 #
-alias su="sudo su"
+if [[ -n "${IS_WSL_ENV}" ]]
+then
+    alias su="sudo su"
+fi
 
 #
 # Other extra aliases

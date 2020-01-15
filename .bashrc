@@ -33,9 +33,17 @@ HISTFILESIZE=100000
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #
-# Useful settings (if you are in Bash under WSL)
+# Useful export (if you are in Bash under WSL)
 #
-umask 022
+if [[ -x /bin/wslpath ]]
+then
+    export IS_WSL_ENV=1
+
+    #
+    # Useful WSL settings
+    #
+    umask 022
+fi
 
 #
 # Alias definitions.

@@ -184,6 +184,15 @@ function removeDockerImages()
         docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP="${SKIP}" '{ if (NR > SKIP) print $3 }' | xargs docker image rm
     fi
 }
+function removeAllDockerImages()
+{
+    local IMAGES="$(docker images | awk '{ if (NR > 1) array[$1]++ } END { for (key in array) if (array[key] > 1) print key }')"
+
+    for IMAGE in ${IMAGES}
+    do
+        removeDockerImages "${IMAGE}"
+    done
+}
 
 function resetPermissions()
 {

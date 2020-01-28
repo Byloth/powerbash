@@ -3,17 +3,21 @@
  * "ms-appdata:///Roaming/" -> "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\RoamingState\"
  */
 
+// To view the default settings, hold "alt" while clicking on the "Settings" button.
+// For documentation on these settings, see: https://aka.ms/terminal-documentation
+
 {
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "globals":
-    {
-        "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
-        "initialCols": 137,
-        "initialRows": 30
-    },
+
+    "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
+
+    "initialCols": 137,
+    "initialRows": 30,
+
     "profiles":
     [
         {
+            // Make changes here to the wsl.exe profile
             "acrylicOpacity": 0.75,
             "backgroundImage": "ms-appdata:///Local/ubuntu-background.png",
             "backgroundImageAlignment": "bottomRight",
@@ -34,6 +38,8 @@
             "useAcrylic": true
         }
     ],
+
+    // Add custom color schemes to this array
     "schemes":
     [
         {
@@ -57,5 +63,9 @@
             "white": "#E5E5E5",
             "yellow": "#CDCD00"
         }
-    ]
+    ],
+
+    // Add any keybinding overrides to this array.
+    // To unbind a default keybinding, set the command to "unbound"
+    "keybindings": []
 }

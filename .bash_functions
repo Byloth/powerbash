@@ -112,7 +112,19 @@ function clean()
 
 function getIpAddresses()
 {
-    ifconfig | grep "inet " | awk '{ print $2 }'
+    local NAMES=($(ifconfig | grep -E "^\w+: " | awk '{ print $1 }'))
+    local ADDRESSES=($(ifconfig | grep "inet " | awk '{ print $2 }'))
+
+    for I in "${!NAMES[@]}"
+    do
+        local NAME="${NAMES[$I]}"
+        local ADDRESS="${ADDRESSES[$I]}"
+
+        if [[ "${ADDRESS}" != "127.0.0.1" ]]
+        then
+            echo -e "${NAME}\t${ADDRESS}"
+        fi
+    done
 }
 
 function kubeDashboard()

@@ -36,7 +36,7 @@ function dockerStop()
     else
         echo "$(error "Something went wrong!")"
 
-        exit 4
+        exit 5
     fi
 }
 
@@ -54,5 +54,5 @@ then
 
     echo -e "\n  Is the Docker daemon running?"
 
-    exit -1
+    exit 1
 fi

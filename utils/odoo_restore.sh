@@ -27,7 +27,7 @@ if [[ -z "${ARCHIVE}" ]]
 then
     echo "Usage: $(basename "${0}") <path/to/dump/file.tar.gz>"
 
-    exit -1
+    exit 0
 fi
 
 read -p "New database name: " DATABASE

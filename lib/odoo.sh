@@ -18,14 +18,14 @@ function checkConfigurations()
     then
         echo -e "\n  $(error "Missing key \"name\" in configuration file!")"
 
-        exit 2
+        exit 3
     fi
 
     if [[ -z "${IMAGE}" ]]
     then
         echo -e "\n  $(error "Missing key \"image\" in configuration file!")"
 
-        exit 3
+        exit 4
     fi
 }
 
@@ -108,7 +108,7 @@ function loadConfigurations()
     else
         echo -e "\n  $(error "Missing instance configuration file: \"${1}\"!")"
 
-        exit 1
+        exit 2
     fi
 }
 

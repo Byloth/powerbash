@@ -146,6 +146,11 @@
     // Removing existing rules:
     //
       {
+        "key": "shift+enter",
+        "command": "-editor.action.previousMatchFindAction",
+        "when": "editorFocus && findInputFocussed"
+      },
+      {
         "key": "shift+alt+f",
         "command": "-filesExplorer.findInFolder",
         "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
@@ -153,6 +158,16 @@
 
     // Adding new rules:
     //
+      {
+        "key": "up",
+        "command": "editor.action.previousMatchFindAction",
+        "when": "editorFocus && findInputFocussed"
+      },
+      {
+        "key": "down",
+        "command": "editor.action.nextMatchFindAction",
+        "when": "editorFocus && findInputFocussed"
+      },
       {
         "key": "ctrl+shift+f",
         "command": "filesExplorer.findInFolder",

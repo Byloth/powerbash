@@ -179,10 +179,53 @@ function odooRemoveAssets()
     _executePSqlQuery "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" "${@}"
 }
 
+function removeStoppedContainers()
+{
+    local CONTAINERS=($(docker ps -a | grep " Exited " | awk '{ print $1 }'))
+
+    echo ""
+
+    if [[ -n "${CONTAINERS}" ]]
+    then
+        for ID in "${CONTAINERS[@]}"
+        do
+            docker rm "${ID}"
+        done
+    else
+        echo "There are no containers to remove."
+    fi
+}
 function removeDockerImages()
 {
+    local ARGS=()
+
+    while [[ ${#} -gt 0 ]]
+    do
+        case "${1}" in
+            -f | --force)
+                local FORCE="true"
+
+                shift
+                ;;
+            *)
+                ARGS+=("${1}")
+
+                shift
+                ;;
+        esac
+    done
+
+    set -- "${ARGS[@]}"
+
+    if [[ "${FORCE}" == "true" ]]
+    then
+        removeStoppedContainers
+    fi
+
     local IMAGE="${1}"
     local SKIP="${2}"
+
+    echo ""
 
     if [[ -z "${IMAGE}" ]]
     then
@@ -193,23 +236,64 @@ function removeDockerImages()
             SKIP=1
         fi
 
-        docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP="${SKIP}" '{ if (NR > SKIP) print $3 }' | xargs docker image rm
+        local IMAGES=($(docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP="${SKIP}" '{ if (NR > SKIP) print $3 }'))
+
+        if [[ -n "${IMAGES}" ]]
+        then
+            for ID in "${IMAGES[@]}"
+            do
+                docker image rm "${ID}"
+            done
+        else
+            echo "There are no images to remove."
+        fi
     fi
 }
 function removeUntaggedDockerImages()
 {
-    removeDockerImages "<none>" 0
+    while [[ ${#} -gt 0 ]]
+    do
+        case "${1}" in
+            -f | --force)
+                local FORCE="--force"
+
+                shift
+                ;;
+            *)
+                ;;
+        esac
+    done
+
+    removeDockerImages "<none>" 0 "${FORCE}"
 }
 function removeAllDockerImages()
 {
-    removeUntaggedDockerImages
-
-    local IMAGES="$(docker images | awk '{ if (NR > 1) array[$1]++ } END { for (key in array) if (array[key] > 1) print key }')"
-
-    for IMAGE in ${IMAGES}
+    while [[ ${#} -gt 0 ]]
     do
-        removeDockerImages "${IMAGE}"
+        case "${1}" in
+            -f | --force)
+                local FORCE="--force"
+
+                shift
+                ;;
+            *)
+                ;;
+        esac
     done
+
+    removeUntaggedDockerImages "${FORCE}"
+
+    local IMAGES=($(docker images | awk '{ if (NR > 1) array[$1]++ } END { for (key in array) if (array[key] > 1) print key }'))
+
+    if [[ -n "${IMAGES}" ]]
+    then
+        for IMAGE in ${IMAGES}
+        do
+            removeDockerImages "${IMAGE}" "${FORCE}"
+        done
+    else
+        echo -e "\nThere are no images to remove."
+    fi
 }
 
 function resetPermissions()

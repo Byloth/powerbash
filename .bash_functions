@@ -204,15 +204,13 @@ function removeDockerImages()
         case "${1}" in
             -f | --force)
                 local FORCE="true"
-
-                shift
                 ;;
             *)
                 ARGS+=("${1}")
-
-                shift
                 ;;
         esac
+
+        shift
     done
 
     set -- "${ARGS[@]}"
@@ -256,12 +254,12 @@ function removeUntaggedDockerImages()
         case "${1}" in
             -f | --force)
                 local FORCE="--force"
-
-                shift
                 ;;
             *)
                 ;;
         esac
+
+        shift
     done
 
     removeDockerImages "<none>" 0 "${FORCE}"
@@ -273,12 +271,12 @@ function removeAllDockerImages()
         case "${1}" in
             -f | --force)
                 local FORCE="--force"
-
-                shift
                 ;;
             *)
                 ;;
         esac
+
+        shift
     done
 
     removeUntaggedDockerImages "${FORCE}"

@@ -12,13 +12,14 @@ esac
 #
 # History Management:
 #  - don't put duplicate lines
+#  - don't put lines with leading spaces
 #  - erase duplicate lines
 #
-HISTCONTROL=ignoredups:erasedups
+HISTCONTROL=ignoreboth:erasedups
 
 #  - append to the history file, don't overwrite it
 #  - check the window size after each command and, if necessary,
-#     update the values of lines and columns
+#     update the values of LINES and COLUMNS.
 #
 shopt -s histappend
 shopt -s checkwinsize
@@ -30,7 +31,7 @@ HISTFILESIZE=100000
 
 #  - saving and reloading the history after each command finishes
 #
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 
 #
 # Useful export (if you are in Bash under WSL)

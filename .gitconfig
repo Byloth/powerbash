@@ -26,6 +26,9 @@
 
     hooksPath = ~/.git-hooks
 
+[pull]
+    rebase = false
+
 [push]
     default = simple
 

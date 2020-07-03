@@ -11,35 +11,46 @@
 
     "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
 
+    // You can add more global application settings here.
+    // To learn more about global settings, visit https://aka.ms/terminal-global-settings
     "initialCols": 137,
     "initialRows": 30,
 
+    // A profile specifies a command to execute paired with information about how it should look and feel.
+    // Each one of them will appear in the 'New Tab' dropdown,
+    //   and can be invoked from the commandline with `wt.exe -p xxx`
+    // To learn more about profiles, visit https://aka.ms/terminal-profile-settings
     "profiles":
-    [
-        {
-            // Make changes here to the wsl.exe profile
-            "acrylicOpacity": 0.75,
-            "backgroundImage": "ms-appdata:///Local/ubuntu-background.png",
-            "backgroundImageAlignment": "bottomRight",
-            "backgroundImageOpacity": 0.1,
-            "backgroundImageStretchMode": "none",
-            "colorScheme": "Ubuntu",
-            "commandline": "wsl.exe ~",
-            "cursorColor": "#CFF5DB",
-            "cursorShape": "bar",
-            "fontFace": "Cascadia Code",
-            "fontSize": 9,
-            "guid": "{00000000-0000-0000-0000-000000000000}",
-            "icon": "ms-appdata:///Local/ubuntu-icon.png",
-            "name": "Windows Linux Subsystem",
-            "padding": "19, 16, 0, 10",
-            "suppressApplicationTitle": true,
-            "tabTitle": "Ubuntu 18.04 LTS",
-            "useAcrylic": true
-        }
-    ],
+    {
+        "list":
+        [
+            {
+                "acrylicOpacity": 0.75,
+                "backgroundImage": "ms-appdata:///Local/ubuntu-background.png",
+                "backgroundImageAlignment": "bottomRight",
+                "backgroundImageOpacity": 0.1,
+                "backgroundImageStretchMode": "none",
+                "colorScheme": "Ubuntu",
+                "commandline": "wsl.exe ~",
+                "cursorColor": "#CFF5DB",
+                "cursorShape": "bar",
+                "fontFace": "Cascadia Code",
+                "fontSize": 9,
+                "guid": "{00000000-0000-0000-0000-000000000000}",
+                "icon": "ms-appdata:///Local/ubuntu-icon.png",
+                "hidden": false,
+                "name": "Windows Linux Subsystem",
+                "padding": "19, 16, 0, 10",
+                "source": "Windows.Terminal.Wsl",
+                "suppressApplicationTitle": true,
+                "tabTitle": "Ubuntu 18.04 LTS",
+                "useAcrylic": true
+            }
+        ]
+    },
 
-    // Add custom color schemes to this array
+    // Add custom color schemes to this array.
+    // To learn more about color schemes, visit https://aka.ms/terminal-color-schemes
     "schemes":
     [
         {
@@ -63,9 +74,5 @@
             "white": "#E5E5E5",
             "yellow": "#CDCD00"
         }
-    ],
-
-    // Add any keybinding overrides to this array.
-    // To unbind a default keybinding, set the command to "unbound"
-    "keybindings": []
+    ]
 }

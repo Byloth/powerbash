@@ -11,6 +11,7 @@ readonly CONFIGS_FILE="odoo.conf"
 
 readonly DEFAULT_PORT="8069"
 readonly DEFAULT_ADMIN_PASSWD="admin00"
+readonly DEFAULT_TIMEOUT="3600"
 
 function checkConfigurations()
 {
@@ -91,15 +92,16 @@ function loadConfigurations()
                     local VAR_NAME="$(echo "${VALUE}" | cut -d ':' -f 1)"
                     local VAR_VALUE="$(echo "${VALUE}" | cut -d ':' -f 2-)"
 
-                    ENV_VARS="${ENV_VARS} -e ${VAR_NAME}=\"${VAR_VALUE}\""
+                    ENV_VARS="${ENV_VARS} -e ${VAR_NAME}=${VAR_VALUE}"
                     ;;
                 "mount")
                     local SRC_PATH="$(echo "${VALUE}" | cut -d ':' -f 1)"
                     local DEST_PATH="$(echo "${VALUE}" | cut -d ':' -f 2-)"
 
-                    echo "${MOUNT_DIRS} -v $(getRealPath "${SRC_PATH}"):${DEST_PATH}:ro"
-
                     MOUNT_DIRS="${MOUNT_DIRS} -v $(getRealPath "${SRC_PATH}"):${DEST_PATH}:ro"
+                    ;;
+                "timeout")
+                    TIMEOUT="${VALUE}"
                     ;;
                 esac
             fi
@@ -167,6 +169,11 @@ function loadDefaults()
     then
         MOUNT_DIRS="-v $(getRealPath "addons"):/opt/odoo/extra-addons/custom:ro"
     fi
+
+    if [[ -z "${TIMEOUT}" ]]
+    then
+        TIMEOUT="${DEFAULT_TIMEOUT}"
+    fi
 }
 
 function odooPull()
@@ -175,6 +182,14 @@ function odooPull()
 }
 function odooRun()
 {
+    local ARGS=("${@}")
+
+    if [[ "${1}" == "odoo" ]] || [[ "${1}" =~ ^-.* ]]
+    then
+        ARGS+=("--limit-time-cpu" "${TIMEOUT}")
+        ARGS+=("--limit-time-real" "${TIMEOUT}")
+    fi
+
     if [[ "${PGHOST}" == "localhost" ]]
     then
         echo -e "  $(warning "WARNING"): $(info "\$PGHOST") variable was set to \"$(warning "localhost")\";"

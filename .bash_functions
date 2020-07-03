@@ -281,7 +281,7 @@ function removeAllDockerImages()
 
     removeUntaggedDockerImages "${FORCE}"
 
-    local IMAGES=($(docker images | awk '{ if (NR > 1) array[$1]++ } END { for (key in array) if (array[key] > 1) print key }'))
+    local IMAGES=($(docker images | awk '{ if (NR > 1) print $1 }' | sort | uniq -c | awk '{ if ($1 > 1) print $2 }'))
 
     if [[ -n "${IMAGES}" ]]
     then

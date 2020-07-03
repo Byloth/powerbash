@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#
+
+for ARG in "${@}"
+do
+
+done
+
+# # An example hook script to limit pushing to a single remote.
+# #
+# # This hook is called with the following parameters:
+# #
+# # $1 -- Name of the remote to which the push is being done
+# # $2 -- URL to which the push is being done
+# #
+# # If this script exits with a non-zero status nothing will be pushed.
+# remote="$1"
+# url="$2"
+# if [[ "$url" =~ gitlab\.ibhplus\.ch(:2222)?\/ ]] 
+# then
+#   echo "primo if"
+#   exit 0
+# fi
+# if [[ "$url" =~ github\.com[\/:]OCA\/ ]]
+# then
+#   echo "secondo if"
+#   exit 1
+# fi
+# exit 1

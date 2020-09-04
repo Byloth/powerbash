@@ -234,7 +234,7 @@ function removeDockerImages()
             SKIP=1
         fi
 
-        local IMAGES=($(docker images | awk -v IMAGE="${IMAGE}" '{ if (NR > 1 && $1 == IMAGE) print }' | awk -v SKIP="${SKIP}" '{ if (NR > SKIP) print $3 }'))
+        local IMAGES=($(docker images | awk '{ if (NR > 1 && $1 == "'"${IMAGE}"'") print }' | awk '{ if (NR > '"${SKIP}"') print $3 }'))
 
         if [[ -n "${IMAGES}" ]]
         then

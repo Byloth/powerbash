@@ -184,7 +184,7 @@ function odooRun()
 {
     local ARGS=("${@}")
 
-    if [[ "${1}" == "odoo" ]] || [[ "${1}" =~ ^-.* ]]
+    if [[ -z "${1}" ]] || [[ "${1}" == "odoo" ]] || [[ "${1}" =~ ^-.* ]]
     then
         ARGS+=("--limit-time-cpu" "${TIMEOUT}")
         ARGS+=("--limit-time-real" "${TIMEOUT}")

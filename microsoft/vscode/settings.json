@@ -4,10 +4,13 @@
     "editor.rulers": [120],
     "files.eol": "\n",
     "problems.showCurrentInStatus": true,
+    "vetur.validation.script": false,
+    "vetur.validation.template": false,
     "window.customMenuBarAltFocus": false,
     "workbench.colorCustomizations": {
         "activityBar.activeBorder": "#007CC8",
-        "activityBar.activeBackground": "#294A5B"
+        "activityBar.activeBackground": "#294A5B",
+        "sash.hoverBorder": "#007CC8"
     },
 
     "[python]": {

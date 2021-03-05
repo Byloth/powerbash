@@ -12,6 +12,8 @@
         "activityBar.activeBackground": "#294A5B",
         "sash.hoverBorder": "#007CC8"
     },
+    "workbench.editor.decorations.colors": true,
+    "workbench.editor.decorations.badges": true,
 
     "[python]": {
         "editor.rulers": [79, 120]

@@ -39,18 +39,48 @@ function _cryptPassword()
     local PYTHON_SCRIPT="
 from passlib.context import CryptContext
 passwd = CryptContext(schemes=['pbkdf2_sha512'])
-print(passwd.encrypt('${1}'))
+print(passwd.hash('${1}'))
 "
     echo "$(python -c "${PYTHON_SCRIPT}")"
 }
 function _executePSqlQuery()
 {
+    _getPgPassword "${@}"
+
     local QUERY="${1}"
 
     echo -e "\n${QUERY}"
     echo -e " └ \c"
     echo "${QUERY}" | psql "${@:2}" -f -
 }
+function _getPgPassword()
+{
+    while [[ ${#} -gt 0 ]]
+    do
+        case "${1}" in
+            -U | --username)
+                PGUSER="${2}"
+
+                shift
+                ;;
+            -w | --no-password)
+                NO_PASSWORD="true"
+                ;;
+        esac
+
+        shift
+    done
+
+    if [[ -z "${PGPASSWORD}" ]] && [[ -z "${NO_PASSWORD}" ]]
+    then
+        echo ""
+        read -s -p "PostgreSQL password for user \"${PGUSER}\": " PGPASSWORD
+        echo ""
+
+        export PGPASSWORD
+    fi
+}
+
 function _odooReset()
 {
     local PYTHON_SCRIPT="
@@ -149,18 +179,18 @@ function kubeDashboard()
 function odooChangePassword()
 {
     echo ""
-    read -s -p "New password: " NEW_PASSWD
+    read -s -p "New Odoo password for user \"admin\": " NEW_PASSWD
     echo ""
 
-    _executePSqlQuery "UPDATE res_users SET password_crypt = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 1;" "${@}"
+    _executePSqlQuery "UPDATE res_users SET password_crypt = '$(_cryptPassword "${NEW_PASSWD}")' WHERE login = 'admin';" "${@}"
 }
 function odoo12ChangePassword()
 {
     echo ""
-    read -s -p "New password: " NEW_PASSWD
+    read -s -p "New Odoo password for user \"admin\": " NEW_PASSWD
     echo ""
 
-    _executePSqlQuery "UPDATE res_users SET password = '$(_cryptPassword "${NEW_PASSWD}")' WHERE id = 2;" "${@}"
+    _executePSqlQuery "UPDATE res_users SET password = '$(_cryptPassword "${NEW_PASSWD}")' WHERE login = 'admin';" "${@}"
 }
 function odooMakeDev()
 {

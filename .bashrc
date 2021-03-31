@@ -31,7 +31,7 @@ HISTFILESIZE=100000
 
 #  - saving and reloading the history after each command finishes
 #
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #
 # Useful export (if you are in Bash under WSL)

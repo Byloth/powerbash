@@ -2,11 +2,22 @@
     "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.rulers": [120],
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [{
+            "scope": "comment",
+            "settings": { "fontStyle": "italic" }
+        }]
+    },
+
     "files.eol": "\n",
     "problems.showCurrentInStatus": true,
+
     "vetur.validation.script": false,
     "vetur.validation.template": false,
+
     "window.customMenuBarAltFocus": false,
+    "window.dialogStyle": "custom",
+
     "workbench.colorCustomizations": {
         "activityBar.activeBorder": "#007CC8",
         "activityBar.activeBackground": "#294A5B",
@@ -14,8 +25,7 @@
     },
     "workbench.editor.decorations.colors": true,
     "workbench.editor.decorations.badges": true,
+    "workbench.experimental.useCustomHover": true,
 
-    "[python]": {
-        "editor.rulers": [79, 120]
-    }
+    "[python]": { "editor.rulers": [79, 120] }
 }

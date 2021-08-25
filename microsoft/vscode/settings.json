@@ -25,7 +25,6 @@
     },
     "workbench.editor.decorations.colors": true,
     "workbench.editor.decorations.badges": true,
-    "workbench.experimental.useCustomHover": true,
 
     "[python]": { "editor.rulers": [79, 120] }
 }

@@ -400,6 +400,13 @@ function tarExtract()
     fi
 }
 
+function weather()
+{
+    local LOCATION="${1}"
+
+    curl "https://wttr.in/${LOCATION}"
+}
+
 #
 # Useful functions (if you are in Bash under WSL)
 #

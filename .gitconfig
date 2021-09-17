@@ -26,6 +26,9 @@
 
     hooksPath = ~/.git-hooks
 
+[init]
+    defaultBranch = master
+
 [pull]
     rebase = false
 

@@ -61,15 +61,59 @@
       //   "command": "editor.action.commentLine",
       //   "when": "editorTextFocus && !editorReadonly"
       // },
-    
+
+  // Rules about cursors duplication...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "ctrl+alt+up",
+        "command": "-editor.action.insertCursorAbove"
+      },
+      {
+        "key": "ctrl+alt+down",
+        "command": "-editor.action.insertCursorBelow"
+      },
+    // Reversing current keybindings:
+    //
+      {
+        "key": "alt+up",
+        "command":"-editor.action.moveLinesUpAction"
+      },
+      {
+        "key": "ctrl+alt+up",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+down",
+        "command":"-editor.action.moveLinesDownAction"
+      },
+      {
+        "key": "ctrl+alt+down",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+    // Adding new rules:
+    //
+      {
+        "key": "alt+up",
+        "command":"editor.action.insertCursorAbove",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "alt+down",
+        "command":"editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+      },
+  
   // Rules about lines duplication...
   //
     // Removing existing rules:
     //
       {
         "key": "ctrl+d",
-        "command": "-editor.action.addSelectionToNextFindMatch",
-        "when": "editorFocus"
+        "command": "-editor.action.addSelectionToNextFindMatch"
       },
 
     // Adding new rules:
@@ -86,26 +130,22 @@
     //
       {
         "key": "ctrl+oem_period",
-        "command": "-editor.action.quickFix",
-        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+        "command": "-editor.action.quickFix"
       },
       {
         "key": "ctrl+oem_period",
-        "command": "-problems.action.showQuickFixes",
-        "when": "problemFocus"
+        "command": "-problems.action.showQuickFixes"
       },
       {
         "key": "ctrl+oem_period",
-        "command": "-settings.action.editFocusedSetting",
-        "when": "inSettingsSearch"
+        "command": "-settings.action.editFocusedSetting"
       },
 
     // Reversing current keybindings:
     //
       {
         "key": "alt+enter",
-        "command": "-debug.openBreakpointToSide",
-        "when": "breakpointsFocused"
+        "command": "-debug.openBreakpointToSide"
       },
       {
         "key": "ctrl+oem_period",
@@ -114,8 +154,7 @@
       },
       {
         "key": "alt+enter",
-        "command": "-editor.action.selectAllMatches",
-        "when": "editorFocus && findWidgetVisible"
+        "command": "-editor.action.selectAllMatches"
       },
       {
         "key": "ctrl+oem_period",
@@ -147,13 +186,11 @@
     //
       {
         "key": "shift+enter",
-        "command": "-editor.action.previousMatchFindAction",
-        "when": "editorFocus && findInputFocussed"
+        "command": "-editor.action.previousMatchFindAction"
       },
       {
         "key": "shift+alt+f",
-        "command": "-filesExplorer.findInFolder",
-        "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
+        "command": "-filesExplorer.findInFolder"
       },
 
     // Adding new rules:

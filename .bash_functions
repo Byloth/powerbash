@@ -400,6 +400,42 @@ function tarExtract()
     fi
 }
 
+function terminateDatabaseConnection()
+{
+    local HELP="Usage: terminateDatabaseConnection -d | --database <database name>"
+
+    if [[ ${#} -lt 1 ]]
+    then
+        echo "${HELP}"
+    else
+        while [[ ${#} -gt 0 ]]
+        do
+            case "${1}" in
+                -h | -? | --help)
+                    echo "${HELP}"
+
+                    return 0
+                    ;;
+                -d | --database)
+                    PGDATABASE="${2}"
+
+                    shift
+                    ;;
+                *)
+                    echo "Error: unknown option '${1}'"
+                    echo "Try \"terminateDatabaseConnection --help\" for more information."
+
+                    return -1
+                    ;;
+            esac
+
+            shift
+        done
+
+        _executePSqlQuery "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${PGDATABASE}' AND pid <> pg_backend_pid();" -d postgres
+    fi
+}
+
 function weather()
 {
     local LOCATION="${1}"

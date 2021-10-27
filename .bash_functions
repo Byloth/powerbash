@@ -400,9 +400,9 @@ function tarExtract()
     fi
 }
 
-function terminateDatabaseConnection()
+function terminateDatabaseConnections()
 {
-    local HELP="Usage: terminateDatabaseConnection -d | --database <database name>"
+    local HELP="Usage: terminateDatabaseConnections -d | --database <database name>"
 
     if [[ ${#} -lt 1 ]]
     then
@@ -423,7 +423,7 @@ function terminateDatabaseConnection()
                     ;;
                 *)
                     echo "Error: unknown option '${1}'"
-                    echo "Try \"terminateDatabaseConnection --help\" for more information."
+                    echo "Try \"terminateDatabaseConnections --help\" for more information."
 
                     return -1
                     ;;

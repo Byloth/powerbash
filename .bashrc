@@ -13,9 +13,8 @@ esac
 # History Management:
 #  - don't put duplicate lines
 #  - don't put lines with leading spaces
-#  - erase duplicate lines
 #
-HISTCONTROL=ignoreboth:erasedups
+HISTCONTROL=ignorespace:ignoredups
 
 #  - append to the history file, don't overwrite it
 #  - check the window size after each command and, if necessary,

@@ -13,8 +13,10 @@ Usage:
     docker-remove-stopped-containers [OPTIONS...]
 
 Options:
-    -c / --commit    Runs in 'commit mode'.
-                     This will remove all the stopped containers."
+    -c / --commit       Runs in 'commit mode'.
+                        This will remove all the stopped containers.
+
+    -h / -? / --help    Shows this help message."
 
     while [[ ${#} -gt 0 ]]
     do
@@ -29,7 +31,7 @@ Options:
                 ;;
             *)
                 echo "Error: unknown option '${1}'"
-                echo "Try \"terminateDatabaseConnections --help\" for more information."
+                echo "Try \"docker-remove-stopped-containers --help\" for more information."
 
                 return -1
                 ;;
@@ -38,7 +40,7 @@ Options:
         shift
     done
 
-    local CONTAINERS=($(docker ps -a | grep " Exited " | awk '{ print $1 }'))
+    local CONTAINERS=("$(docker ps -a | grep " Exited " | awk '{ print $1 }')")
 
     if [[ -z "${CONTAINERS}" ]]
     then
@@ -64,24 +66,33 @@ Removes all the stopped containers at once.
 By default, it runs in 'dry mode' and will only show a list of commands to run.
 
 Usage:
-    docker-remove-images REPOSITORY | WORKING_MODE [SKIP | 1] [OPTIONS...]
+    docker-remove-images [OPTIONS...] REPOSITORY [REPOSITORIES...]
 
-Args:
+Arguments:
     REPOSITORY           The name of the repository ...
-    SKIP                 A number ...
-                         default: 1
 
-Working modes:
+General options:
+    -c / --commit         Runs in 'commit mode'.
+                          This will fisically remove all the matching containers.
+
+    -f / --force          Forces ...
+    -s / --skip INT       Skips a number of images.
+                          default: 1
+
+    -h / -? / --help      Shows this help message.
+
+Working mode options:
     --untagged           '<none>'
-    --all                All the images.
+    --all                All the images."
 
-Options:
-    -c / --commit    Runs in 'commit mode'.
-                     This will fisically remove all the matching containers.
+    local REPOSITORIES=()
 
-    -f / --force     Forces ..."
+    if [[ ${#} -eq 0 ]]
+    then
+        echo "${HELP}"
 
-    local ARGS=()
+        return 0
+    fi
 
     while [[ ${#} -gt 0 ]]
     do
@@ -107,31 +118,31 @@ Options:
 
                 return -994
                 ;;
+            -s | --skip)
+                local SKIP="${2}"
+
+                shift
+                ;;
             *)
-                ARGS+=("${1}")
+                REPOSITORIES+=("${1}")
                 ;;
         esac
 
         shift
     done
 
-    set -- "${ARGS[@]}"
-
     # if [[ "${FORCE}" == "true" ]]
     # then
     #     removeStoppedContainers
     # fi
 
-    local IMAGE="${1}"
-    local SKIP="${2}"
-
-    if [[ -z "${IMAGE}" ]]
+    if [[ -z "${REPOSITORIES}" ]]
     then
-        echo "${HELP}"
+        echo "Error: no repositories specified."
+        echo "Try \"docker-remove-images --help\" for more information."
 
-        return 0
+        return -1
     fi
-
     if [[ -z "${SKIP}" ]]
     then
         if [[ -n "${UNTAGGED}" ]]
@@ -142,23 +153,39 @@ Options:
         fi
     fi
 
-    local IMAGES=($(docker images | awk '{ if (NR > 1 && $1 == "'"${IMAGE}"'") print }' | awk '{ if (NR > '"${SKIP}"') print $3 }'))
+    set -- "${REPOSITORIES[@]}"
 
-    if [[ -z "${IMAGES}" ]]
-    then
-        echo "There are no images to remove."
+    while [[ ${#} -gt 0 ]]
+    do
+        local REPOSITORY="${1}"
 
-        return 0
-    fi
-    
-    local COMMAND="docker image rm"
+        local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
 
-    if [[ -z "${COMMIT}" ]]
-    then
-        local COMMAND="echo ${COMMAND}"
-    fi
+        if [[ -n "${UNTAGGED}" ]]
+        then
+            local IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if ($2 == "'"<none>"'") print }')")
+        fi
 
-    echo "${IMAGES[@]}" | xargs -n 1 ${COMMAND}
+        local IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > "'"${SKIP}"'") print $3 }')")
+
+        if [[ -z "${IMAGES}" ]]
+        then
+            echo "There are no images to remove."
+
+            return 0
+        fi
+        
+        local COMMAND="docker image rm"
+
+        if [[ -z "${COMMIT}" ]]
+        then
+            local COMMAND="echo ${COMMAND}"
+        fi
+
+        echo "${IMAGES[@]}" | xargs -n 1 ${COMMAND}
+
+        shift
+    done
 }
 
 

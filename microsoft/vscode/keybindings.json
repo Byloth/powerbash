@@ -62,51 +62,6 @@
       //   "when": "editorTextFocus && !editorReadonly"
       // },
 
-  // Rules about cursors duplication...
-  //
-    // Removing existing rules:
-    //
-      {
-        "key": "ctrl+alt+up",
-        "command": "-editor.action.insertCursorAbove"
-      },
-      {
-        "key": "ctrl+alt+down",
-        "command": "-editor.action.insertCursorBelow"
-      },
-    // Reversing current keybindings:
-    //
-      {
-        "key": "alt+up",
-        "command":"-editor.action.moveLinesUpAction"
-      },
-      {
-        "key": "ctrl+alt+up",
-        "command": "editor.action.moveLinesUpAction",
-        "when": "editorTextFocus && !editorReadonly"
-      },
-      {
-        "key": "alt+down",
-        "command":"-editor.action.moveLinesDownAction"
-      },
-      {
-        "key": "ctrl+alt+down",
-        "command": "editor.action.moveLinesDownAction",
-        "when": "editorTextFocus && !editorReadonly"
-      },
-    // Adding new rules:
-    //
-      {
-        "key": "alt+up",
-        "command":"editor.action.insertCursorAbove",
-        "when": "editorTextFocus"
-      },
-      {
-        "key": "alt+down",
-        "command":"editor.action.insertCursorBelow",
-        "when": "editorTextFocus"
-      },
-  
   // Rules about lines duplication...
   //
     // Removing existing rules:

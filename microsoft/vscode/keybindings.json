@@ -164,5 +164,16 @@
         "key": "ctrl+shift+f",
         "command": "filesExplorer.findInFolder",
         "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
-      }
+      },
+
+  // Rules about zooming...
+  //
+    {
+      "key": "ctrl+0",
+      "command": "-workbench.action.focusSideBar"
+    },
+    {
+      "key": "ctrl+0",
+      "command": "workbench.action.zoomReset"
+    }
 ]

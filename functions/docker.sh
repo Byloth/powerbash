@@ -10,30 +10,41 @@ By default, it runs in 'dry mode' and will only show a list of commands to run.
 You can copy 'n paste it or just run this command using the '--commit' option.
 
 Usage:
-    docker-remove-stopped-containers [OPTIONS...]
+    docker-remove-stopped-containers [OPTIONS...] IMAGE [IMAGES...]
+
+Arguments:
+    IMAGE               The name of the Docker image(s) still attached
+                         to the stopped containers you wat to remove.
+                        Specify one or more images will allows you to remove
+                         only containers that use the specified image(s).
 
 Options:
     -c / --commit       Runs in 'commit mode'.
                         This will remove all the stopped containers.
 
-    -h / -? / --help    Shows this help message."
+    -h / -? / --help    Prints this help message."
+
+    local IMAGES=()
 
     while [[ ${#} -gt 0 ]]
     do
         case "${1}" in
+            -c | --commit)
+                local COMMIT="true"
+                ;;
             -h | -? | --help)
                 echo "${HELP}"
 
                 return 0
                 ;;
-            -c | --commit)
-                local COMMIT="true"
-                ;;
-            *)
+            -*)
                 echo "Error: unknown option '${1}'"
                 echo "Try \"docker-remove-stopped-containers --help\" for more information."
 
-                return -1
+                return 1
+                ;;
+            *)
+                IMAGES+=("${1}")
                 ;;
         esac
 
@@ -62,54 +73,39 @@ Options:
 function docker-remove-images()
 {
     local HELP="
-Removes all the stopped containers at once.
+Removes all the older images from all the specified repositories at once.
+
 By default, it runs in 'dry mode' and will only show a list of commands to run.
+You can copy 'n paste it or just run this command using the '--commit' option.
 
 Usage:
     docker-remove-images [OPTIONS...] REPOSITORY [REPOSITORIES...]
 
 Arguments:
-    REPOSITORY           The name of the repository ...
+    REPOSITORY           The name of the repository(s) whose
+                          images you want to remove.
 
-General options:
-    -c / --commit         Runs in 'commit mode'.
-                          This will fisically remove all the matching containers.
+Options:
+    -c / --commit        Runs in 'commit mode'.
+                         This will fisically remove all the matching images.
 
-    -f / --force          Forces ...
-    -s / --skip INT       Skips a number of images.
-                          default: 1
+    -f / --force         Forces the removal of all the stopped containers
+                          where the images to be removed are still in use.
 
-    -h / -? / --help      Shows this help message.
+    -s / --skip <INT>    Skips the removal of the latest <INT> more recent images.
+                         This is useful when you want to keep some of the latest images.
+                         By default, when this option isn't specified, the default <INT>
+                          value is 1 keeping the last most recent image.
+                         If you're not interested in keeping any of
+                         of the images, you can use the value 0.
 
-Working mode options:
-    --untagged           '<none>'
-    --all                All the images."
+    -h / -? / --help     Prints this help message."
 
     local REPOSITORIES=()
-
-    if [[ ${#} -eq 0 ]]
-    then
-        echo "${HELP}"
-
-        return 0
-    fi
 
     while [[ ${#} -gt 0 ]]
     do
         case "${1}" in
-            -h | -? | --help)
-                echo "${HELP}"
-
-                return 0
-                ;;
-            --untagged)
-                local UNTAGGED="true"
-                ;;
-            --all)
-                echo "Not implemented yet."
-
-                return -992
-                ;;
             -c | --commit)
                 local COMMIT="true"
                 ;;
@@ -123,6 +119,17 @@ Working mode options:
 
                 shift
                 ;;
+            -h | -? | --help)
+                echo "${HELP}"
+
+                return 0
+                ;;
+            -*)
+                echo "Error: unknown option '${1}'"
+                echo "Try \"docker-remove-images --help\" for more information."
+
+                return 1
+                ;;
             *)
                 REPOSITORIES+=("${1}")
                 ;;
@@ -131,26 +138,16 @@ Working mode options:
         shift
     done
 
-    # if [[ "${FORCE}" == "true" ]]
-    # then
-    #     removeStoppedContainers
-    # fi
-
     if [[ -z "${REPOSITORIES}" ]]
     then
         echo "Error: no repositories specified."
         echo "Try \"docker-remove-images --help\" for more information."
 
-        return -1
+        return 2
     fi
     if [[ -z "${SKIP}" ]]
     then
-        if [[ -n "${UNTAGGED}" ]]
-        then
-            local SKIP=0
-        else
-            local SKIP=1
-        fi
+        local SKIP="1"
     fi
 
     set -- "${REPOSITORIES[@]}"
@@ -160,19 +157,13 @@ Working mode options:
         local REPOSITORY="${1}"
 
         local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
-
-        if [[ -n "${UNTAGGED}" ]]
-        then
-            local IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if ($2 == "'"<none>"'") print }')")
-        fi
-
         local IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > "'"${SKIP}"'") print $3 }')")
 
-        if [[ -z "${IMAGES}" ]]
+        if [[ -z "${IMAGES}" ]] && [[ -n "${COMMIT}" ]]
         then
-            echo "There are no images to remove."
+            echo "There are no images to remove for repository: '${REPOSITORY}'."
 
-            return 0
+            continue
         fi
         
         local COMMAND="docker image rm"

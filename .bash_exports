@@ -31,7 +31,7 @@ fi
 #
 if [[ -x /usr/local/bin/pipenv ]]
 then
-    eval "$(pipenv --completion)"
+    eval "$(_PIPENV_COMPLETE=bash_source pipenv)"
 fi
 
 #

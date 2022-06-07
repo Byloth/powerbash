@@ -446,6 +446,10 @@ function weather()
 #
 # Useful functions (if you are in Bash under WSL)
 #
+function getHostIp()
+{
+    cat /etc/resolv.conf | grep nameserver | awk '{ print $2 }'
+}
 function getWindowsFriendlyRealPath()
 {
     local TARGET="${1}"

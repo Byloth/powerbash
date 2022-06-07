@@ -3,12 +3,9 @@
  * "ms-appdata:///Roaming/" -> "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\RoamingState\"
  */
 
-// To view the default settings, hold "alt" while clicking on the "Settings" button.
-// For documentation on these settings, see: https://aka.ms/terminal-documentation
-
 {
+    "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-
     "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
 
     // You can add more global application settings here.
@@ -22,29 +19,28 @@
     // To learn more about profiles, visit https://aka.ms/terminal-profile-settings
     "profiles":
     {
+        "defaults":
+        {
+            "font": { "size": 10 },
+            "opacity": 75,
+            "useAcrylic": true
+        },
         "list":
         [
             {
-                "acrylicOpacity": 0.75,
                 "backgroundImage": "ms-appdata:///Local/ubuntu-background.png",
                 "backgroundImageAlignment": "bottomRight",
                 "backgroundImageOpacity": 0.1,
                 "backgroundImageStretchMode": "none",
                 "colorScheme": "Ubuntu",
-                "commandline": "wsl.exe ~",
-                "cursorColor": "#CFF5DB",
-                "cursorShape": "bar",
-                "fontFace": "Cascadia Code",
-                "fontSize": 9,
                 "guid": "{00000000-0000-0000-0000-000000000000}",
-                "icon": "ms-appdata:///Local/ubuntu-icon.png",
                 "hidden": false,
+                "icon": "ms-appdata:///Local/ubuntu-icon.png",
                 "name": "Windows Linux Subsystem",
                 "padding": "19, 16, 0, 10",
                 "source": "Windows.Terminal.Wsl",
                 "suppressApplicationTitle": true,
-                "tabTitle": "Ubuntu 18.04 LTS",
-                "useAcrylic": true
+                "tabTitle": "Ubuntu 22.04 LTS"
             }
         ]
     },
@@ -65,12 +61,14 @@
             "brightRed": "#FF0000",
             "brightWhite": "#FFFFFF",
             "brightYellow": "#FFFF00",
+            "cursorColor": "#CFF5DB",
             "cyan": "#00CDCD",
             "foreground": "#E5E5E5",
             "green": "#00CD00",
             "name": "Ubuntu",
             "purple": "#CD00CD",
             "red": "#CD0000",
+            "selectionBackground": "#CFF5DB",
             "white": "#E5E5E5",
             "yellow": "#CDCD00"
         }

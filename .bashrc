@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 #
+# `~/.bashrc`: executed by bash(1) for non-login shells.
+# See /usr/share/doc/bash/examples/startup-files
+#  (in the package bash-doc) for examples.
+#
 
 #
 # If not running interactively, don't do anything
@@ -32,6 +36,20 @@ HISTFILESIZE=100000
 #  - saving and reloading the history after each command finishes
 #
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+#
+# If set, the pattern "**" used in a pathname expansion context will
+#  match all files and zero or more directories and subdirectories.
+#
+# shopt -s globstar
+
+#
+# Make less more friendly for non-text input files, see lesspipe(1)
+#
+if [[ -x /usr/bin/lesspipe ]]
+then
+    eval "$(SHELL=/bin/sh lesspipe)"
+fi
 
 #
 # Useful export (if you are in Bash under WSL)

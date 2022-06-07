@@ -34,6 +34,11 @@ then
 fi
 
 #
+# Useful proxy aliases
+#
+# alias sudo="sudo --preserve-env"
+
+#
 # Useful WSL aliases
 #
 if [[ -n "${IS_WSL_ENV}" ]]

@@ -35,6 +35,19 @@ then
 fi
 
 #
+# Useful proxy exports
+#
+# export HTTP_PROXY="http://<address>:<port>"
+# export HTTPS_PROXY="http://<address>:<port>"
+# export FTP_PROXY="http://<address>:<port>"
+# export NO_PROXY="localhost,127.0.0.1,::1"
+#
+# export http_proxy="${HTTP_PROXY}"
+# export https_proxy="${HTTPS_PROXY}"
+# export ftp_proxy="${FTP_PROXY}"
+# export no_proxy="${NO_PROXY}"
+
+#
 # Useful WSL exports
 #
 if [[ -n "${IS_WSL_ENV}" ]]

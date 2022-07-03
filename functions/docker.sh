@@ -20,7 +20,13 @@ Arguments:
 
 Options:
     -c / --commit       Runs in 'commit mode'.
-                        This will remove all the stopped containers.
+                        This will physically remove all
+                         matching stopped containers.
+
+    -q / --quiet        Quiet mode.
+                        This will only show commands to execute
+                         without printing info messages to
+                         the user about missing results.
 
     -h / -? / --help    Prints this help message."
 
@@ -30,7 +36,10 @@ Options:
     do
         case "${1}" in
             -c | --commit)
-                local COMMIT="true"
+                local COMMIT="--commit"
+                ;;
+            -q | --quiet)
+                local QUIET="--quiet"
                 ;;
             -h | -? | --help)
                 echo "${HELP}"
@@ -38,8 +47,8 @@ Options:
                 return 0
                 ;;
             -*)
-                echo "Error: unknown option '${1}'"
-                echo "Try \"docker-remove-stopped-containers --help\" for more information."
+                echo "[ERROR] Unknown option: '${1}'"
+                echo "        Try \"docker-remove-stopped-containers --help\" for more information."
 
                 return 1
                 ;;
@@ -60,15 +69,14 @@ Options:
         do
             local IMAGE_CONTAINERS=($(echo "${STOPPED_CONTAINERS}" | awk '{ if ($2 == "'"${IMAGE}"'") print $1 }'))
 
-            if [[ ${#IMAGE_CONTAINERS[@]} -eq 0 ]]
+            if [[ ${#IMAGE_CONTAINERS[@]} -gt 0 ]]
             then
-                echo "Error: unable to find any stopped container using image '${IMAGE}'"
-                echo "Try \"docker-remove-stopped-containers --help\" for more information."
+                CONTAINERS_TO_REMOVE+=(${IMAGE_CONTAINERS[@]})
 
-                return 2
+            elif [[ -z "${QUIET}" ]]
+            then
+                echo "[INFO] There are no stopped container using the '${IMAGE}' image."
             fi
-
-            CONTAINERS_TO_REMOVE+=(${IMAGE_CONTAINERS[@]})
         done
     else
         CONTAINERS_TO_REMOVE=($(echo "${STOPPED_CONTAINERS}" | awk '{ print $1 }'))
@@ -76,9 +84,12 @@ Options:
 
     if [[ ${#CONTAINERS_TO_REMOVE[@]} -eq 0 ]]
     then
-        echo "Info: there are no stopped containers to remove."
+        if [[ -z "${QUIET}" ]]
+        then
+            echo "[INFO] There are no stopped containers to remove."
+        fi
 
-        return 0
+        return -1
     fi
 
     local COMMAND="docker rm"
@@ -113,12 +124,29 @@ Options:
     -f / --force         Forces the removal of all the stopped containers
                           where the images to be removed are still in use.
 
+    -q / --quiet        Quiet mode.
+                        This will only show commands to execute
+                         without printing info messages to
+                         the user about missing results.
+
     -s / --skip <INT>    Skips the removal of the latest <INT> more recent images.
                          This is useful when you want to keep some of the latest images.
                          By default, when this option isn't specified, the default <INT>
                           value is 1 keeping the last most recent image.
-                         If you're not interested in keeping any of
-                         of the images, you can use the value 0.
+                         If you're not interested in keeping any
+                          of the images, you can use the value 0.
+
+    -u / --untagged      Removes all the images that are no longer tagged.
+                         When you download from the registry or locally build a
+                          new version of a specific image, Docker removes the used
+                          tag from the previous image and assigns it to the new one.
+                         This causes the old image to become an untagged one.
+                         When using this option, you can either specify registries
+                          to remove the images from or omit them altogether to
+                          remove all untagged images available on the system.
+                         Also, when this option is used, the '--skip' value
+                          is automatically set to 0; you can still specify
+                          it by using the '--skip' option explicitly.
 
     -h / -? / --help     Prints this help message."
 
@@ -133,11 +161,14 @@ Options:
             -f | --force)
                 local FORCE="--force"
                 ;;
+            -q | --quiet)
+                local QUIET="--quiet"
+                ;;
             -s | --skip)
                 if [[ ! "${2}" =~ ^[0-9]+$ ]]
                 then
-                    echo "Error: the '${1}' option requires an integer value."
-                    echo "Try \"docker-remove-images --help\" for more information."
+                    echo "[ERROR] The '${1}' option requires an integer value."
+                    echo "        Try \"docker-remove-images --help\" for more information."
 
                     return 2
                 fi
@@ -146,14 +177,17 @@ Options:
 
                 shift
                 ;;
+            -u | --untagged)
+                local UNTAGGED="--untagged"
+                ;;
             -h | -? | --help)
                 echo "${HELP}"
 
                 return 0
                 ;;
             -*)
-                echo "Error: unknown option '${1}'"
-                echo "Try \"docker-remove-images --help\" for more information."
+                echo "[ERROR] Unknown option: '${1}'"
+                echo "        Try \"docker-remove-images --help\" for more information."
 
                 return 1
                 ;;
@@ -165,40 +199,80 @@ Options:
         shift
     done
 
-    if [[ ${#REPOSITORIES[@]} -eq 0 ]]
-    then
-        echo "Error: no repositories specified."
-        echo "Try \"docker-remove-images --help\" for more information."
-
-        return 3
-    fi
     if [[ -z "${SKIP}" ]]
     then
-        local SKIP="1"
+        if [[ -n "${UNTAGGED}" ]]
+        then
+            local SKIP="0"
+        else
+            local SKIP="1"
+        fi
     fi
 
     local IMAGES_TO_REMOVE=()
 
-    for REPOSITORY in ${REPOSITORIES[@]}
-    do
-        local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
-        IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}') { if ($1 != "<none>" && $2 != "<none>") { print $1":"$2 } else { print $3 } } }')")
-
-        if [[ -z "${IMAGES}" ]] && [[ -n "${COMMIT}" ]]
+    if [[ ${#REPOSITORIES[@]} -gt 0 ]]
+    then
+        if [[ -n "${UNTAGGED}" ]]
         then
-            echo "Info: there are no images to remove for repository: '${REPOSITORY}'."
+            for REPOSITORY in ${REPOSITORIES[@]}
+            do
+                local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
+                IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}' && $2 == "<none>") print $3 }')")
 
-            continue
+                if [[ ${#IMAGES[@]} -gt 0 ]]
+                then
+                    IMAGES_TO_REMOVE+=(${IMAGES[@]})
+
+                elif [[ -z "${QUIET}" ]]
+                then
+                    echo "[INFO] There are no untagged images to remove for the '${REPOSITORY}' repository."
+                fi
+            done
+        else
+            for REPOSITORY in ${REPOSITORIES[@]}
+            do
+                local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
+                IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}') { if ($2 != "<none>") { print $1":"$2 } else { print $3 } } }')")
+
+                if [[ ${#IMAGES[@]} -gt 0 ]]
+                then
+                    IMAGES_TO_REMOVE+=(${IMAGES[@]})
+
+                elif [[ -z "${QUIET}" ]]
+                then
+                    echo "[INFO] There are no images to remove for the '${REPOSITORY}' repository."
+                fi
+            done
         fi
+    elif [[ -n "${UNTAGGED}" ]]
+    then
+        local IMAGES=("$(docker images | awk '{ if (NR > 1) print }')")
+        IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}' && $2 == "<none>") print $3 }')")
 
-        IMAGES_TO_REMOVE+=(${IMAGES[@]})
-    done
+        if [[ ${#IMAGES[@]} -gt 0 ]]
+        then
+            IMAGES_TO_REMOVE+=(${IMAGES[@]})
+
+        elif [[ -z "${QUIET}" ]]
+        then
+            echo "[INFO] There are no untagged images to remove."
+        fi
+    else
+        echo "[ERROR] No repositories specified."
+        echo "        Try \"docker-remove-images --help\" for more information."
+
+        return 3
+    fi
 
     if [[ ${#IMAGES_TO_REMOVE[@]} -eq 0 ]]
     then
-        echo "Info: there are no images to remove."
+        if [[ -z "${QUIET}" ]]
+        then
+            echo "[INFO] There are no images to remove."
+        fi
 
-        return 0
+        return -1
     fi
         
     local COMMAND="docker image rm"
@@ -212,65 +286,11 @@ Options:
     then
         for IMAGE in ${IMAGES_TO_REMOVE[@]}
         do
-            docker-remove-stopped-containers "${COMMIT}" "${IMAGE}"
-        done
+            docker-remove-stopped-containers "${COMMIT}" --quiet "${IMAGE}"
 
-        ${COMMAND} "${IMAGE}"
+            ${COMMAND} "${IMAGE}"
+        done
     else
         echo ${IMAGES_TO_REMOVE[@]} | xargs -n 1 ${COMMAND}
     fi
 }
-
-
-
-
-
-
-
-function removeUntaggedDockerImages()
-{
-    while [[ ${#} -gt 0 ]]
-    do
-        case "${1}" in
-            -f | --force)
-                local FORCE="--force"
-                ;;
-            *)
-                ;;
-        esac
-
-        shift
-    done
-
-    removeDockerImages "<none>" 0 "${FORCE}"
-}
-function removeAllDockerImages()
-{
-    while [[ ${#} -gt 0 ]]
-    do
-        case "${1}" in
-            -f | --force)
-                local FORCE="--force"
-                ;;
-            *)
-                ;;
-        esac
-
-        shift
-    done
-
-    removeUntaggedDockerImages "${FORCE}"
-
-    local IMAGES=($(docker images | awk '{ if (NR > 1) print $1 }' | sort | uniq -c | awk '{ if ($1 > 1) print $2 }'))
-
-    if [[ -n "${IMAGES}" ]]
-    then
-        for IMAGE in ${IMAGES}
-        do
-            removeDockerImages "${IMAGE}" "${FORCE}"
-        done
-    else
-        echo -e "\nThere are no images to remove."
-    fi
-}
-

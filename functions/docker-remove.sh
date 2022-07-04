@@ -274,7 +274,7 @@ Options:
 
         return -1
     fi
-        
+
     local COMMAND="docker image rm"
 
     if [[ -z "${COMMIT}" ]]

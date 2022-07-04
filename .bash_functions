@@ -209,8 +209,6 @@ function odooRemoveAssets()
     _executePSqlQuery "DELETE FROM ir_attachment WHERE datas_fname SIMILAR TO '%.(css|js|less)';" "${@}"
 }
 
-source functions/docker.sh
-
 function resetPermissions()
 {
     local TARGET="${1}"
@@ -329,6 +327,11 @@ function weather()
 
     curl "https://wttr.in/${LOCATION}"
 }
+
+#
+# Imported from external files
+#
+source "functions/docker-remove.sh"
 
 #
 # Useful functions (if you are in Bash under WSL)

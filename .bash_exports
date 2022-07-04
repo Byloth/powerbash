@@ -27,13 +27,6 @@ then
     source "/usr/local/bin/virtualenvwrapper.sh"
 fi
 
-#  - enable Pipenv support
-#
-if [[ -x /usr/local/bin/pipenv ]]
-then
-    eval "$(_PIPENV_COMPLETE=bash_source pipenv)"
-fi
-
 #
 # Useful proxy exports
 #

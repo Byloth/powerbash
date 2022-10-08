@@ -12,9 +12,6 @@
     "files.eol": "\n",
     "problems.showCurrentInStatus": true,
 
-    "vetur.validation.script": false,
-    "vetur.validation.template": false,
-
     "window.customMenuBarAltFocus": false,
     "window.dialogStyle": "custom",
 

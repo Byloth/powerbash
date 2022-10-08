@@ -38,3 +38,4 @@
 [user]
     name = <first name> <last name>
     email = <e-mail address>
+    signingkey = <gpg key>

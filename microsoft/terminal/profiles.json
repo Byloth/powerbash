@@ -6,12 +6,16 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
+
     "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
+    "copyFormatting": "all",
 
     // You can add more global application settings here.
     // To learn more about global settings, visit https://aka.ms/terminal-global-settings
     "initialCols": 137,
     "initialRows": 30,
+
+    "useAcrylicInTabRow": true,
 
     // A profile specifies a command to execute paired with information about how it should look and feel.
     // Each one of them will appear in the 'New Tab' dropdown,
@@ -23,6 +27,7 @@
         {
             "font": { "size": 10 },
             "opacity": 75,
+            "padding": "19, 16, 0, 10",
             "useAcrylic": true
         },
         "list":
@@ -32,12 +37,11 @@
                 "backgroundImageAlignment": "bottomRight",
                 "backgroundImageOpacity": 0.1,
                 "backgroundImageStretchMode": "none",
-                "colorScheme": "Ubuntu",
+                "colorScheme": "Nautilus",
                 "guid": "{00000000-0000-0000-0000-000000000000}",
                 "hidden": false,
                 "icon": "ms-appdata:///Local/ubuntu-icon.png",
-                "name": "Windows Linux Subsystem",
-                "padding": "19, 16, 0, 10",
+                "name": "Ubuntu 22.04 LTS",
                 "source": "Windows.Terminal.Wsl",
                 "suppressApplicationTitle": true,
                 "tabTitle": "Ubuntu 22.04 LTS"
@@ -65,7 +69,7 @@
             "cyan": "#00CDCD",
             "foreground": "#E5E5E5",
             "green": "#00CD00",
-            "name": "Ubuntu",
+            "name": "Nautilus",
             "purple": "#CD00CD",
             "red": "#CD0000",
             "selectionBackground": "#CFF5DB",

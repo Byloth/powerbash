@@ -2,6 +2,8 @@
     "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.rulers": [120],
+    "editor.stickyScroll.enabled": true,
+    "editor.suggest.matchOnWordStartOnly": false,
     "editor.tokenColorCustomizations": {
         "textMateRules": [{
             "scope": "comment",
@@ -11,7 +13,9 @@
 
     "files.eol": "\n",
     "problems.showCurrentInStatus": true,
+    "terminal.integrated.smoothScrolling": true,
 
+    "window.commandCenter": true,
     "window.customMenuBarAltFocus": false,
     "window.dialogStyle": "custom",
 

@@ -28,9 +28,9 @@ alias l="ls -CF"
 #
 # Useful aliases
 #
-if [[ -x /usr/bin/bat ]]
+if [[ -x "/usr/bin/batcat" ]]
 then
-    alias cat="bat"
+    alias cat="batcat"
 fi
 
 #

@@ -11,7 +11,7 @@ export EDITOR="${VISUAL}"
 # Python VirtualEnv:
 #  - disable the default virtualenv prompt change
 #
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+export VIRTUAL_ENV_DISABLE_PROMPT="1"
 
 #  - some useful environment variables
 #
@@ -22,7 +22,7 @@ export PROJECT_HOME="${HOME}/projects"
 #
 if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
 then
-    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
 
     source "/usr/local/bin/virtualenvwrapper.sh"
 fi

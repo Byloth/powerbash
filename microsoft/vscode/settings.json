@@ -1,6 +1,7 @@
 {
     "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
+    "editor.inlineSuggest.showToolbar": "always",
     "editor.rulers": [120],
     "editor.stickyScroll.enabled": true,
     "editor.suggest.matchOnWordStartOnly": false,

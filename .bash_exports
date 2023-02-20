@@ -46,6 +46,7 @@ fi
 if [[ -n "${IS_WSL_ENV}" ]]
 then
     export BROWSER="none"
+    export WINDOWS_HOME="/mnt/c/Users/<username>"
 
     # If you're using Docker & WSL1
     #

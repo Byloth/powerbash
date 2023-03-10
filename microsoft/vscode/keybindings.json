@@ -166,6 +166,32 @@
         "when": "explorerResourceIsFolder && explorerViewletVisible && filesExplorerFocus && !inputFocus"
       },
 
+  // Rules about previous & next occurrences...
+  //
+    // Removing existing rules:
+    //
+      {
+        "key": "shift+alt+up",
+        "command": "-editor.action.copyLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "shift+alt+down",
+        "command": "-editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+
+    // Adding new rules:
+    //
+      {
+        "key": "shift+alt+up",
+        "command": "editor.action.addSelectionToPreviousFindMatch"
+      },
+      {
+        "key": "shift+alt+down",
+        "command": "editor.action.addSelectionToNextFindMatch"
+      },
+
   // Rules about zooming...
   //
     {

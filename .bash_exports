@@ -15,14 +15,22 @@ export VIRTUAL_ENV_DISABLE_PROMPT="1"
 
 #  - some useful environment variables
 #
-export WORKON_HOME="${HOME}/.virtualenvs"
 export PROJECT_HOME="${HOME}/projects"
+export VIRTUALENVS_PATH="${HOME}/.virtualenvs"
+
+#  - enable Poetry support
+#
+if [[ -f "${HOME}/.local/bin/poetry" ]]
+then
+    export POETRY_VIRTUALENVS_PATH="${VIRTUALENVS_PATH}"
+fi
 
 #  - enable VirtualEnvWrapper support
 #
 if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
 then
     export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
+    export WORKON_HOME="${VIRTUALENVS_PATH}"
 
     source "/usr/local/bin/virtualenvwrapper.sh"
 fi

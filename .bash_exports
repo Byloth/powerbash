@@ -8,6 +8,15 @@ export VISUAL="nano"
 export EDITOR="${VISUAL}"
 
 #
+# Rust Cargo:
+#  - enable Cargo support
+#
+if [[ -f ~/.cargo/env ]]
+then
+    source ~/.cargo/env
+fi
+
+#
 # Python VirtualEnv:
 #  - disable the default virtualenv prompt change
 #
@@ -20,7 +29,9 @@ export VIRTUALENVS_PATH="${HOME}/.virtualenvs"
 
 #  - enable Poetry support
 #
-if [[ -f "${HOME}/.local/bin/poetry" ]]
+export POETRY_HOME="/opt/poetry"
+
+if [[ -x "${POETRY_HOME}/bin/poetry" ]]
 then
     export POETRY_VIRTUALENVS_PATH="${VIRTUALENVS_PATH}"
 fi

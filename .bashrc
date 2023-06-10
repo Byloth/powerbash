@@ -45,7 +45,7 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 #
 # Make less more friendly for non-text input files, see lesspipe(1)
 #
-if [[ -x /usr/bin/lesspipe ]]
+if [[ -x "/usr/bin/lesspipe" ]]
 then
     eval "$(SHELL=/bin/sh lesspipe)"
 fi
@@ -53,7 +53,7 @@ fi
 #
 # Useful export (if you are in Bash under WSL)
 #
-if [[ -x /bin/wslpath ]]
+if [[ -x "/bin/wslpath" ]]
 then
     export IS_WSL_ENV=1
 

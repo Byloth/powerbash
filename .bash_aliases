@@ -5,7 +5,7 @@
 # Enable color support of 'ls', 'grep'
 #  and also add handy aliases
 #
-if [[ -x /usr/bin/dircolors ]]
+if [[ -x "/usr/bin/dircolors" ]]
 then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 

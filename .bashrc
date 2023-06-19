@@ -29,8 +29,8 @@ shopt -s checkwinsize
 
 #  - setting history length
 #
-HISTSIZE=100000
-HISTFILESIZE=100000
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 #  - saving and reloading the history after each command finishes
 #
@@ -51,7 +51,7 @@ then
 fi
 
 #
-# Useful export (if you are in Bash under WSL)
+# Useful export (if you're under WSL)
 #
 if [[ -x "/bin/wslpath" ]]
 then

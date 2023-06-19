@@ -334,7 +334,7 @@ function weather()
 source ~/functions/docker-remove.sh
 
 #
-# Useful functions (if you are in Bash under WSL)
+# Useful functions (if you're under WSL)
 #
 function getHostIp()
 {

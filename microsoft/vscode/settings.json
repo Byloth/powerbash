@@ -14,19 +14,14 @@
 
     "files.eol": "\n",
     "problems.showCurrentInStatus": true,
-    "terminal.integrated.smoothScrolling": true,
 
     "window.commandCenter": true,
-    "window.customMenuBarAltFocus": false,
     "window.dialogStyle": "custom",
 
     "workbench.colorCustomizations": {
-        "activityBar.activeBorder": "#007CC8",
-        "activityBar.activeBackground": "#294A5B",
-        "sash.hoverBorder": "#007CC8"
+        "activityBar.activeBackground": "#1F1F1F"
     },
-    "workbench.editor.decorations.colors": true,
-    "workbench.editor.decorations.badges": true,
+    "workbench.colorTheme": "Default Dark Modern",
 
     "[python]": { "editor.rulers": [79, 120] }
 }

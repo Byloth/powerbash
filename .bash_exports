@@ -2,12 +2,6 @@
 #
 
 #
-# Defining the default editor to use
-#
-export VISUAL="nano"
-export EDITOR="${VISUAL}"
-
-#
 # Rust Cargo:
 #  - enable Cargo support
 #
@@ -27,15 +21,6 @@ export VIRTUAL_ENV_DISABLE_PROMPT="1"
 export PROJECT_HOME="${HOME}/projects"
 export VIRTUALENVS_PATH="${HOME}/.virtualenvs"
 
-#  - enable Poetry support
-#
-export POETRY_HOME="/opt/poetry"
-
-if [[ -x "${POETRY_HOME}/bin/poetry" ]]
-then
-    export POETRY_VIRTUALENVS_PATH="${VIRTUALENVS_PATH}"
-fi
-
 #  - enable VirtualEnvWrapper support
 #
 if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
@@ -44,6 +29,17 @@ then
     export WORKON_HOME="${VIRTUALENVS_PATH}"
 
     source "/usr/local/bin/virtualenvwrapper.sh"
+fi
+
+#
+# Python Poetry
+#  - enable Poetry support
+#
+export POETRY_HOME="/opt/poetry"
+
+if [[ -x "${POETRY_HOME}/bin/poetry" ]]
+then
+    export POETRY_VIRTUALENVS_PATH="${VIRTUALENVS_PATH}"
 fi
 
 #
@@ -59,8 +55,14 @@ fi
 # export ftp_proxy="${FTP_PROXY}"
 # export no_proxy="${NO_PROXY}"
 
+
 #
-# Useful WSL exports
+# User defined exports
+#
+export VISUAL="nano"
+export EDITOR="${VISUAL}"
+
+# - useful if you're under WSL
 #
 if [[ -n "${IS_WSL_ENV}" ]]
 then

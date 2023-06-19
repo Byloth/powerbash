@@ -51,7 +51,7 @@ then
 fi
 
 #
-# Other extra aliases
+# User defined aliases
 #
 alias home="cd && clean"
 alias welcome="tmux new-session 'htop' \; rename-window workspace \; split-window -p 85 \; split-window -d -p 40 \; split-window -h \; swap-pane -D \; select-pane -U"

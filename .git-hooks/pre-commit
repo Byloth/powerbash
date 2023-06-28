@@ -36,7 +36,7 @@ then
     echo -e " \e[31m│\e[0m"
     echo -e " \e[31m└\e[0m Please, resolve these problems before committing."
     echo -e "   If instead you know \e[4mEXACTLY\e[0m what you're doing,"
-    echo -e "    you can force commit using \"\e[36mgit commit --no-verify\e[0m\"."
+    echo -e "    you can force commit using \"\e[1;4mgit commit --no-verify\e[0m\"."
     echo -e "\n  --------------------------------------------------------\c"
     echo -e "${OUTPUT_CHECK}"
 

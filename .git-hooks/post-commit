@@ -25,7 +25,7 @@ then
 
         echo -e " \e[33m│\e[0m"
         echo -e " \e[33m└\e[0m Please, resolve these problems before pushing."
-        echo -e "   You can use \"\e[36mgit commit --amend\e[0m\" to integrate "
+        echo -e "   You can use \"\e[1;4mgit commit --amend\e[0m\" to integrate "
         echo -e "    this commit with the correct modules version or"
         echo -e "    you can simply create another explicit commit."
         echo -e "\n  --------------------------------------------------------\c"

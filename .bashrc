@@ -90,4 +90,4 @@ fi
 # Print a random phrase when the terminal is
 #  opened and all scripts have been loaded.
 #
-_randomPhrase
+_random-phrase

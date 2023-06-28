@@ -244,7 +244,7 @@ function weather()
 #
 # Imported from external files
 #
-source ./functions/docker-remove.sh
+source ./lib/docker-remove.sh
 
 #
 # Useful functions (if you're under WSL)

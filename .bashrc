@@ -87,7 +87,7 @@ then
 fi
 
 #
-# Print a random phrase when the terminal is
-#  opened and all scripts have been loaded.
+# Print a random cowsay fortune when the terminal
+#  is opened and all scripts have been loaded.
 #
-_random-phrase
+cowsay-fortune

@@ -14,10 +14,6 @@ Desktop.ini
 #
 __pycache__/
 
-# Other files
-#
-odoo.conf
-
 # Not ignored
 #
 !.gitkeep

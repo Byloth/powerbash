@@ -238,6 +238,21 @@ function resetPermissions()
     fi
 }
 
+function serve-dir()
+{
+    local PORT="${1}"
+
+    if [[ "${PORT}" == "-h" ]] || [[ "${PORT}" == "--help" ]]
+    then
+        echo "Usage: serve-dir [<local port> | 8000]"
+    elif [[ -z "${PORT}" ]]
+    then
+        PORT=8000
+    fi
+
+    python3 -m http.server "${PORT}"
+}
+
 function sshTunnel()
 {
     if [[ ${#} -lt 3 ]]

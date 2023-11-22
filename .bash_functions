@@ -36,12 +36,61 @@ function _psql-query()
 
     echo -e "\n${QUERY}"
     echo -e " └ \c"
-    echo "${QUERY}" | psql "${@:2}" -f -
+    echo "${QUERY}" | psql ${@:2} -f -
+}
+
+function _require()
+{
+    if [[ -z "$(which ${1})" ]]
+    then
+        echo -e "\n \e[31;4mERROR!\e[0m"
+
+        if [[ -n "${2}" ]]
+        then
+            echo -e "  \e[31m├\e[0m This command requires \"\e[36m${1}\e[0m\" to be"
+            echo -e "  \e[31m│\e[0m  available on your system to work properly."
+            echo -e "  \e[31m│\e[0m"
+            echo -e "  \e[31m└\e[0m You can install it simply by running:"
+            echo -e "     └ \e[1;4m${2}\e[0m"
+        else
+            echo -e "  \e[31m└\e[0m This command requires \"\e[36m${1}\e[0m\" to be"
+            echo -e "     available on your system to work properly."
+        fi
+
+        return 1
+    fi
+}
+
+function base64-encode()
+{
+    if ! _require "base64"
+    then
+        return 1
+    fi
+
+    echo -n "${1}" | base64
+}
+function base64-decode()
+{
+    if ! _require "base64"
+    then
+        return 1
+    fi
+
+    echo -n "${1}" | base64 --decode
 }
 
 function cowsay-fortune()
 {
-    #
+    if ! _require "cowthink" "sudo apt install cowsay"
+    then
+        return 1
+    fi
+    if ! _require "fortune" "sudo apt install fortunes"
+    then
+        return 2
+    fi
+
     # Some other "cows" here: /usr/share/cowsay/cows
     #  -f <cow_name>
     #  -W <max_columns>
@@ -52,26 +101,65 @@ function cowsay-fortune()
     fortune -as | cowthink -n -${COW_PARAMS:$(shuf -i0-8 -n1):1}
 }
 
-function base64-encode()
+function docker-clean()
 {
-    echo -n "${1}" | base64
+    local HELP="Usage: docker-clean [-a | --all]"
+
+    while [[ ${#} -gt 0 ]]
+    do
+        case "${1}" in
+            -h | -? | --help)
+                echo "${HELP}"
+
+                return 0
+                ;;
+            -a | --all)
+                local ALL="--all"
+
+                shift
+                ;;
+            *)
+                echo "Error: unknown option \"${1}\""
+                echo "${HELP}"
+
+                return 1
+                ;;
+        esac
+
+        shift
+    done
+
+    if ! _require "docker" "sudo apt install docker-ce-cli"
+    then
+        return 2
+    fi
+
+    docker builder prune ${ALL}
 }
-function base64-decode()
+function docker-upload()
 {
-    echo -n "${1}" | base64 --decode
+    local HELP="Usage: docker-upload <image name> <ssh host>"
+
+    if [[ ${#} -lt 2 ]]
+    then
+        echo "Error: \"docker-upload\" requires exactly 2 arguments."
+        echo "${HELP}"
+
+        return 1
+    fi
+
+    if ! _require "docker" "sudo apt install docker-ce-cli"
+    then
+        return 2
+    fi
+
+    docker save "${1}" | gzip | ssh "${2}" "docker load"
 }
 
 function ip-address()
 {
-    if [[ -z "$(which ifconfig)" ]]
+    if ! _require "ifconfig" "sudo apt install net-tools"
     then
-        echo -e "\n \e[31;4mERROR!\e[0m"
-        echo -e "  \e[31m├\e[0m This command requires \"\e[36mifconfig\e[0m\" to be"
-        echo -e "  \e[31m│\e[0m  available on your system to work properly."
-        echo -e "  \e[31m│\e[0m"
-        echo -e "  \e[31m└\e[0m You can install it by running:"
-        echo -e "     └ \e[1;4msudo apt install net-tools\e[0m"
-
         return 1
     fi
 
@@ -121,54 +209,49 @@ function permissions-reset()
 
 function pgdatabase-close-connections()
 {
-    local HELP="Usage: pgdatabase-close-connections -d | --database <database name>"
+    local HELP="Usage: pgdatabase-close-connections <database name>"
 
-    if [[ ${#} -lt 1 ]]
+    if [[ "${1}" == "-h" ]] || [[ "${1}" == "--help" ]]
     then
         echo "${HELP}"
 
         return 0
+
+    elif [[ -z "${1}" ]]
+    then
+        echo "Error: \"pgdatabase-close-connections\" requires exactly 1 argument."
+        echo "${HELP}"
+
+        return 1
     fi
 
-    while [[ ${#} -gt 0 ]]
-    do
-        case "${1}" in
-            -h | -? | --help)
-                echo "${HELP}"
+    if ! _require "psql" "sudo apt install postgresql-client"
+    then
+        return 2
+    fi
 
-                return 0
-                ;;
-            -d | --database)
-                PGDATABASE="${2}"
-
-                shift
-                ;;
-            *)
-                echo "Error: unknown option '${1}'"
-                echo "Try \"pgdatabase-close-connections --help\" for more information."
-
-                return -1
-                ;;
-        esac
-
-        shift
-    done
-
-    _psql-query "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${PGDATABASE}' AND pid <> pg_backend_pid();" -d postgres
+    _psql-query "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${1}' AND pid <> pg_backend_pid();" -d postgres
 }
 
 function serve-dir()
 {
+    local HELP="Usage: serve-dir [<local port> | 8000]"
     local PORT="${1}"
 
     if [[ "${PORT}" == "-h" ]] || [[ "${PORT}" == "--help" ]]
     then
-        echo "Usage: serve-dir [<local port> | 8000]"
+        echo "${HELP}"
 
         return 0
+
     elif [[ -z "${PORT}" ]]
     then
         PORT=8000
+    fi
+
+    if ! _require "python3" "sudo apt install python3"
+    then
+        return 1
     fi
 
     python3 -m http.server "${PORT}"
@@ -176,11 +259,14 @@ function serve-dir()
 
 function ssh-tunnel()
 {
+    local HELP="Usage: ssh-tunnel <local port> [<ssh username>@]<ssh host>[:<ssh port> | 22] <remote port>"
+
     if [[ ${#} -lt 3 ]]
     then
-        echo "Usage: ssh-tunnel <local port> [<ssh username>@]<ssh host>[:<ssh port> | 22] <remote port>"
+        echo "Error: \"ssh-tunnel\" requires exactly 3 arguments."
+        echo "${HELP}"
 
-        return 0
+        return 1
     fi
 
     local PARTS=($(echo ${2} | tr ':' ' '))
@@ -192,32 +278,52 @@ function ssh-tunnel()
         SSH_PORT=22
     fi
 
-    echo -e "\nTunnelling \"localhost:${1}\" to \"${SSH_HOST}:${3}\"..."
+    if ! _require "ssh" "sudo apt install openssh-client"
+    then
+        return 2
+    fi
 
+    echo -e "\nTunnelling \"localhost:${1}\" to \"${SSH_HOST}:${3}\"..."
     ssh -NL ${1}:localhost:${3} ${SSH_HOST} -p ${SSH_PORT}
 }
 
 function tar-compress()
 {
+    local HELP="Usage: tar-compress <archive name> <file or directory to compress>"
+
     if [[ ${#} -lt 2 ]]
     then
-        echo "Usage: tar-compress <archive name> <file or directory to compress>"
+        echo "Error: \"tar-compress\" requires exactly 2 arguments."
+        echo "${HELP}"
 
-        return 0
+        return 1
+    fi
+
+    if ! _require "tar" "sudo apt install tar"
+    then
+        return 2
     fi
 
     tar -czvf "${1}" "${2}"
 }
 function tar-extract()
 {
+    local HELP="Usage: tar-extract <archive name> [<directory where extract archive> | .]"
+
     if [[ ${#} -lt 1 ]]
     then
-        echo "Usage: tar-extract <archive name> [<directory where extract archive> | .]"
+        echo "Error: \"tar-compress\" requires at least 1 argument."
+        echo "${HELP}"
 
-        return 0
+        return 1
     fi
 
     local EXTRACT_PATH="${2}"
+
+    if ! _require "tar" "sudo apt install tar"
+    then
+        return 2
+    fi
 
     if [[ -z "${EXTRACT_PATH}" ]]
     then
@@ -229,14 +335,21 @@ function tar-extract()
 
 function weather()
 {
+    local HELP="Usage: weather [<location>]"
+
     if [[ "${1}" == "-h" ]] || [[ "${1}" == "--help" ]]
     then
-        echo "Usage: weather [<location>]"
+        echo "${HELP}"
 
         return 0
     fi
 
     local LOCATION="${1}"
+
+    if ! _require "curl" "sudo apt install curl"
+    then
+        return 1
+    fi
 
     curl "https://wttr.in/${LOCATION}"
 }

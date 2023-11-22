@@ -89,7 +89,7 @@ Options:
             echo "[INFO] There are no stopped containers to remove."
         fi
 
-        return -1
+        return 2
     fi
 
     local COMMAND="docker rm"
@@ -272,7 +272,7 @@ Options:
             echo "[INFO] There are no images to remove."
         fi
 
-        return -1
+        return 4
     fi
 
     local COMMAND="docker image rm"

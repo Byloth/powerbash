@@ -152,8 +152,19 @@ function docker-upload()
     then
         return 2
     fi
+    if ! _require "pv" "sudo apt install pv"
+    then
+        return 3
+    fi
 
-    docker save "${1}" | gzip | ssh "${2}" "docker load"
+    local FILENAME="$(mktemp --suffix ".gz")"
+
+    docker save "${1}" | gzip > "${FILENAME}"
+
+    echo ""
+    cat "${FILENAME}" | pv -s $(stat -c %s "${FILENAME}") | ssh "${2}" "docker load"
+
+    rm "${FILENAME}"
 }
 
 function ip-address()

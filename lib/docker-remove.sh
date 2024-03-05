@@ -286,7 +286,7 @@ Options:
     then
         for IMAGE in ${IMAGES_TO_REMOVE[@]}
         do
-            docker-remove-stopped-containers "${COMMIT}" --quiet "${IMAGE}"
+            docker-remove-stopped-containers ${COMMIT} --quiet "${IMAGE}"
 
             ${COMMAND} "${IMAGE}"
         done

@@ -1,6 +1,7 @@
 {
     "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
+    "editor.inlineSuggest.enabled": true,
     "editor.inlineSuggest.showToolbar": "always",
     "editor.rulers": [120],
     "editor.stickyScroll.enabled": true,
@@ -23,5 +24,14 @@
     },
     "workbench.colorTheme": "Default Dark Modern",
 
-    "[python]": { "editor.rulers": [79, 120] }
+    "github.copilot.editor.enableAutoCompletions": true,
+
+    "[python]": { "editor.rulers": [79, 120] },
+    "python.analysis.inlayHints.callArgumentNames": "all",
+    
+    "javascript.inlayHints.parameterNames.enabled": "literals",
+    "typescript.inlayHints.parameterNames.enabled": "literals",
+    
+    "vue.inlayHints.missingProps": true,
+    "vue.inlayHints.vBindShorthand": true
 }

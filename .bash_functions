@@ -300,7 +300,12 @@ function ssh-tunnel()
 
 function tar-compress()
 {
-    local HELP="Usage: tar-compress <archive name> <file or directory to compress>"
+    local HELP="Usage: tar-compress <file-or-path/to/compress> <archive-name.tar.gz>
+
+ ----
+
+[HINT] If you want to perform the same operation without using this function, you can run:
+ └ tar -czvf <archive-name.tar.gz> <file-or-path/to/compress>"
 
     if [[ ${#} -lt 2 ]]
     then
@@ -315,11 +320,16 @@ function tar-compress()
         return 2
     fi
 
-    tar -czvf "${1}" "${2}"
+    tar -czvf "${2}" "${1}"
 }
 function tar-extract()
 {
-    local HELP="Usage: tar-extract <archive name> [<directory where extract archive> | .]"
+    local HELP="Usage: tar-extract [<path/where-to/extract/the-archive> | .] <archive-name.tar.gz>
+
+ ----
+
+[HINT] If you want to perform the same operation without using this function, you can run:
+ └ tar -xzvf <archive-name.tar.gz> -C <path/where-to/extract/the-archive>"
 
     if [[ ${#} -lt 1 ]]
     then
@@ -329,19 +339,21 @@ function tar-extract()
         return 1
     fi
 
-    local EXTRACT_PATH="${2}"
-
     if ! _require "tar" "sudo apt install tar"
     then
         return 2
     fi
 
-    if [[ -z "${EXTRACT_PATH}" ]]
+    local EXTRACT_PATH="."
+    local ARCHIVE_NAME="${1}"
+
+    if [[ ${#} -gt 1 ]]
     then
-        EXTRACT_PATH="."
+        EXTRACT_PATH="${1}"
+        ARCHIVE_NAME="${2}"
     fi
 
-    tar -xzvf "${1}" -C "${EXTRACT_PATH}"
+    tar -xzvf "${ARCHIVE_NAME}" -C "${EXTRACT_PATH}"
 }
 
 function weather()

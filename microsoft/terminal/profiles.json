@@ -41,6 +41,7 @@
                 "backgroundImageOpacity": 0.1,
                 "backgroundImageStretchMode": "none",
                 "colorScheme": "Nautilus",
+                "cursorShape": "bar",
                 "font": {
                     "face": "Ubuntu Mono",
                     "size": 12

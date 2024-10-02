@@ -27,7 +27,7 @@
         "defaults":
         {
             "antialiasingMode": "cleartype",
-            "font": { "size": 10 },
+            "font": { "size": 10.0 },
             "opacity": 75,
             "padding": "19, 16, 0, 10",
             "useAcrylic": true,
@@ -44,7 +44,7 @@
                 "cursorShape": "bar",
                 "font": {
                     "face": "Ubuntu Mono",
-                    "size": 12
+                    "size": 12.0
                 },
                 "guid": "{00000000-0000-0000-0000-000000000000}",
                 "hidden": false,

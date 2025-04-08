@@ -2,12 +2,22 @@
 #
 
 #
+# Node.js Bun
+#
+export BUN_INSTALL="${HOME}/.local/share/bun"
+
+#
 # Rust Cargo:
+#  - define Rust environmental variables
+#
+export CARGO_HOME="${HOME}/.local/share/cargo"
+export RUSTUP_HOME="${HOME}/.local/share/rustup"
+
 #  - enable Cargo support
 #
-if [[ -f ~/.cargo/env ]]
+if [[ -f "${HOME}/.local/share/cargo/env" ]]
 then
-    source ~/.cargo/env
+    source "${HOME}/.local/share/cargo/env"
 fi
 
 #
@@ -32,12 +42,10 @@ then
 fi
 
 #
-# Python Poetry
+# Python Poetry:
 #  - enable Poetry support
 #
-export POETRY_HOME="/opt/poetry"
-
-if [[ -x "${POETRY_HOME}/bin/poetry" ]]
+if [[ "$(which poetry)" ]]
 then
     export POETRY_VIRTUALENVS_PATH="${VIRTUALENVS_PATH}"
 fi

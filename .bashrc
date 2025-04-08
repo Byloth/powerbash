@@ -37,6 +37,14 @@ HISTFILESIZE=-1
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #
+# Add `.local/bin` to the PATH if exists
+#
+if [[ -d "${HOME}/.local/bin" ]]
+then
+    PATH="${HOME}/.local/bin:${PATH}"
+fi
+
+#
 # If set, the pattern "**" used in a pathname expansion context will
 #  match all files and zero or more directories and subdirectories.
 #
@@ -72,6 +80,10 @@ fi
 if [[ -f ~/.bash_aliases ]]
 then
     source ~/.bash_aliases
+fi
+if [[ -f ~/.bash_completion ]]
+then
+    source ~/.bash_completion
 fi
 if [[ -f ~/.bash_customs ]]
 then

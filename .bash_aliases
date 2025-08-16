@@ -32,10 +32,6 @@ if [[ -x "/usr/bin/batcat" ]]
 then
     alias cat="batcat"
 fi
-if [[ -x "/usr/bin/github-copilot-cli" ]]
-then
-    eval "$(github-copilot-cli alias -- "${0}")"
-fi
 
 #
 # Useful proxy aliases

@@ -33,12 +33,19 @@ export VIRTUALENVS_PATH="${HOME}/.virtualenvs"
 
 #  - enable VirtualEnvWrapper support
 #
-if [[ -f "/usr/local/bin/virtualenvwrapper.sh" ]]
-then
-    export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3"
-    export WORKON_HOME="${VIRTUALENVS_PATH}"
+export WORKON_HOME="${VIRTUALENVS_PATH}"
 
-    source "/usr/local/bin/virtualenvwrapper.sh"
+__venvs_mngmnt="${VIRTUALENVS_PATH}/__venvs-mngmnt"
+export VIRTUALENVWRAPPER_PYTHON="${__venvs_mngmnt}/bin/python"
+export VIRTUALENVWRAPPER_VIRTUALENV="${__venvs_mngmnt}/bin/virtualenv"
+if [[ -f "${__venvs_mngmnt}/bin/virtualenvwrapper.sh" ]]
+then
+    source "${__venvs_mngmnt}/bin/virtualenvwrapper.sh"
+else
+    unset WORKON_HOME
+
+    unset VIRTUALENVWRAPPER_PYTHON
+    unset VIRTUALENVWRAPPER_VIRTUALENV
 fi
 
 #
@@ -63,7 +70,6 @@ fi
 # export ftp_proxy="${FTP_PROXY}"
 # export no_proxy="${NO_PROXY}"
 
-
 #
 # User defined exports
 #
@@ -76,8 +82,4 @@ if [[ -n "${IS_WSL_ENV}" ]]
 then
     export BROWSER="none"
     export WINDOWS_HOME="/mnt/c/Users/<username>"
-
-    # If you're using Docker & WSL1
-    #
-    # export DOCKER_HOST="tcp://localhost:2375"
 fi

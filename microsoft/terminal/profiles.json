@@ -7,8 +7,8 @@
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
 
-    "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
     "copyFormatting": "all",
+    "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
 
     // You can add more global application settings here.
     // To learn more about global settings, visit https://aka.ms/terminal-global-settings
@@ -49,10 +49,10 @@
                 "guid": "{00000000-0000-0000-0000-000000000000}",
                 "hidden": false,
                 "icon": "ms-appdata:///Local/ubuntu-icon.png",
-                "name": "Ubuntu 22.04 LTS",
-                "source": "Windows.Terminal.Wsl",
+                "name": "Ubuntu 24.04 LTS",
+                "source": "Microsoft.WSL",
                 "suppressApplicationTitle": true,
-                "tabTitle": "Ubuntu 22.04 LTS"
+                "tabTitle": "Ubuntu 24.04 LTS"
             }
         ]
     },

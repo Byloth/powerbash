@@ -30,8 +30,7 @@
             "font": { "size": 10.0 },
             "opacity": 75,
             "padding": "19, 16, 0, 10",
-            "useAcrylic": true,
-            "useAtlasEngine": true
+            "useAcrylic": true
         },
         "list":
         [

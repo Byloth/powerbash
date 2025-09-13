@@ -22,8 +22,6 @@
     "workbench.colorCustomizations": { "activityBar.activeBackground": "#1F1F1F" },
     "workbench.colorTheme": "Default Dark Modern",
 
-    "github.copilot.editor.enableAutoCompletions": true,
-
     "[python]": { "editor.rulers": [79, 120] },
     "python.analysis.inlayHints.callArgumentNames": "all",
     

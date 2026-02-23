@@ -136,6 +136,11 @@ function docker-clean()
 
     docker builder prune ${ALL}
 }
+function docker-images()
+{
+    docker image ls --all \
+                    --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}\t{{.Size}}"
+}
 function docker-upload()
 {
     local HELP="Usage: docker-upload <image name> <ssh host>"
@@ -324,7 +329,7 @@ function tar-compress()
 }
 function tar-extract()
 {
-    local HELP="Usage: tar-extract [<path/where-to/extract/the-archive> | .] <archive-name.tar.gz>
+    local HELP="Usage: tar-extract <archive-name.tar.gz> [<path/where-to/extract/the-archive> | .]
 
  ----
 
@@ -333,7 +338,7 @@ function tar-extract()
 
     if [[ ${#} -lt 1 ]]
     then
-        echo "Error: \"tar-compress\" requires at least 1 argument."
+        echo "Error: \"tar-extract\" requires at least 1 argument."
         echo "${HELP}"
 
         return 1
@@ -344,13 +349,12 @@ function tar-extract()
         return 2
     fi
 
-    local EXTRACT_PATH="."
     local ARCHIVE_NAME="${1}"
+    local EXTRACT_PATH="."
 
     if [[ ${#} -gt 1 ]]
     then
-        EXTRACT_PATH="${1}"
-        ARCHIVE_NAME="${2}"
+        EXTRACT_PATH="${2}"
     fi
 
     tar -xzvf "${ARCHIVE_NAME}" -C "${EXTRACT_PATH}"

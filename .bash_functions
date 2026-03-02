@@ -172,6 +172,31 @@ function docker-upload()
     rm "${FILENAME}"
 }
 
+function git-repair()
+{
+    local HELP="Usage: git-repair [<path/to/git-repository> | .]"
+
+    if ! _require "git" "sudo apt install git"
+    then
+        return 2
+    fi
+
+    local REPO_PATH="${1}"
+    if [[ "${REPO_PATH}" == "-h" ]] || [[ "${REPO_PATH}" == "--help" ]]
+    then
+        echo "${HELP}"
+
+        return 0
+
+    elif [[ -z "${REPO_PATH}" ]]
+    then
+        REPO_PATH="."
+    fi
+
+    echo -e "\nRepairing repository at \"\e[36m$(realpath "${REPO_PATH}")\e[0m\"...\n"
+    git -C "${REPO_PATH}" fsck --full --no-reflogs --unreachable --lost-found
+}
+
 function ip-address()
 {
     if ! _require "ifconfig" "sudo apt install net-tools"

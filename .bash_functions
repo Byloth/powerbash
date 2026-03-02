@@ -193,8 +193,13 @@ function git-repair()
         REPO_PATH="."
     fi
 
-    echo -e "\nRepairing repository at \"\e[36m$(realpath "${REPO_PATH}")\e[0m\"...\n"
+    echo -e "\nRepairing repository at \"\e[36m$(realpath "${REPO_PATH}")\e[0m\"..."
+
+    echo -e "\n"
     git -C "${REPO_PATH}" fsck --full --no-reflogs --unreachable --lost-found
+
+    echo -e "\n"
+    git -C "${REPO_PATH}" status
 }
 
 function ip-address()

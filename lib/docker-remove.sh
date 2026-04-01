@@ -217,7 +217,7 @@ Options:
         then
             for REPOSITORY in ${REPOSITORIES[@]}
             do
-                local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
+                local IMAGES=("$(docker-images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
                 IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}' && $2 == "<none>") print $3 }')")
 
                 if [[ ${#IMAGES[@]} -gt 0 ]]
@@ -232,7 +232,7 @@ Options:
         else
             for REPOSITORY in ${REPOSITORIES[@]}
             do
-                local IMAGES=("$(docker images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
+                local IMAGES=("$(docker-images | awk '{ if (NR > 1 && $1 == "'"${REPOSITORY}"'") print }')")
                 IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}') { if ($2 != "<none>") { print $1":"$2 } else { print $3 } } }')")
 
                 if [[ ${#IMAGES[@]} -gt 0 ]]
@@ -247,7 +247,7 @@ Options:
         fi
     elif [[ -n "${UNTAGGED}" ]]
     then
-        local IMAGES=("$(docker images | awk '{ if (NR > 1) print }')")
+        local IMAGES=("$(docker-images | awk '{ if (NR > 1) print }')")
         IMAGES=("$(echo "${IMAGES[@]}" | awk '{ if (NR > '${SKIP}' && $2 == "<none>") print $3 }')")
 
         if [[ ${#IMAGES[@]} -gt 0 ]]

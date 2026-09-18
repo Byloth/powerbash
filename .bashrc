@@ -34,7 +34,7 @@ HISTFILESIZE=-1
 
 #  - saving and reloading the history after each command finishes
 #
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
 #
 # Add `.local/bin` to the PATH if exists

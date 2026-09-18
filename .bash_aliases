@@ -26,24 +26,18 @@ alias la="ls -A"
 alias l="ls -CF"
 
 #
-# Useful aliases
-#
-if [[ -x "/usr/bin/batcat" ]]
-then
-    alias cat="batcat"
-fi
-
-#
 # Useful proxy aliases
 #
 # alias sudo="sudo --preserve-env"
 
 #
-# Useful WSL aliases
+# Useful aliases
 #
-if [[ -n "${IS_WSL_ENV}" ]]
+alias su="sudo su"
+
+if [[ -x "/usr/bin/batcat" ]]
 then
-    alias su="sudo su"
+    alias cat="batcat"
 fi
 
 #

@@ -162,14 +162,10 @@ function docker-upload()
         return 3
     fi
 
-    local FILENAME="$(mktemp --suffix ".gz")"
-
-    docker save "${1}" | gzip > "${FILENAME}"
+    local SIZE="$(docker image inspect --format '{{.Size}}' "${1}")"
 
     echo ""
-    cat "${FILENAME}" | pv -s $(stat -c %s "${FILENAME}") | ssh "${2}" "docker load"
-
-    rm "${FILENAME}"
+    docker save "${1}" | pv -s "${SIZE}" | gzip | ssh "${2}" "docker load"
 }
 
 function git-repair()
